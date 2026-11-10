@@ -66,6 +66,11 @@ nav button.active, nav button:hover {
   color:var(--gold);
 }
 
+nav button:disabled {
+  opacity:.35;
+  cursor:not-allowed;
+}
+
 main {
   max-width:1150px;
   width:100%;
@@ -223,6 +228,37 @@ th,td {
 
 th { color:var(--gold); }
 
+.login-card {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.login-info {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.login-actions {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.login-status {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.admin-label {
+  color:var(--gold);
+  font-size:12px;
+}
+
 @media(max-width:700px) {
   .layout { display:block; }
   .side { width:100%; padding:15px; }
@@ -255,11 +291,11 @@ th { color:var(--gold); }
 
   <nav>
     <button class="active" data-page="home">⌂ Visão geral</button>
-    <button data-page="promote">↑ Promover</button>
+    <button data-page="promote" class="admin-only" disabled>↑ Promover</button>
     <button data-page="ranks">▤ Hierarquia</button>
-    <button data-page="history">◷ Histórico</button>
-    <button data-page="audit">⌕ Auditoria</button>
-    <button data-page="accounts">◎ Contas</button>
+    <button data-page="history" class="admin-only" disabled>◷ Histórico</button>
+    <button data-page="audit" class="admin-only" disabled>⌕ Auditoria</button>
+    <button data-page="accounts" class="admin-only" disabled>◎ Contas</button>
   </nav>
 </aside>
 
@@ -272,6 +308,33 @@ th { color:var(--gold); }
     <span class="status">EB DO AXEL</span>
   </div>
 
+  <div class="card login-card">
+    <div class="login-info">
+      <strong id="loginTitle">Não conectado</strong>
+      <span class="login-status" id="loginDescription">
+        Entre com sua conta Roblox para verificar seu acesso.
+      </span>
+      <span class="admin-label hidden" id="adminLabel">
+        ADMINISTRADOR AUTORIZADO
+      </span>
+    </div>
+
+    <div class="login-actions">
+      <a href="https://eb-do-axel-api.onrender.com/auth/roblox"
+         id="loginButton"
+         class="action"
+         style="text-decoration:none;display:inline-block">
+        ENTRAR COM ROBLOX
+      </a>
+
+      <button class="secondary hidden" id="logoutButton">
+        Sair
+      </button>
+    </div>
+  </div>
+
+  <div id="authMessage" class="notice hidden"></div>
+
   <section id="home" class="page">
     <div class="card">
       <h2>Bem-vindo à Central</h2>
@@ -281,7 +344,9 @@ th { color:var(--gold); }
 
     <div class="card">
       <h2>Atalhos administrativos</h2>
-      <button class="action" data-go="promote">Consultar jogador</button>
+      <button class="action" data-go="promote" id="shortcutPromote" disabled>
+        Consultar jogador
+      </button>
       <button class="secondary" data-go="ranks">Consultar hierarquia</button>
     </div>
   </section>
@@ -428,7 +493,6 @@ th { color:var(--gold); }
 </main>
 </div>
 
-<!-- JAVASCRIPT: MANTENHA DENTRO DESTAS TAGS -->
 <script>
 const API_URL = "https://eb-do-axel-api.onrender.com";
 
@@ -447,9 +511,125 @@ const playerRank = document.getElementById("playerRank");
 const promoteButton = document.getElementById("promoteButton");
 const errorMessage = document.getElementById("errorMessage");
 
+const loginTitle = document.getElementById("loginTitle");
+const loginDescription = document.getElementById("loginDescription");
+const loginButton = document.getElementById("loginButton");
+const logoutButton = document.getElementById("logoutButton");
+const adminLabel = document.getElementById("adminLabel");
+const authMessage = document.getElementById("authMessage");
+
 let jogadorEncontrado = false;
 let consultaAtual = 0;
 let temporizador;
+let usuarioAtual = null;
+let isAdmin = false;
+
+function showAuthMessage(message) {
+  authMessage.textContent = message;
+  authMessage.classList.remove("hidden");
+}
+
+function clearAuthMessage() {
+  authMessage.classList.add("hidden");
+  authMessage.textContent = "";
+}
+
+function updateAccess() {
+  document.querySelectorAll(".admin-only").forEach(button => {
+    button.disabled = !isAdmin;
+  });
+
+  document.getElementById("shortcutPromote").disabled = !isAdmin;
+
+  if (!isAdmin && document.getElementById("promote").classList.contains("hidden") === false) {
+    openPage("home");
+  }
+}
+
+async function checkLogin() {
+  try {
+    const response = await fetch(`${API_URL}/api/me`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    if (!response.ok) {
+      usuarioAtual = null;
+      isAdmin = false;
+
+      loginTitle.textContent = "Não conectado";
+      loginDescription.textContent = "Entre com sua conta Roblox para verificar seu acesso.";
+      loginButton.classList.remove("hidden");
+      logoutButton.classList.add("hidden");
+      adminLabel.classList.add("hidden");
+
+      updateAccess();
+      return;
+    }
+
+    const data = await response.json();
+
+    if (!data.autenticado || !data.usuario) {
+      throw new Error("Sessão inválida.");
+    }
+
+    usuarioAtual = data.usuario;
+    isAdmin = data.usuario.admin === true &&
+      [254, 255].includes(Number(data.usuario.patente));
+
+    loginTitle.textContent = data.usuario.displayName || data.usuario.username;
+    loginDescription.textContent =
+      `${data.usuario.cargo} • Patente ${data.usuario.patente}`;
+
+    loginButton.classList.add("hidden");
+    logoutButton.classList.remove("hidden");
+    adminLabel.classList.toggle("hidden", !isAdmin);
+
+    if (isAdmin) {
+      showAuthMessage("Acesso administrativo autorizado.");
+    } else {
+      showAuthMessage("Login realizado, mas sua patente não permite acesso administrativo.");
+    }
+
+    updateAccess();
+
+  } catch (error) {
+    usuarioAtual = null;
+    isAdmin = false;
+
+    loginTitle.textContent = "Não conectado";
+    loginDescription.textContent = "Não foi possível verificar a sessão.";
+    loginButton.classList.remove("hidden");
+    logoutButton.classList.add("hidden");
+    adminLabel.classList.add("hidden");
+
+    updateAccess();
+    showAuthMessage("Não foi possível verificar o login. Tente atualizar a página.");
+  }
+}
+
+logoutButton.addEventListener("click", async () => {
+  try {
+    const response = await fetch(`${API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+
+    if (!response.ok) {
+      throw new Error("Falha ao sair.");
+    }
+
+    usuarioAtual = null;
+    isAdmin = false;
+    clearAuthMessage();
+    await checkLogin();
+    openPage("home");
+    showAuthMessage("Você saiu da sua conta Roblox.");
+
+  } catch (error) {
+    showAuthMessage("Não foi possível encerrar a sessão. Tente novamente.");
+  }
+});
 
 function clearPlayerResult() {
   jogadorEncontrado = false;
@@ -460,6 +640,11 @@ function clearPlayerResult() {
 }
 
 function openPage(page) {
+  if (["promote", "history", "audit", "accounts"].includes(page) && !isAdmin) {
+    showAuthMessage("Você precisa de uma patente autorizada para acessar essa área.");
+    return;
+  }
+
   document.querySelectorAll(".page").forEach(section => {
     section.classList.toggle("hidden", section.id !== page);
   });
@@ -540,16 +725,31 @@ nicknameInput.addEventListener("input", () => {
 });
 
 promoteButton.addEventListener("click", () => {
-  if (!jogadorEncontrado) return;
+  if (!isAdmin || !jogadorEncontrado) return;
 
   errorMessage.textContent =
     "Consulta concluída! A promoção automática ainda está em desenvolvimento.";
   errorMessage.classList.remove("hidden");
 });
 
+const loginResult = new URLSearchParams(location.search).get("login");
+
+if (loginResult === "sucesso") {
+  showAuthMessage("Login Roblox concluído. Verificando sua autorização...");
+} else if (loginResult === "sem_permissao") {
+  showAuthMessage("Login realizado, mas sua patente não permite acesso administrativo.");
+} else if (loginResult) {
+  showAuthMessage("Não foi possível concluir o login. Tente novamente.");
+}
+
+// Limpar o parâmetro de retorno da URL
+if (loginResult) {
+  history.replaceState({}, document.title, location.pathname);
+}
+
 clearPlayerResult();
+checkLogin();
 </script>
-<!-- FIM DO JAVASCRIPT -->
 
 </body>
-        </html>
+          </html>
