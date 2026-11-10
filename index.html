@@ -109,7 +109,15 @@
       cursor: pointer;
     }
 
-    .action:hover { filter: brightness(1.1); }
+    .action:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+
+    .action:disabled {
+      background: #454b55;
+      color: #a5adba;
+      cursor: not-allowed;
+    }
 
     .secondary {
       background: #252c38;
@@ -284,28 +292,36 @@
       </div>
     </section>
 
+    <!-- PROMOVER -->
     <section id="promote" class="page hidden">
       <div class="card">
-        <h2>Consultar jogador</h2>
+        <h2>Promover jogador</h2>
         <p class="muted">
-          Digite o nickname Roblox para visualizar as informações do jogador.
+          Digite o nickname Roblox para consultar o jogador.
         </p>
 
         <label for="nickname">Nickname Roblox</label>
-        <input id="nickname" placeholder="Digite o nickname do jogador">
+        <input
+          id="nickname"
+          placeholder="Digite o nickname do jogador"
+          autocomplete="off"
+        >
 
-        <button class="action" id="lookup">Consultar jogador</button>
-
-        <div id="playerResult" class="player-card hidden">
-          <div class="player-name" id="playerName"></div>
+        <div class="player-card">
+          <div class="player-name" id="playerName">N/A</div>
           <p class="muted">Cargo atual</p>
-          <div class="player-rank" id="playerRank"></div>
+          <div class="player-rank" id="playerRank">N/A</div>
         </div>
+
+        <button class="action" id="promoteButton" disabled>
+          PROMOVER O CARGO
+        </button>
 
         <div id="errorMessage" class="notice hidden"></div>
       </div>
     </section>
 
+    <!-- HIERARQUIA -->
     <section id="ranks" class="page hidden">
       <div class="card">
         <h2>Hierarquia militar</h2>
@@ -392,6 +408,7 @@
       </div>
     </section>
 
+    <!-- HISTÓRICO -->
     <section id="history" class="page hidden">
       <div class="card">
         <h2>Histórico de promoções</h2>
@@ -401,6 +418,7 @@
       </div>
     </section>
 
+    <!-- AUDITORIA -->
     <section id="audit" class="page hidden">
       <div class="card">
         <h2>Auditoria administrativa</h2>
@@ -417,6 +435,7 @@
       </div>
     </section>
 
+    <!-- CONTAS -->
     <section id="accounts" class="page hidden">
       <div class="card">
         <h2>Vinculação de contas</h2>
@@ -445,14 +464,16 @@
   };
 
   const nicknameInput = document.getElementById("nickname");
-  const result = document.getElementById("playerResult");
-  const error = document.getElementById("errorMessage");
+  const playerName = document.getElementById("playerName");
+  const playerRank = document.getElementById("playerRank");
+  const promoteButton = document.getElementById("promoteButton");
+  const errorMessage = document.getElementById("errorMessage");
 
   function clearPlayerResult() {
-    result.classList.add("hidden");
-    error.classList.add("hidden");
-    document.getElementById("playerName").textContent = "";
-    document.getElementById("playerRank").textContent = "";
+    playerName.textContent = "N/A";
+    playerRank.textContent = "N/A";
+    promoteButton.disabled = true;
+    errorMessage.classList.add("hidden");
   }
 
   function openPage(page) {
@@ -468,6 +489,7 @@
       titles[page] || "Central de gestão";
 
     if (page !== "promote") {
+      nicknameInput.value = "";
       clearPlayerResult();
     }
   }
@@ -484,31 +506,31 @@
     });
   });
 
-  document.getElementById("lookup").addEventListener("click", () => {
+  nicknameInput.addEventListener("input", () => {
     const nickname = nicknameInput.value.trim();
 
     clearPlayerResult();
 
-    if (!nickname) {
-      error.textContent = "Digite o nickname do jogador.";
-      error.classList.remove("hidden");
-      return;
-    }
+    if (nickname.length > 0) {
+      playerName.textContent = nickname;
 
-    document.getElementById("playerName").textContent = nickname;
-    document.getElementById("playerRank").textContent = "Soldado";
-    result.classList.remove("hidden");
-  });
+      // Cargo provisório enquanto não existe consulta real ao Roblox.
+      playerRank.textContent = "Soldado";
 
-  nicknameInput.addEventListener("input", () => {
-    clearPlayerResult();
-  });
-
-  nicknameInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      document.getElementById("lookup").click();
+      promoteButton.disabled = false;
     }
   });
+
+  promoteButton.addEventListener("click", () => {
+    if (!nicknameInput.value.trim()) return;
+
+    errorMessage.textContent =
+      "A promoção ainda não está conectada ao grupo Roblox.";
+
+    errorMessage.classList.remove("hidden");
+  });
+
+  clearPlayerResult();
 </script>
 
 </body>
