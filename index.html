@@ -204,6 +204,21 @@
       padding: 25px 10px;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      padding: 11px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    th { color: var(--gold); }
+
     @media (max-width: 700px) {
       .layout { display: block; }
       .side { width: 100%; padding: 15px; }
@@ -253,7 +268,6 @@
       <span class="status">EB DO AXEL</span>
     </div>
 
-    <!-- VISÃO GERAL -->
     <section id="home" class="page">
       <div class="card">
         <h2>Bem-vindo à Central</h2>
@@ -270,7 +284,6 @@
       </div>
     </section>
 
-    <!-- PROMOVER -->
     <section id="promote" class="page hidden">
       <div class="card">
         <h2>Consultar jogador</h2>
@@ -287,23 +300,17 @@
           <div class="player-name" id="playerName"></div>
           <p class="muted">Cargo atual</p>
           <div class="player-rank" id="playerRank"></div>
-          <div class="notice">
-            Informação fictícia para demonstração do protótipo.
-            A patente real será consultada quando houver integração com o Roblox.
-          </div>
         </div>
 
         <div id="errorMessage" class="notice hidden"></div>
       </div>
     </section>
 
-    <!-- HIERARQUIA -->
     <section id="ranks" class="page hidden">
       <div class="card">
         <h2>Hierarquia militar</h2>
         <p class="muted">
           Estrutura organizada conforme os cargos informados para o projeto.
-          A sequência definitiva deve ser conferida com os cargos do grupo Roblox.
         </p>
 
         <h3 class="rank-category">Diretoria</h3>
@@ -385,26 +392,19 @@
       </div>
     </section>
 
-    <!-- HISTÓRICO -->
     <section id="history" class="page hidden">
       <div class="card">
         <h2>Histórico de promoções</h2>
-        <p class="muted">
-          Os registros reais serão carregados do banco de dados após a integração.
-        </p>
         <div class="empty">
-          Nenhuma promoção registrada nesta demonstração.
+          Nenhuma promoção registrada.
         </div>
       </div>
     </section>
 
-    <!-- AUDITORIA -->
     <section id="audit" class="page hidden">
       <div class="card">
         <h2>Auditoria administrativa</h2>
-        <p class="muted">
-          Área destinada à equipe autorizada.
-        </p>
+        <p class="muted">Área destinada à equipe autorizada.</p>
 
         <table>
           <tr><th>Campo</th><th>Informação registrada</th></tr>
@@ -414,32 +414,16 @@
           <tr><td>Responsável</td><td>Promotor identificado</td></tr>
           <tr><td>Data e horário</td><td>Registro automático</td></tr>
         </table>
-
-        <div class="notice">
-          A proteção desta página ainda não está implementada.
-          A autorização de acesso precisa ser validada pelo backend,
-          não apenas pelo navegador.
-        </div>
       </div>
     </section>
 
-    <!-- CONTAS -->
     <section id="accounts" class="page hidden">
       <div class="card">
         <h2>Vinculação de contas</h2>
         <p class="muted">Conexão entre Roblox e Discord.</p>
 
-        <div class="notice">
-          <strong>Roblox:</strong> integração pendente.
-        </div>
-
-        <div class="notice">
-          <strong>Discord:</strong> integração OAuth pendente.
-        </div>
-
         <p class="muted">
           Nunca informe senhas, cookies ou tokens neste painel.
-          As chaves de API devem permanecer exclusivamente no backend.
         </p>
       </div>
     </section>
@@ -460,6 +444,17 @@
     accounts: "Contas"
   };
 
+  const nicknameInput = document.getElementById("nickname");
+  const result = document.getElementById("playerResult");
+  const error = document.getElementById("errorMessage");
+
+  function clearPlayerResult() {
+    result.classList.add("hidden");
+    error.classList.add("hidden");
+    document.getElementById("playerName").textContent = "";
+    document.getElementById("playerRank").textContent = "";
+  }
+
   function openPage(page) {
     document.querySelectorAll(".page").forEach(section => {
       section.classList.toggle("hidden", section.id !== page);
@@ -471,6 +466,10 @@
 
     document.getElementById("heading").textContent =
       titles[page] || "Central de gestão";
+
+    if (page !== "promote") {
+      clearPlayerResult();
+    }
   }
 
   document.querySelectorAll("[data-page]").forEach(button => {
@@ -486,12 +485,9 @@
   });
 
   document.getElementById("lookup").addEventListener("click", () => {
-    const nickname = document.getElementById("nickname").value.trim();
-    const result = document.getElementById("playerResult");
-    const error = document.getElementById("errorMessage");
+    const nickname = nicknameInput.value.trim();
 
-    result.classList.add("hidden");
-    error.classList.add("hidden");
+    clearPlayerResult();
 
     if (!nickname) {
       error.textContent = "Digite o nickname do jogador.";
@@ -504,7 +500,11 @@
     result.classList.remove("hidden");
   });
 
-  document.getElementById("nickname").addEventListener("keydown", event => {
+  nicknameInput.addEventListener("input", () => {
+    clearPlayerResult();
+  });
+
+  nicknameInput.addEventListener("keydown", event => {
     if (event.key === "Enter") {
       document.getElementById("lookup").click();
     }
