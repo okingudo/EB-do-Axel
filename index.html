@@ -1,537 +1,123 @@
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EB do Axel | Central de Gestão</title>
-  <style>
-    :root {
-      --bg: #090b10;
-      --panel: #151a23;
-      --sidebar: #10141c;
-      --border: #303846;
-      --gold: #d8b65f;
-      --text: #f4f4f4;
-      --muted: #a5adba;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font: 15px Arial, sans-serif;
-    }
-
-    .layout { display: flex; min-height: 100vh; }
-
-    .side {
-      width: 235px;
-      flex-shrink: 0;
-      background: var(--sidebar);
-      padding: 22px 15px;
-      border-right: 1px solid var(--border);
-    }
-
-    .brand {
-      font-weight: bold;
-      letter-spacing: 2px;
-      padding: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .gold { color: var(--gold); }
-    .muted { color: var(--muted); font-size: 13px; }
-
-    nav { margin-top: 24px; }
-
-    nav button {
-      display: block;
-      width: 100%;
-      padding: 13px;
-      text-align: left;
-      background: none;
-      color: #ddd;
-      border: 0;
-      border-radius: 7px;
-      margin: 5px 0;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    nav button.active, nav button:hover {
-      background: #29251b;
-      color: var(--gold);
-    }
-
-    main {
-      max-width: 1150px;
-      width: 100%;
-      padding: 28px;
-      margin: 0 auto;
-      min-width: 0;
-    }
-
-    h1 { font-size: 27px; margin-bottom: 8px; }
-    h2 { font-size: 18px; }
-    h3 { font-size: 15px; }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 14px 0;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      background: #0b0f15;
-      color: white;
-      border: 1px solid #384250;
-      border-radius: 7px;
-      font: inherit;
-    }
-
-    label { display: block; margin: 14px 0 7px; }
-
-    .action {
-      background: var(--gold);
-      color: #17130a;
-      border: 0;
-      padding: 12px 16px;
-      border-radius: 7px;
-      margin-top: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .action:hover:not(:disabled) {
-      filter: brightness(1.1);
-    }
-
-    .action:disabled {
-      background: #454b55;
-      color: #a5adba;
-      cursor: not-allowed;
-    }
-
-    .secondary {
-      background: #252c38;
-      color: white;
-      border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 7px;
-      cursor: pointer;
-    }
-
-    .notice {
-      background: #211e16;
-      color: #dfd0a5;
-      padding: 13px;
-      border-left: 3px solid var(--gold);
-      margin-top: 14px;
-      font-size: 13px;
-      border-radius: 4px;
-    }
-
-    .hidden { display: none !important; }
-
-    .page { animation: appear .2s ease; }
-
-    @keyframes appear {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .rank-category {
-      color: var(--gold);
-      margin-top: 22px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 8px;
-    }
-
-    .rank-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .rank-item {
-      background: #10151e;
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 10px 12px;
-      font-size: 13px;
-    }
-
-    .status {
-      display: inline-block;
-      color: var(--gold);
-      background: #29251b;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 12px;
-    }
-
-    .topline {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .player-card {
-      background: #10151e;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      margin-top: 18px;
-    }
-
-    .player-name {
-      font-size: 19px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .player-rank {
-      color: var(--gold);
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .empty {
-      color: var(--muted);
-      text-align: center;
-      padding: 25px 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-
-    th, td {
-      padding: 11px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-      font-size: 13px;
-    }
-
-    th { color: var(--gold); }
-
-    @media (max-width: 700px) {
-      .layout { display: block; }
-      .side { width: 100%; padding: 15px; }
-      nav {
-        display: flex;
-        overflow-x: auto;
-        gap: 5px;
-        margin-top: 14px;
-      }
-      nav button {
-        white-space: nowrap;
-        width: auto;
-        flex-shrink: 0;
-      }
-      main { padding: 15px; }
-      h1 { font-size: 23px; }
-      .card { padding: 15px; }
-    }
-  </style>
-</head>
-
-<body>
-<div class="layout">
-
-  <aside class="side">
-    <div class="brand">
-      EB <span class="gold">DO AXEL</span>
-      <div class="muted">Central de gestão</div>
-    </div>
-
-    <nav>
-      <button class="active" data-page="home">⌂ Visão geral</button>
-      <button data-page="promote">↑ Promover</button>
-      <button data-page="ranks">▤ Hierarquia</button>
-      <button data-page="history">◷ Histórico</button>
-      <button data-page="audit">⌕ Auditoria</button>
-      <button data-page="accounts">◎ Contas</button>
-    </nav>
-  </aside>
-
-  <main>
-    <div class="topline">
-      <div>
-        <div class="muted gold">PAINEL ADMINISTRATIVO</div>
-        <h1 id="heading">Visão geral</h1>
-      </div>
-      <span class="status">EB DO AXEL</span>
-    </div>
-
-    <section id="home" class="page">
-      <div class="card">
-        <h2>Bem-vindo à Central</h2>
-        <p class="muted">Sistema administrativo do Exército Brasileiro do Axel.</p>
-        <div class="notice">
-          Central administrativa do EB do Axel.
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Atalhos administrativos</h2>
-        <button class="action" data-go="promote">Consultar jogador</button>
-        <button class="secondary" data-go="ranks">Consultar hierarquia</button>
-      </div>
-    </section>
-
-    <!-- PROMOVER -->
-    <section id="promote" class="page hidden">
-      <div class="card">
-        <h2>Promover jogador</h2>
-        <p class="muted">
-          Digite o nickname Roblox para consultar o jogador.
-        </p>
-
-        <label for="nickname">Nickname Roblox</label>
-        <input
-          id="nickname"
-          placeholder="Digite o nickname do jogador"
-          autocomplete="off"
-        >
-
-        <div class="player-card">
-          <div class="player-name" id="playerName">N/A</div>
-          <p class="muted">Cargo atual</p>
-          <div class="player-rank" id="playerRank">N/A</div>
-        </div>
-
-        <button class="action" id="promoteButton" disabled>
-          PROMOVER O CARGO
-        </button>
-
-        <div id="errorMessage" class="notice hidden"></div>
-      </div>
-    </section>
-
-    <!-- HIERARQUIA -->
-    <section id="ranks" class="page hidden">
-      <div class="card">
-        <h2>Hierarquia militar</h2>
-        <p class="muted">
-          Estrutura organizada conforme os cargos informados para o projeto.
-        </p>
-
-        <h3 class="rank-category">Diretoria</h3>
-        <div class="rank-list">
-          <span class="rank-item">Criador</span>
-          <span class="rank-item">Sub Criador</span>
-        </div>
-
-        <h3 class="rank-category">Administração</h3>
-        <div class="rank-list">
-          <span class="rank-item">Administrador</span>
-          <span class="rank-item">Moderador</span>
-        </div>
-
-        <h3 class="rank-category">Alto Comando da Supremacia</h3>
-        <div class="rank-list">
-          <span class="rank-item">Marechal</span>
-        </div>
-
-        <h3 class="rank-category">Alto Comando</h3>
-        <div class="rank-list">
-          <span class="rank-item">Comandante</span>
-          <span class="rank-item">Subcomandante</span>
-          <span class="rank-item">Sócios</span>
-        </div>
-
-        <h3 class="rank-category">Oficiais da Elite</h3>
-        <div class="rank-list">
-          <span class="rank-item">Elite Real</span>
-          <span class="rank-item">Elite Secreta</span>
-          <span class="rank-item">Elite Militar</span>
-        </div>
-
-        <h3 class="rank-category">Oficiais Generais</h3>
-        <div class="rank-list">
-          <span class="rank-item">General do Exército</span>
-          <span class="rank-item">General de Divisão</span>
-          <span class="rank-item">General de Brigada</span>
-        </div>
-
-        <h3 class="rank-category">Oficiais Superiores</h3>
-        <div class="rank-list">
-          <span class="rank-item">Coronel</span>
-          <span class="rank-item">Tenente-Coronel</span>
-          <span class="rank-item">Major</span>
-        </div>
-
-        <h3 class="rank-category">Oficiais Intermediários</h3>
-        <div class="rank-list">
-          <span class="rank-item">Capitão</span>
-        </div>
-
-        <h3 class="rank-category">Oficiais Subalternos</h3>
-        <div class="rank-list">
-          <span class="rank-item">Primeiro Tenente</span>
-          <span class="rank-item">Segundo Tenente</span>
-          <span class="rank-item">Aspirante a Oficial</span>
-        </div>
-
-        <h3 class="rank-category">Praças Especiais</h3>
-        <div class="rank-list">
-          <span class="rank-item">Cadete</span>
-        </div>
-
-        <h3 class="rank-category">Graduados</h3>
-        <div class="rank-list">
-          <span class="rank-item">Subtenente</span>
-          <span class="rank-item">Primeiro Sargento</span>
-          <span class="rank-item">Segundo Sargento</span>
-          <span class="rank-item">Terceiro Sargento</span>
-        </div>
-
-        <h3 class="rank-category">Praças</h3>
-        <div class="rank-list">
-          <span class="rank-item">Cabo</span>
-          <span class="rank-item">Soldado</span>
-          <span class="rank-item">Recruta</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- HISTÓRICO -->
-    <section id="history" class="page hidden">
-      <div class="card">
-        <h2>Histórico de promoções</h2>
-        <div class="empty">
-          Nenhuma promoção registrada.
-        </div>
-      </div>
-    </section>
-
-    <!-- AUDITORIA -->
-    <section id="audit" class="page hidden">
-      <div class="card">
-        <h2>Auditoria administrativa</h2>
-        <p class="muted">Área destinada à equipe autorizada.</p>
-
-        <table>
-          <tr><th>Campo</th><th>Informação registrada</th></tr>
-          <tr><td>Jogador promovido</td><td>Nickname Roblox</td></tr>
-          <tr><td>Cargo anterior</td><td>Posto anterior</td></tr>
-          <tr><td>Novo cargo</td><td>Posto alcançado</td></tr>
-          <tr><td>Responsável</td><td>Promotor identificado</td></tr>
-          <tr><td>Data e horário</td><td>Registro automático</td></tr>
-        </table>
-      </div>
-    </section>
-
-    <!-- CONTAS -->
-    <section id="accounts" class="page hidden">
-      <div class="card">
-        <h2>Vinculação de contas</h2>
-        <p class="muted">Conexão entre Roblox e Discord.</p>
-
-        <p class="muted">
-          Nunca informe senhas, cookies ou tokens neste painel.
-        </p>
-      </div>
-    </section>
-
-    <footer class="muted" style="padding:25px 5px;text-align:center">
-      EB DO AXEL • Disciplina • Respeito • União
-    </footer>
-  </main>
-</div>
-
-<script>
-  const titles = {
-    home: "Visão geral",
-    promote: "Promover",
-    ranks: "Hierarquia militar",
-    history: "Histórico",
-    audit: "Auditoria",
-    accounts: "Contas"
-  };
-
-  const nicknameInput = document.getElementById("nickname");
-  const playerName = document.getElementById("playerName");
-  const playerRank = document.getElementById("playerRank");
-  const promoteButton = document.getElementById("promoteButton");
-  const errorMessage = document.getElementById("errorMessage");
-
-  function clearPlayerResult() {
-    playerName.textContent = "N/A";
-    playerRank.textContent = "N/A";
-    promoteButton.disabled = true;
-    errorMessage.classList.add("hidden");
-  }
-
-  function openPage(page) {
-    document.querySelectorAll(".page").forEach(section => {
-      section.classList.toggle("hidden", section.id !== page);
-    });
-
-    document.querySelectorAll("[data-page]").forEach(button => {
-      button.classList.toggle("active", button.dataset.page === page);
-    });
-
-    document.getElementById("heading").textContent =
-      titles[page] || "Central de gestão";
-
-    if (page !== "promote") {
-      nicknameInput.value = "";
-      clearPlayerResult();
-    }
-  }
+const API_URL = "https://eb-do-axel-api.onrender.com";
+
+const titles = {
+  home: "Visão geral",
+  promote: "Promover",
+  ranks: "Hierarquia militar",
+  history: "Histórico",
+  audit: "Auditoria",
+  accounts: "Contas"
+};
+
+const nicknameInput = document.getElementById("nickname");
+const playerName = document.getElementById("playerName");
+const playerRank = document.getElementById("playerRank");
+const promoteButton = document.getElementById("promoteButton");
+const errorMessage = document.getElementById("errorMessage");
+
+let jogadorEncontrado = false;
+let consultaAtual = 0;
+
+function clearPlayerResult() {
+  jogadorEncontrado = false;
+  playerName.textContent = "N/A";
+  playerRank.textContent = "N/A";
+  promoteButton.disabled = true;
+  errorMessage.classList.add("hidden");
+}
+
+function openPage(page) {
+  document.querySelectorAll(".page").forEach(section => {
+    section.classList.toggle("hidden", section.id !== page);
+  });
 
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-      openPage(button.dataset.page);
-    });
+    button.classList.toggle("active", button.dataset.page === page);
   });
 
-  document.querySelectorAll("[data-go]").forEach(button => {
-    button.addEventListener("click", () => {
-      openPage(button.dataset.go);
-    });
-  });
+  document.getElementById("heading").textContent =
+    titles[page] || "Central de gestão";
 
-  nicknameInput.addEventListener("input", () => {
-    const nickname = nicknameInput.value.trim();
-
+  if (page !== "promote") {
+    consultaAtual++;
+    nicknameInput.value = "";
     clearPlayerResult();
+  }
+}
 
-    if (nickname.length > 0) {
-      playerName.textContent = nickname;
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => openPage(button.dataset.page));
+});
 
-      // Cargo provisório enquanto não existe consulta real ao Roblox.
-      playerRank.textContent = "Soldado";
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => openPage(button.dataset.go));
+});
 
-      promoteButton.disabled = false;
-    }
-  });
-
-  promoteButton.addEventListener("click", () => {
-    if (!nicknameInput.value.trim()) return;
-
-    errorMessage.textContent =
-      "A promoção ainda não está conectada ao grupo Roblox.";
-
-    errorMessage.classList.remove("hidden");
-  });
+async function consultarJogador(nickname) {
+  const minhaConsulta = ++consultaAtual;
 
   clearPlayerResult();
-</script>
 
-</body>
-</html>
+  if (!nickname) return;
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
+    );
+
+    const data = await response.json();
+
+    if (minhaConsulta !== consultaAtual) return;
+
+    if (!response.ok || !data.encontrado) {
+      errorMessage.textContent =
+        data.mensagem || "Jogador não encontrado.";
+
+      errorMessage.classList.remove("hidden");
+      return;
+    }
+
+    playerName.textContent = data.jogador.nick;
+    playerRank.textContent = data.jogador.cargo;
+
+    jogadorEncontrado = true;
+    promoteButton.disabled = false;
+
+  } catch (error) {
+    if (minhaConsulta !== consultaAtual) return;
+
+    errorMessage.textContent =
+      "Não foi possível conectar à API. Tente novamente.";
+
+    errorMessage.classList.remove("hidden");
+  }
+}
+
+let temporizador;
+
+nicknameInput.addEventListener("input", () => {
+  clearTimeout(temporizador);
+
+  consultaAtual++;
+  clearPlayerResult();
+
+  const nickname = nicknameInput.value.trim();
+
+  if (!nickname) return;
+
+  temporizador = setTimeout(() => {
+    consultarJogador(nickname);
+  }, 600);
+});
+
+promoteButton.addEventListener("click", () => {
+  if (!jogadorEncontrado) return;
+
+  errorMessage.textContent =
+    "Consulta concluída! O sistema de promoção ainda está em desenvolvimento.";
+
+  errorMessage.classList.remove("hidden");
+});
+
+clearPlayerResult();
