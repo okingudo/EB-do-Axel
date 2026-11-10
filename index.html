@@ -108,7 +108,7 @@
 
     label { display: block; margin: 14px 0 7px; }
 
-    input, textarea {
+    input {
       width: 100%;
       padding: 12px;
       background: #0b0f15;
@@ -117,8 +117,6 @@
       border-radius: 7px;
       font: inherit;
     }
-
-    textarea { resize: vertical; }
 
     .action {
       background: var(--gold);
@@ -277,7 +275,6 @@
       <div class="card">
         <h2>Bem-vindo à Central</h2>
         <p class="muted">Sistema administrativo do Exército Brasileiro do Axel.</p>
-        <p class="muted">Grupo Roblox: 98950517</p>
         <div class="notice">
           Esta versão é uma demonstração do painel. As funções reais dependem
           da integração com um backend seguro e a Roblox Open Cloud.
@@ -286,8 +283,8 @@
 
       <div class="grid">
         <div class="stat">
-          <span class="muted">Grupo Roblox</span>
-          <strong>98950517</strong>
+          <span class="muted">Central administrativa</span>
+          <strong>EB DO AXEL</strong>
         </div>
         <div class="stat">
           <span class="muted">Módulos disponíveis</span>
@@ -317,43 +314,14 @@
       </div>
 
       <div class="card">
-        <h2>Permissões de promoção</h2>
+        <h2>Registrar promoção</h2>
         <p class="muted">
-          O sistema deverá identificar automaticamente a autorização
-          do responsável pela conta conectada.
+          Após consultar o jogador, o sistema poderá preparar a solicitação
+          de promoção conforme as permissões da conta conectada.
         </p>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Autorização</th>
-              <th>Limite de promoção</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Oficial Subalterno</td><td>Subtenente</td></tr>
-            <tr><td>Oficial Intermediário</td><td>Subtenente</td></tr>
-            <tr><td>Oficial Superior</td><td>Subtenente</td></tr>
-            <tr><td>Oficial General</td><td>Tenente-Coronel</td></tr>
-            <tr><td>Oficial Elite</td><td>Coronel</td></tr>
-            <tr><td>Marechal</td><td>Elite Real</td></tr>
-            <tr><td>Presidente</td><td>Marechal</td></tr>
-          </tbody>
-        </table>
-
-        <div class="notice">
-          Cadete não possui autorização para promover. O jogador só poderá
-          avançar um posto por vez. A validação deverá acontecer no servidor.
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Registrar promoção</h2>
-        <label for="reason">Motivo da promoção</label>
-        <textarea id="reason" rows="3" placeholder="Descreva o motivo..."></textarea>
-
         <button class="action" id="registerPromotion">
-          Registrar demonstração
+          Registrar promoção
         </button>
 
         <div id="promotionMessage" class="notice hidden"></div>
@@ -475,7 +443,6 @@
           <tr><td>Cargo anterior</td><td>Posto anterior</td></tr>
           <tr><td>Novo cargo</td><td>Posto alcançado</td></tr>
           <tr><td>Responsável</td><td>Promotor identificado</td></tr>
-          <tr><td>Motivo</td><td>Justificativa</td></tr>
           <tr><td>Data e horário</td><td>Registro automático</td></tr>
         </table>
 
@@ -571,7 +538,6 @@
   });
 
   document.getElementById("registerPromotion").addEventListener("click", () => {
-    const reason = document.getElementById("reason").value.trim();
     const message = document.getElementById("promotionMessage");
 
     message.classList.remove("hidden");
@@ -581,16 +547,9 @@
       return;
     }
 
-    if (!reason) {
-      message.textContent = "Informe o motivo da promoção.";
-      return;
-    }
-
     message.textContent =
       "Demonstração: solicitação preparada para " + consultedNickname +
       ". Nenhuma promoção real foi realizada. A validação de autorização e a promoção dependem do backend.";
-
-    document.getElementById("reason").value = "";
   });
 </script>
 
