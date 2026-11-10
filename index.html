@@ -86,28 +86,6 @@
       margin: 14px 0;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .stat {
-      background: #10151e;
-      border: 1px solid var(--border);
-      padding: 18px;
-      border-radius: 10px;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 23px;
-      color: var(--gold);
-      margin-top: 8px;
-    }
-
-    label { display: block; margin: 14px 0 7px; }
-
     input {
       width: 100%;
       padding: 12px;
@@ -117,6 +95,8 @@
       border-radius: 7px;
       font: inherit;
     }
+
+    label { display: block; margin: 14px 0 7px; }
 
     .action {
       background: var(--gold);
@@ -159,21 +139,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-
-    td, th {
-      text-align: left;
-      padding: 12px 9px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    th { color: var(--gold); }
-
     .rank-category {
       color: var(--gold);
       margin-top: 22px;
@@ -213,6 +178,26 @@
       flex-wrap: wrap;
     }
 
+    .player-card {
+      background: #10151e;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      margin-top: 18px;
+    }
+
+    .player-name {
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .player-rank {
+      color: var(--gold);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
     .empty {
       color: var(--muted);
       text-align: center;
@@ -234,10 +219,8 @@
         flex-shrink: 0;
       }
       main { padding: 15px; }
-      .grid { grid-template-columns: 1fr; }
       h1 { font-size: 23px; }
       .card { padding: 15px; }
-      table { font-size: 12px; }
     }
   </style>
 </head>
@@ -276,55 +259,41 @@
         <h2>Bem-vindo à Central</h2>
         <p class="muted">Sistema administrativo do Exército Brasileiro do Axel.</p>
         <div class="notice">
-          Esta versão é uma demonstração do painel. As funções reais dependem
-          da integração com um backend seguro e a Roblox Open Cloud.
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="stat">
-          <span class="muted">Central administrativa</span>
-          <strong>EB DO AXEL</strong>
-        </div>
-        <div class="stat">
-          <span class="muted">Módulos disponíveis</span>
-          <strong>06</strong>
+          Central administrativa do EB do Axel.
         </div>
       </div>
 
       <div class="card">
         <h2>Atalhos administrativos</h2>
-        <button class="action" data-go="promote">Nova promoção</button>
+        <button class="action" data-go="promote">Consultar jogador</button>
         <button class="secondary" data-go="ranks">Consultar hierarquia</button>
       </div>
     </section>
 
-    <!-- PROMOÇÕES -->
+    <!-- PROMOVER -->
     <section id="promote" class="page hidden">
       <div class="card">
-        <h2>Nova promoção</h2>
-        <p class="muted">Informe o jogador que deseja consultar.</p>
+        <h2>Consultar jogador</h2>
+        <p class="muted">
+          Digite o nickname Roblox para visualizar as informações do jogador.
+        </p>
 
         <label for="nickname">Nickname Roblox</label>
         <input id="nickname" placeholder="Digite o nickname do jogador">
 
         <button class="action" id="lookup">Consultar jogador</button>
 
-        <div id="playerResult" class="notice hidden"></div>
-      </div>
+        <div id="playerResult" class="player-card hidden">
+          <div class="player-name" id="playerName"></div>
+          <p class="muted">Cargo atual</p>
+          <div class="player-rank" id="playerRank"></div>
+          <div class="notice">
+            Informação fictícia para demonstração do protótipo.
+            A patente real será consultada quando houver integração com o Roblox.
+          </div>
+        </div>
 
-      <div class="card">
-        <h2>Registrar promoção</h2>
-        <p class="muted">
-          Após consultar o jogador, o sistema poderá preparar a solicitação
-          de promoção conforme as permissões da conta conectada.
-        </p>
-
-        <button class="action" id="registerPromotion">
-          Registrar promoção
-        </button>
-
-        <div id="promotionMessage" class="notice hidden"></div>
+        <div id="errorMessage" class="notice hidden"></div>
       </div>
     </section>
 
@@ -423,7 +392,7 @@
         <p class="muted">
           Os registros reais serão carregados do banco de dados após a integração.
         </p>
-        <div id="historyList" class="empty">
+        <div class="empty">
           Nenhuma promoção registrada nesta demonstração.
         </div>
       </div>
@@ -516,40 +485,29 @@
     });
   });
 
-  let consultedNickname = "";
-
   document.getElementById("lookup").addEventListener("click", () => {
     const nickname = document.getElementById("nickname").value.trim();
     const result = document.getElementById("playerResult");
+    const error = document.getElementById("errorMessage");
 
-    result.classList.remove("hidden");
+    result.classList.add("hidden");
+    error.classList.add("hidden");
 
     if (!nickname) {
-      result.textContent = "Digite o nickname do jogador.";
-      consultedNickname = "";
+      error.textContent = "Digite o nickname do jogador.";
+      error.classList.remove("hidden");
       return;
     }
 
-    consultedNickname = nickname;
-
-    result.textContent =
-      "Jogador informado: " + nickname +
-      ". A consulta real do perfil e do cargo depende da integração com a API Roblox.";
+    document.getElementById("playerName").textContent = nickname;
+    document.getElementById("playerRank").textContent = "Soldado";
+    result.classList.remove("hidden");
   });
 
-  document.getElementById("registerPromotion").addEventListener("click", () => {
-    const message = document.getElementById("promotionMessage");
-
-    message.classList.remove("hidden");
-
-    if (!consultedNickname) {
-      message.textContent = "Primeiro, consulte o nickname do jogador.";
-      return;
+  document.getElementById("nickname").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      document.getElementById("lookup").click();
     }
-
-    message.textContent =
-      "Demonstração: solicitação preparada para " + consultedNickname +
-      ". Nenhuma promoção real foi realizada. A validação de autorização e a promoção dependem do backend.";
   });
 </script>
 
