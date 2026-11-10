@@ -1,8 +1,598 @@
-<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EB do Axel</title><style>
-body{margin:0;background:#090b10;color:#f4f4f4;font:15px Arial}.layout{display:flex;min-height:100vh}.side{width:220px;background:#10141c;padding:22px;border-right:1px solid #303846}.brand{font-weight:bold;letter-spacing:2px;padding:10px;border-bottom:1px solid #303846}.gold{color:#d8b65f}nav{margin-top:22px}nav button{display:block;width:100%;padding:12px;text-align:left;background:none;color:#ddd;border:0;border-radius:7px;margin:4px 0}nav button.active,nav button:hover{background:#29251b;color:#d8b65f}main{max-width:1050px;width:100%;padding:28px;margin:auto}.card{background:#151a23;border:1px solid #303846;border-radius:12px;padding:20px;margin:14px 0}.muted{color:#a5adba;font-size:13px}h1{font-size:27px}h2{font-size:18px}label{display:block;margin:13px 0 6px}input,select,textarea{width:100%;padding:11px;background:#0b0f15;color:white;border:1px solid #384250;border-radius:7px;box-sizing:border-box}.action{background:#d8b65f;color:#17130a;border:0;padding:11px 15px;border-radius:7px;margin-top:12px;font-weight:bold}.notice{background:#211e16;color:#dfd0a5;padding:12px;border-left:3px solid #d8b65f;margin-top:14px;font-size:13px}.hidden{display:none}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:10px;border-bottom:1px solid #303846}@media(max-width:700px){.layout{display:block}.side{width:auto}nav{display:flex;overflow:auto}nav button{white-space:nowrap;width:auto}main{padding:14px}}
-</style><div class="layout"><aside class="side"><div class="brand">EB <span class="gold">DO AXEL</span><div class="muted">Central de gestão</div></div><nav><button class="active" data-id="home">⌂ Início</button><button data-id="promote">↑ Promover</button><button data-id="ranks">▤ Hierarquia</button><button data-id="history">◷ Histórico</button><button data-id="audit">⌕ Auditoria</button><button data-id="accounts">◎ Contas</button></nav></aside><main><div class="muted gold">PAINEL ADMINISTRATIVO</div><h1 id="heading">Visão geral</h1>
-<section id="home" class="page"><div class="card"><h2>Bem-vindo à Central</h2><p class="muted">Grupo Roblox: 98950517</p><div class="notice">Protótipo visual. A consulta de membros, promoção real e auditoria protegida exigem backend seguro conectado à Roblox Open Cloud.</div></div></section>
-<section id="promote" class="page hidden"><div class="card"><h2>Nova promoção</h2><label>Nickname Roblox</label><input id="nick" placeholder="Nickname do jogador"><button class="action" id="lookup">Consultar jogador</button><div id="lookupResult" class="notice hidden"></div><label>Seu nível de autorização</label><select><option>Selecione</option><option>Oficial Subalterno</option><option>Oficial Intermediário</option><option>Oficial Superior</option><option>Oficial General</option><option>Oficial Elite</option><option>Marechal</option><option>Presidente</option></select><label>Motivo</label><textarea rows="3" placeholder="Motivo da promoção"></textarea><div class="notice">O posto atual será obtido automaticamente pela API quando integrada. Não será selecionado manualmente.</div><button class="action" onclick="alert('Demonstração: nenhuma promoção real foi feita.')">Registrar (demonstração)</button></div></section>
-<section id="ranks" class="page hidden"><div class="card"><h2>Hierarquia militar</h2><p class="muted">Ordem provisória; confirmar os IDs e a sequência real dos cargos antes da integração.</p><table><tr><th>Categoria</th><th>Postos</th></tr><tr><td>Praças</td><td>Recruta → Soldado → Cabo</td></tr><tr><td>Graduados</td><td>3º Sargento → 2º Sargento → 1º Sargento → Subtenente</td></tr><tr><td>Praças especiais</td><td>Cadete</td></tr><tr><td>Oficiais subalternos</td><td>Aspirante → 2º Tenente → 1º Tenente</td></tr><tr><td>Intermediários</td><td>Capitão</td></tr><tr><td>Superiores</td><td>Major → Tenente-Coronel → Coronel</td></tr><tr><td>Generais</td><td>General de Brigada → General de Divisão → General do Exército</td></tr><tr><td>Elite</td><td>Elite Militar → Elite Secreta → Elite Real</td></tr><tr><td>Alto comando</td><td>Sócios → Subcomandante → Comandante → Marechal</td></tr></table></div></section>
-<section id="history" class="page hidden"><div class="card"><h2>Histórico</h2><p class="muted">Os registros aparecerão aqui após a integração do backend.</p></div></section><section id="audit" class="page hidden"><div class="card"><h2>Auditoria administrativa</h2><p class="muted">Área de consulta dos responsáveis, postos, motivos e datas. O acesso deverá ser validado no servidor.</p></div></section><section id="accounts" class="page hidden"><div class="card"><h2>Vincular contas</h2><p class="muted">Discord OAuth e Roblox OAuth — integração pendente.</p><div class="notice">Nunca informe senhas, cookies ou tokens. Chaves de API ficam somente no backend.</div></div></section></main></div>
-<script>const t={home:'Visão geral',promote:'Registrar promoção',ranks:'Hierarquia militar',history:'Histórico',audit:'Auditoria',accounts:'Vincular contas'};document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.page').forEach(s=>s.classList.toggle('hidden',s.id!==b.dataset.id));document.querySelectorAll('[data-id]').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('heading').textContent=t[b.dataset.id]});document.getElementById('lookup').onclick=()=>{let n=document.getElementById('nick').value.trim(),r=document.getElementById('lookupResult');r.classList.remove('hidden');r.textContent=n?'Nickname informado: '+n+'. Consulta automática ainda depende da API Roblox.':'Digite um nickname.'};</script></main></html>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EB do Axel | Central de Gestão</title>
+  <style>
+    :root {
+      --bg: #090b10;
+      --panel: #151a23;
+      --sidebar: #10141c;
+      --border: #303846;
+      --gold: #d8b65f;
+      --text: #f4f4f4;
+      --muted: #a5adba;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 15px Arial, sans-serif;
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    .side {
+      width: 235px;
+      flex-shrink: 0;
+      background: var(--sidebar);
+      padding: 22px 15px;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand {
+      font-weight: bold;
+      letter-spacing: 2px;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gold { color: var(--gold); }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    nav { margin-top: 24px; }
+
+    nav button {
+      display: block;
+      width: 100%;
+      padding: 13px;
+      text-align: left;
+      background: none;
+      color: #ddd;
+      border: 0;
+      border-radius: 7px;
+      margin: 5px 0;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    nav button.active, nav button:hover {
+      background: #29251b;
+      color: var(--gold);
+    }
+
+    main {
+      max-width: 1150px;
+      width: 100%;
+      padding: 28px;
+      margin: 0 auto;
+      min-width: 0;
+    }
+
+    h1 { font-size: 27px; margin-bottom: 8px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 15px; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 14px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      background: #10151e;
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 23px;
+      color: var(--gold);
+      margin-top: 8px;
+    }
+
+    label { display: block; margin: 14px 0 7px; }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      background: #0b0f15;
+      color: white;
+      border: 1px solid #384250;
+      border-radius: 7px;
+      font: inherit;
+    }
+
+    textarea { resize: vertical; }
+
+    .action {
+      background: var(--gold);
+      color: #17130a;
+      border: 0;
+      padding: 12px 16px;
+      border-radius: 7px;
+      margin-top: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .action:hover { filter: brightness(1.1); }
+
+    .secondary {
+      background: #252c38;
+      color: white;
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    .notice {
+      background: #211e16;
+      color: #dfd0a5;
+      padding: 13px;
+      border-left: 3px solid var(--gold);
+      margin-top: 14px;
+      font-size: 13px;
+      border-radius: 4px;
+    }
+
+    .hidden { display: none !important; }
+
+    .page { animation: appear .2s ease; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    td, th {
+      text-align: left;
+      padding: 12px 9px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th { color: var(--gold); }
+
+    .rank-category {
+      color: var(--gold);
+      margin-top: 22px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .rank-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .rank-item {
+      background: #10151e;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-block;
+      color: var(--gold);
+      background: #29251b;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    @media (max-width: 700px) {
+      .layout { display: block; }
+      .side { width: 100%; padding: 15px; }
+      nav {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+        margin-top: 14px;
+      }
+      nav button {
+        white-space: nowrap;
+        width: auto;
+        flex-shrink: 0;
+      }
+      main { padding: 15px; }
+      .grid { grid-template-columns: 1fr; }
+      h1 { font-size: 23px; }
+      .card { padding: 15px; }
+      table { font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="layout">
+
+  <aside class="side">
+    <div class="brand">
+      EB <span class="gold">DO AXEL</span>
+      <div class="muted">Central de gestão</div>
+    </div>
+
+    <nav>
+      <button class="active" data-page="home">⌂ Visão geral</button>
+      <button data-page="promote">↑ Promover</button>
+      <button data-page="ranks">▤ Hierarquia</button>
+      <button data-page="history">◷ Histórico</button>
+      <button data-page="audit">⌕ Auditoria</button>
+      <button data-page="accounts">◎ Contas</button>
+    </nav>
+  </aside>
+
+  <main>
+    <div class="topline">
+      <div>
+        <div class="muted gold">PAINEL ADMINISTRATIVO</div>
+        <h1 id="heading">Visão geral</h1>
+      </div>
+      <span class="status">EB DO AXEL</span>
+    </div>
+
+    <!-- VISÃO GERAL -->
+    <section id="home" class="page">
+      <div class="card">
+        <h2>Bem-vindo à Central</h2>
+        <p class="muted">Sistema administrativo do Exército Brasileiro do Axel.</p>
+        <p class="muted">Grupo Roblox: 98950517</p>
+        <div class="notice">
+          Esta versão é uma demonstração do painel. As funções reais dependem
+          da integração com um backend seguro e a Roblox Open Cloud.
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="stat">
+          <span class="muted">Grupo Roblox</span>
+          <strong>98950517</strong>
+        </div>
+        <div class="stat">
+          <span class="muted">Módulos disponíveis</span>
+          <strong>06</strong>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Atalhos administrativos</h2>
+        <button class="action" data-go="promote">Nova promoção</button>
+        <button class="secondary" data-go="ranks">Consultar hierarquia</button>
+      </div>
+    </section>
+
+    <!-- PROMOÇÕES -->
+    <section id="promote" class="page hidden">
+      <div class="card">
+        <h2>Nova promoção</h2>
+        <p class="muted">Informe o jogador que deseja consultar.</p>
+
+        <label for="nickname">Nickname Roblox</label>
+        <input id="nickname" placeholder="Digite o nickname do jogador">
+
+        <button class="action" id="lookup">Consultar jogador</button>
+
+        <div id="playerResult" class="notice hidden"></div>
+      </div>
+
+      <div class="card">
+        <h2>Permissões de promoção</h2>
+        <p class="muted">
+          O sistema deverá identificar automaticamente a autorização
+          do responsável pela conta conectada.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Autorização</th>
+              <th>Limite de promoção</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Oficial Subalterno</td><td>Subtenente</td></tr>
+            <tr><td>Oficial Intermediário</td><td>Subtenente</td></tr>
+            <tr><td>Oficial Superior</td><td>Subtenente</td></tr>
+            <tr><td>Oficial General</td><td>Tenente-Coronel</td></tr>
+            <tr><td>Oficial Elite</td><td>Coronel</td></tr>
+            <tr><td>Marechal</td><td>Elite Real</td></tr>
+            <tr><td>Presidente</td><td>Marechal</td></tr>
+          </tbody>
+        </table>
+
+        <div class="notice">
+          Cadete não possui autorização para promover. O jogador só poderá
+          avançar um posto por vez. A validação deverá acontecer no servidor.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Registrar promoção</h2>
+        <label for="reason">Motivo da promoção</label>
+        <textarea id="reason" rows="3" placeholder="Descreva o motivo..."></textarea>
+
+        <button class="action" id="registerPromotion">
+          Registrar demonstração
+        </button>
+
+        <div id="promotionMessage" class="notice hidden"></div>
+      </div>
+    </section>
+
+    <!-- HIERARQUIA -->
+    <section id="ranks" class="page hidden">
+      <div class="card">
+        <h2>Hierarquia militar</h2>
+        <p class="muted">
+          Estrutura organizada conforme os cargos informados para o projeto.
+          A sequência definitiva deve ser conferida com os cargos do grupo Roblox.
+        </p>
+
+        <h3 class="rank-category">Diretoria</h3>
+        <div class="rank-list">
+          <span class="rank-item">Criador</span>
+          <span class="rank-item">Sub Criador</span>
+        </div>
+
+        <h3 class="rank-category">Administração</h3>
+        <div class="rank-list">
+          <span class="rank-item">Administrador</span>
+          <span class="rank-item">Moderador</span>
+        </div>
+
+        <h3 class="rank-category">Alto Comando da Supremacia</h3>
+        <div class="rank-list">
+          <span class="rank-item">Marechal</span>
+        </div>
+
+        <h3 class="rank-category">Alto Comando</h3>
+        <div class="rank-list">
+          <span class="rank-item">Comandante</span>
+          <span class="rank-item">Subcomandante</span>
+          <span class="rank-item">Sócios</span>
+        </div>
+
+        <h3 class="rank-category">Oficiais da Elite</h3>
+        <div class="rank-list">
+          <span class="rank-item">Elite Real</span>
+          <span class="rank-item">Elite Secreta</span>
+          <span class="rank-item">Elite Militar</span>
+        </div>
+
+        <h3 class="rank-category">Oficiais Generais</h3>
+        <div class="rank-list">
+          <span class="rank-item">General do Exército</span>
+          <span class="rank-item">General de Divisão</span>
+          <span class="rank-item">General de Brigada</span>
+        </div>
+
+        <h3 class="rank-category">Oficiais Superiores</h3>
+        <div class="rank-list">
+          <span class="rank-item">Coronel</span>
+          <span class="rank-item">Tenente-Coronel</span>
+          <span class="rank-item">Major</span>
+        </div>
+
+        <h3 class="rank-category">Oficiais Intermediários</h3>
+        <div class="rank-list">
+          <span class="rank-item">Capitão</span>
+        </div>
+
+        <h3 class="rank-category">Oficiais Subalternos</h3>
+        <div class="rank-list">
+          <span class="rank-item">Primeiro Tenente</span>
+          <span class="rank-item">Segundo Tenente</span>
+          <span class="rank-item">Aspirante a Oficial</span>
+        </div>
+
+        <h3 class="rank-category">Praças Especiais</h3>
+        <div class="rank-list">
+          <span class="rank-item">Cadete</span>
+        </div>
+
+        <h3 class="rank-category">Graduados</h3>
+        <div class="rank-list">
+          <span class="rank-item">Subtenente</span>
+          <span class="rank-item">Primeiro Sargento</span>
+          <span class="rank-item">Segundo Sargento</span>
+          <span class="rank-item">Terceiro Sargento</span>
+        </div>
+
+        <h3 class="rank-category">Praças</h3>
+        <div class="rank-list">
+          <span class="rank-item">Cabo</span>
+          <span class="rank-item">Soldado</span>
+          <span class="rank-item">Recruta</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HISTÓRICO -->
+    <section id="history" class="page hidden">
+      <div class="card">
+        <h2>Histórico de promoções</h2>
+        <p class="muted">
+          Os registros reais serão carregados do banco de dados após a integração.
+        </p>
+        <div id="historyList" class="empty">
+          Nenhuma promoção registrada nesta demonstração.
+        </div>
+      </div>
+    </section>
+
+    <!-- AUDITORIA -->
+    <section id="audit" class="page hidden">
+      <div class="card">
+        <h2>Auditoria administrativa</h2>
+        <p class="muted">
+          Área destinada à equipe autorizada.
+        </p>
+
+        <table>
+          <tr><th>Campo</th><th>Informação registrada</th></tr>
+          <tr><td>Jogador promovido</td><td>Nickname Roblox</td></tr>
+          <tr><td>Cargo anterior</td><td>Posto anterior</td></tr>
+          <tr><td>Novo cargo</td><td>Posto alcançado</td></tr>
+          <tr><td>Responsável</td><td>Promotor identificado</td></tr>
+          <tr><td>Motivo</td><td>Justificativa</td></tr>
+          <tr><td>Data e horário</td><td>Registro automático</td></tr>
+        </table>
+
+        <div class="notice">
+          A proteção desta página ainda não está implementada.
+          A autorização de acesso precisa ser validada pelo backend,
+          não apenas pelo navegador.
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTAS -->
+    <section id="accounts" class="page hidden">
+      <div class="card">
+        <h2>Vinculação de contas</h2>
+        <p class="muted">Conexão entre Roblox e Discord.</p>
+
+        <div class="notice">
+          <strong>Roblox:</strong> integração pendente.
+        </div>
+
+        <div class="notice">
+          <strong>Discord:</strong> integração OAuth pendente.
+        </div>
+
+        <p class="muted">
+          Nunca informe senhas, cookies ou tokens neste painel.
+          As chaves de API devem permanecer exclusivamente no backend.
+        </p>
+      </div>
+    </section>
+
+    <footer class="muted" style="padding:25px 5px;text-align:center">
+      EB DO AXEL • Disciplina • Respeito • União
+    </footer>
+  </main>
+</div>
+
+<script>
+  const titles = {
+    home: "Visão geral",
+    promote: "Promover",
+    ranks: "Hierarquia militar",
+    history: "Histórico",
+    audit: "Auditoria",
+    accounts: "Contas"
+  };
+
+  function openPage(page) {
+    document.querySelectorAll(".page").forEach(section => {
+      section.classList.toggle("hidden", section.id !== page);
+    });
+
+    document.querySelectorAll("[data-page]").forEach(button => {
+      button.classList.toggle("active", button.dataset.page === page);
+    });
+
+    document.getElementById("heading").textContent =
+      titles[page] || "Central de gestão";
+  }
+
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.addEventListener("click", () => {
+      openPage(button.dataset.page);
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => {
+      openPage(button.dataset.go);
+    });
+  });
+
+  let consultedNickname = "";
+
+  document.getElementById("lookup").addEventListener("click", () => {
+    const nickname = document.getElementById("nickname").value.trim();
+    const result = document.getElementById("playerResult");
+
+    result.classList.remove("hidden");
+
+    if (!nickname) {
+      result.textContent = "Digite o nickname do jogador.";
+      consultedNickname = "";
+      return;
+    }
+
+    consultedNickname = nickname;
+
+    result.textContent =
+      "Jogador informado: " + nickname +
+      ". A consulta real do perfil e do cargo depende da integração com a API Roblox.";
+  });
+
+  document.getElementById("registerPromotion").addEventListener("click", () => {
+    const reason = document.getElementById("reason").value.trim();
+    const message = document.getElementById("promotionMessage");
+
+    message.classList.remove("hidden");
+
+    if (!consultedNickname) {
+      message.textContent = "Primeiro, consulte o nickname do jogador.";
+      return;
+    }
+
+    if (!reason) {
+      message.textContent = "Informe o motivo da promoção.";
+      return;
+    }
+
+    message.textContent =
+      "Demonstração: solicitação preparada para " + consultedNickname +
+      ". Nenhuma promoção real foi realizada. A validação de autorização e a promoção dependem do backend.";
+
+    document.getElementById("reason").value = "";
+  });
+</script>
+
+</body>
+</html>
