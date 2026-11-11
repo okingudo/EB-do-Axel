@@ -519,6 +519,7 @@ const adminLabel = document.getElementById("adminLabel");
 const authMessage = document.getElementById("authMessage");
 
 let jogadorEncontrado = false;
+let jogadorAlvoId = null;
 let consultaAtual = 0;
 let temporizador;
 let usuarioAtual = null;
@@ -633,9 +634,31 @@ logoutButton.addEventListener("click", async () => {
 
 function clearPlayerResult() {
   jogadorEncontrado = false;
+  jogadorAlvoId = null;
   playerName.textContent = "N/A";
   playerRank.textContent = "N/A";
   promoteButton.disabled = true;
+  errorMessage.classList.add("hidden");
+  errorMessage.textContent = "";
+}
+
+function verificarAutopromocao() {
+  if (!usuarioAtual || !jogadorAlvoId) {
+    promoteButton.disabled = true;
+    return;
+  }
+
+  const mesmoJogador =
+    Number(usuarioAtual.id) === Number(jogadorAlvoId);
+
+  if (mesmoJogador) {
+    promoteButton.disabled = true;
+    errorMessage.textContent = "Você não pode se autopromover!";
+    errorMessage.classList.remove("hidden");
+    return;
+  }
+
+  promoteButton.disabled = !isAdmin || !jogadorEncontrado;
   errorMessage.classList.add("hidden");
 }
 
@@ -698,8 +721,11 @@ async function consultarJogador(nickname) {
 
     playerName.textContent = data.jogador.nick;
     playerRank.textContent = data.jogador.cargo;
+
+    jogadorAlvoId = data.jogador.id;
     jogadorEncontrado = true;
-    promoteButton.disabled = false;
+
+    verificarAutopromocao();
 
   } catch (error) {
     if (minhaConsulta !== consultaAtual) return;
@@ -727,6 +753,13 @@ nicknameInput.addEventListener("input", () => {
 promoteButton.addEventListener("click", () => {
   if (!isAdmin || !jogadorEncontrado) return;
 
+  if (Number(usuarioAtual.id) === Number(jogadorAlvoId)) {
+    promoteButton.disabled = true;
+    errorMessage.textContent = "Você não pode se autopromover!";
+    errorMessage.classList.remove("hidden");
+    return;
+  }
+
   errorMessage.textContent =
     "Consulta concluída! A promoção automática ainda está em desenvolvimento.";
   errorMessage.classList.remove("hidden");
@@ -742,7 +775,6 @@ if (loginResult === "sucesso") {
   showAuthMessage("Não foi possível concluir o login. Tente novamente.");
 }
 
-// Limpar o parâmetro de retorno da URL
 if (loginResult) {
   history.replaceState({}, document.title, location.pathname);
 }
