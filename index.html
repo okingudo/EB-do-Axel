@@ -699,20 +699,69 @@ nicknameInput.addEventListener("input", () => {
   }, 600);
 });
 
-// Botão de promoção
-promoteButton.addEventListener("click", () => {
-  if (!isAdmin || !jogadorEncontrado || !usuarioAtual) return;
+// Executar promoção REAL
+promoteButton.addEventListener("click", async () => {
+  if (
+    !isAdmin ||
+    !usuarioAtual ||
+    !jogadorEncontrado ||
+    !jogadorAlvoId
+  ) {
+    return;
+  }
 
   if (String(usuarioAtual.id) === String(jogadorAlvoId)) {
     verificarAutopromocao();
     return;
   }
 
-  errorMessage.textContent =
-    "A promoção automática ainda está em desenvolvimento.";
+  const nickname = nicknameInput.value.trim();
 
+  if (!nickname) return;
+
+  const confirmado = confirm(
+    `Tem certeza de que deseja promover ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
+  );
+
+  if (!confirmado) return;
+
+  promoteButton.disabled = true;
+  errorMessage.textContent = "Processando promoção...";
   errorMessage.classList.remove("hidden");
+
+  try {
+    const response = await fetch(`${API_URL}/api/promocao`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ nick: nickname })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.sucesso) {
+      throw new Error(
+        data.mensagem || "Não foi possível realizar a promoção."
+      );
+    }
+
+    errorMessage.textContent =
+      data.mensagem || "Promoção realizada com sucesso!";
+
+    await consultarJogador(nickname);
+
+  } catch (error) {
+    verificarAutopromocao();
+
+    errorMessage.textContent =
+      error.message || "Erro ao realizar a promoção.";
+
+    errorMessage.classList.remove("hidden");
+  }
 });
+
 
 // Consultar jogador para rebaixamento
 async function consultarJogadorRebaixamento(nickname) {
