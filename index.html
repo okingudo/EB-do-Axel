@@ -4,302 +4,149 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EB do Axel | Central de Gestão</title>
-
 <style>
 :root {
-  --bg:#090b10;
-  --panel:#151a23;
-  --sidebar:#10141c;
-  --border:#303846;
-  --gold:#d8b65f;
-  --text:#f4f4f4;
-  --muted:#a5adba;
+  --bg:#090b10; --panel:#151a23; --sidebar:#10141c;
+  --border:#303846; --gold:#d8b65f;
+  --text:#f4f4f4; --muted:#a5adba;
 }
-
 * { box-sizing:border-box; }
-
 body {
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
+  margin:0; background:var(--bg); color:var(--text);
   font:15px Arial,sans-serif;
 }
-
 .layout { display:flex; min-height:100vh; }
-
 .side {
-  width:235px;
-  flex-shrink:0;
-  background:var(--sidebar);
-  padding:22px 15px;
-  border-right:1px solid var(--border);
+  width:235px; flex-shrink:0; background:var(--sidebar);
+  padding:22px 15px; border-right:1px solid var(--border);
 }
-
 .brand {
-  font-weight:bold;
-  letter-spacing:2px;
-  padding:10px;
+  font-weight:bold; letter-spacing:2px; padding:10px;
   border-bottom:1px solid var(--border);
 }
-
 .gold { color:var(--gold); }
 .muted { color:var(--muted); font-size:13px; }
-
 nav { margin-top:24px; }
-
 nav button {
-  display:block;
-  width:100%;
-  padding:13px;
-  text-align:left;
-  background:none;
-  color:#ddd;
-  border:0;
-  border-radius:7px;
-  margin:5px 0;
-  cursor:pointer;
-  font-size:14px;
+  display:block; width:100%; padding:13px; text-align:left;
+  background:none; color:#ddd; border:0; border-radius:7px;
+  margin:5px 0; cursor:pointer; font-size:14px;
 }
-
 nav button.active, nav button:hover {
-  background:#29251b;
-  color:var(--gold);
+  background:#29251b; color:var(--gold);
 }
-
-nav button:disabled {
-  opacity:.35;
-  cursor:not-allowed;
-}
-
+nav button:disabled { opacity:.35; cursor:not-allowed; }
 main {
-  max-width:1150px;
-  width:100%;
-  padding:28px;
-  margin:0 auto;
-  min-width:0;
+  max-width:1150px; width:100%; padding:28px;
+  margin:0 auto; min-width:0;
 }
-
 h1 { font-size:27px; margin-bottom:8px; }
 h2 { font-size:18px; }
 h3 { font-size:15px; }
-
 .card {
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:20px;
-  margin:14px 0;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:12px; padding:20px; margin:14px 0;
 }
-
 input {
-  width:100%;
-  padding:12px;
-  background:#0b0f15;
-  color:white;
-  border:1px solid #384250;
-  border-radius:7px;
-  font:inherit;
+  width:100%; padding:12px; background:#0b0f15;
+  color:white; border:1px solid #384250;
+  border-radius:7px; font:inherit;
 }
-
 label { display:block; margin:14px 0 7px; }
-
 .action {
-  background:var(--gold);
-  color:#17130a;
-  border:0;
-  padding:12px 16px;
-  border-radius:7px;
-  margin-top:12px;
-  font-weight:bold;
-  cursor:pointer;
+  background:var(--gold); color:#17130a; border:0;
+  padding:12px 16px; border-radius:7px; margin-top:12px;
+  font-weight:bold; cursor:pointer;
 }
-
 .action:disabled {
-  background:#454b55;
-  color:#a5adba;
-  cursor:not-allowed;
+  background:#454b55; color:#a5adba; cursor:not-allowed;
 }
-
 .secondary {
-  background:#252c38;
-  color:white;
-  border:1px solid var(--border);
-  padding:10px 14px;
-  border-radius:7px;
-  cursor:pointer;
+  background:#252c38; color:white; border:1px solid var(--border);
+  padding:10px 14px; border-radius:7px; cursor:pointer;
 }
-
+.secondary:disabled {
+  opacity:.4; cursor:not-allowed;
+}
 .notice {
-  background:#211e16;
-  color:#dfd0a5;
-  padding:13px;
-  border-left:3px solid var(--gold);
-  margin-top:14px;
-  font-size:13px;
-  border-radius:4px;
+  background:#211e16; color:#dfd0a5; padding:13px;
+  border-left:3px solid var(--gold); margin-top:14px;
+  font-size:13px; border-radius:4px;
 }
-
 .hidden { display:none !important; }
-
 .page { animation:appear .2s ease; }
-
 @keyframes appear {
   from { opacity:0; transform:translateY(5px); }
   to { opacity:1; transform:translateY(0); }
 }
-
 .rank-category {
-  color:var(--gold);
-  margin-top:22px;
-  border-bottom:1px solid var(--border);
-  padding-bottom:8px;
+  color:var(--gold); margin-top:22px;
+  border-bottom:1px solid var(--border); padding-bottom:8px;
 }
-
 .rank-list {
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:12px;
+  display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;
 }
-
 .rank-item {
-  background:#10151e;
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:10px 12px;
-  font-size:13px;
+  background:#10151e; border:1px solid var(--border);
+  border-radius:7px; padding:10px 12px; font-size:13px;
 }
-
 .status {
-  display:inline-block;
-  color:var(--gold);
-  background:#29251b;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:12px;
+  display:inline-block; color:var(--gold); background:#29251b;
+  padding:5px 9px; border-radius:20px; font-size:12px;
 }
-
 .topline {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:12px; flex-wrap:wrap;
 }
-
 .player-card {
-  background:#10151e;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:18px;
-  margin-top:18px;
+  background:#10151e; border:1px solid var(--border);
+  border-radius:10px; padding:18px; margin-top:18px;
 }
-
-.player-name {
-  font-size:19px;
-  font-weight:bold;
-  margin-bottom:12px;
-}
-
-.player-rank {
-  color:var(--gold);
-  font-size:16px;
-  font-weight:bold;
-}
-
-.empty {
-  color:var(--muted);
-  text-align:center;
-  padding:25px 10px;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-
+.player-name { font-size:19px; font-weight:bold; margin-bottom:12px; }
+.player-rank { color:var(--gold); font-size:16px; font-weight:bold; }
+.empty { color:var(--muted); text-align:center; padding:25px 10px; }
+table { width:100%; border-collapse:collapse; margin-top:15px; }
 th,td {
-  padding:11px;
-  text-align:left;
-  border-bottom:1px solid var(--border);
+  padding:11px; text-align:left; border-bottom:1px solid var(--border);
   font-size:13px;
 }
-
 th { color:var(--gold); }
-
 .login-card {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:15px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:15px;
 }
-
-.login-info {
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-.login-actions {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-
-.login-status {
-  color:var(--muted);
-  font-size:13px;
-}
-
-.admin-label {
-  color:var(--gold);
-  font-size:12px;
-}
-
+.login-info { display:flex; flex-direction:column; gap:6px; }
+.login-actions { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.login-status { color:var(--muted); font-size:13px; }
+.admin-label { color:var(--gold); font-size:12px; }
 @media(max-width:700px) {
   .layout { display:block; }
   .side { width:100%; padding:15px; }
-  nav {
-    display:flex;
-    overflow-x:auto;
-    gap:5px;
-    margin-top:14px;
-  }
-  nav button {
-    white-space:nowrap;
-    width:auto;
-    flex-shrink:0;
-  }
+  nav { display:flex; overflow-x:auto; gap:5px; margin-top:14px; }
+  nav button { white-space:nowrap; width:auto; flex-shrink:0; }
   main { padding:15px; }
   h1 { font-size:23px; }
   .card { padding:15px; }
 }
 </style>
 </head>
-
 <body>
 <div class="layout">
-
 <aside class="side">
   <div class="brand">
     EB <span class="gold">DO AXEL</span>
     <div class="muted">Central de gestão</div>
   </div>
-
   <nav>
     <button class="active" data-page="home">⌂ Visão geral</button>
-    <button data-page="promote" class="admin-only" disabled>↑ Promover</button>
-    <button data-page="demote" class="admin-only" disabled>↓ Rebaixar</button>
+    <button data-page="promote" class="admin-only hidden" disabled>↑ Promover</button>
+    <button data-page="demote" class="admin-only hidden" disabled>↓ Rebaixar</button>
     <button data-page="ranks">▤ Hierarquia</button>
-    <button data-page="history" class="admin-only" disabled>◷ Histórico</button>
-    <button data-page="audit" class="admin-only" disabled>⌕ Auditoria</button>
-    <button data-page="accounts" class="admin-only" disabled>◎ Contas</button>
+    <button data-page="history" class="admin-only hidden" disabled>◷ Histórico</button>
+    <button data-page="audit" class="admin-only hidden" disabled>⌕ Auditoria</button>
+    <button data-page="accounts" class="admin-only hidden" disabled>◎ Contas</button>
   </nav>
 </aside>
-
 <main>
   <div class="topline">
     <div>
@@ -319,21 +166,15 @@ th { color:var(--gold); }
         ADMINISTRADOR AUTORIZADO
       </span>
     </div>
-
     <div class="login-actions">
       <a href="https://eb-do-axel-api.onrender.com/auth/roblox"
-         id="loginButton"
-         class="action"
+         id="loginButton" class="action"
          style="text-decoration:none;display:inline-block">
         ENTRAR COM ROBLOX
       </a>
-
-      <button class="secondary hidden" id="logoutButton">
-        Sair
-      </button>
+      <button class="secondary hidden" id="logoutButton">Sair</button>
     </div>
   </div>
-
   <div id="authMessage" class="notice hidden"></div>
 
   <section id="home" class="page">
@@ -342,13 +183,14 @@ th { color:var(--gold); }
       <p class="muted">Sistema administrativo do Exército Brasileiro do Axel.</p>
       <div class="notice">Central administrativa do EB do Axel.</div>
     </div>
-
     <div class="card">
       <h2>Atalhos administrativos</h2>
-      <button class="action" data-go="promote" id="shortcutPromote" disabled>
+      <button class="action admin-only hidden" data-go="promote"
+              id="shortcutPromote" disabled>
         Consultar jogador
       </button>
-      <button class="secondary" data-go="demote" id="shortcutDemote" disabled>
+      <button class="secondary admin-only hidden" data-go="demote"
+              id="shortcutDemote" disabled>
         Rebaixar jogador
       </button>
       <button class="secondary" data-go="ranks">Consultar hierarquia</button>
@@ -359,20 +201,14 @@ th { color:var(--gold); }
     <div class="card">
       <h2>Promover jogador</h2>
       <p class="muted">Digite o nickname Roblox para consultar o jogador.</p>
-
       <label for="nickname">Nickname Roblox</label>
       <input id="nickname" placeholder="Digite o nickname do jogador" autocomplete="off">
-
       <div class="player-card">
         <div class="player-name" id="playerName">N/A</div>
         <p class="muted">Cargo atual</p>
         <div class="player-rank" id="playerRank">N/A</div>
       </div>
-
-      <button class="action" id="promoteButton" disabled>
-        PROMOVER O CARGO
-      </button>
-
+      <button class="action" id="promoteButton" disabled>PROMOVER O CARGO</button>
       <div id="errorMessage" class="notice hidden"></div>
     </div>
   </section>
@@ -380,27 +216,15 @@ th { color:var(--gold); }
   <section id="demote" class="page hidden">
     <div class="card">
       <h2>Rebaixar jogador</h2>
-      <p class="muted">
-        Digite o nickname Roblox para consultar o jogador.
-      </p>
-
+      <p class="muted">Digite o nickname Roblox para consultar o jogador.</p>
       <label for="demoteNickname">Nickname Roblox</label>
-      <input
-        id="demoteNickname"
-        placeholder="Digite o nickname do jogador"
-        autocomplete="off"
-      >
-
+      <input id="demoteNickname" placeholder="Digite o nickname do jogador" autocomplete="off">
       <div class="player-card">
         <div class="player-name" id="demotePlayerName">N/A</div>
         <p class="muted">Cargo atual</p>
         <div class="player-rank" id="demotePlayerRank">N/A</div>
       </div>
-
-      <button class="action" id="demoteButton" disabled>
-        REBAIXAR UM CARGO
-      </button>
-
+      <button class="action" id="demoteButton" disabled>REBAIXAR UM CARGO</button>
       <div id="demoteMessage" class="notice hidden"></div>
     </div>
   </section>
@@ -409,83 +233,30 @@ th { color:var(--gold); }
     <div class="card">
       <h2>Hierarquia militar</h2>
       <p class="muted">Estrutura organizada conforme os cargos do projeto.</p>
-
       <h3 class="rank-category">Diretoria</h3>
-      <div class="rank-list">
-        <span class="rank-item">Criador</span>
-        <span class="rank-item">Sub Criador</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Criador</span><span class="rank-item">Sub Criador</span></div>
       <h3 class="rank-category">Administração</h3>
-      <div class="rank-list">
-        <span class="rank-item">Administrador</span>
-        <span class="rank-item">Moderador</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Administrador</span><span class="rank-item">Moderador</span></div>
       <h3 class="rank-category">Alto Comando da Supremacia</h3>
-      <div class="rank-list">
-        <span class="rank-item">Marechal</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Marechal</span></div>
       <h3 class="rank-category">Alto Comando</h3>
-      <div class="rank-list">
-        <span class="rank-item">Comandante</span>
-        <span class="rank-item">Subcomandante</span>
-        <span class="rank-item">Sócios</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Comandante</span><span class="rank-item">Subcomandante</span><span class="rank-item">Sócios</span></div>
       <h3 class="rank-category">Oficiais da Elite</h3>
-      <div class="rank-list">
-        <span class="rank-item">Elite Real</span>
-        <span class="rank-item">Elite Secreta</span>
-        <span class="rank-item">Elite Militar</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Elite Real</span><span class="rank-item">Elite Secreta</span><span class="rank-item">Elite Militar</span></div>
       <h3 class="rank-category">Oficiais Generais</h3>
-      <div class="rank-list">
-        <span class="rank-item">General do Exército</span>
-        <span class="rank-item">General de Divisão</span>
-        <span class="rank-item">General de Brigada</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">General do Exército</span><span class="rank-item">General de Divisão</span><span class="rank-item">General de Brigada</span></div>
       <h3 class="rank-category">Oficiais Superiores</h3>
-      <div class="rank-list">
-        <span class="rank-item">Coronel</span>
-        <span class="rank-item">Tenente-Coronel</span>
-        <span class="rank-item">Major</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Coronel</span><span class="rank-item">Tenente-Coronel</span><span class="rank-item">Major</span></div>
       <h3 class="rank-category">Oficiais Intermediários</h3>
-      <div class="rank-list">
-        <span class="rank-item">Capitão</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Capitão</span></div>
       <h3 class="rank-category">Oficiais Subalternos</h3>
-      <div class="rank-list">
-        <span class="rank-item">Primeiro Tenente</span>
-        <span class="rank-item">Segundo Tenente</span>
-        <span class="rank-item">Aspirante a Oficial</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Primeiro Tenente</span><span class="rank-item">Segundo Tenente</span><span class="rank-item">Aspirante a Oficial</span></div>
       <h3 class="rank-category">Praças Especiais</h3>
-      <div class="rank-list">
-        <span class="rank-item">Cadete</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Cadete</span></div>
       <h3 class="rank-category">Graduados</h3>
-      <div class="rank-list">
-        <span class="rank-item">Subtenente</span>
-        <span class="rank-item">Primeiro Sargento</span>
-        <span class="rank-item">Segundo Sargento</span>
-        <span class="rank-item">Terceiro Sargento</span>
-      </div>
-
+      <div class="rank-list"><span class="rank-item">Subtenente</span><span class="rank-item">Primeiro Sargento</span><span class="rank-item">Segundo Sargento</span><span class="rank-item">Terceiro Sargento</span></div>
       <h3 class="rank-category">Praças</h3>
-      <div class="rank-list">
-        <span class="rank-item">Cabo</span>
-        <span class="rank-item">Soldado</span>
-        <span class="rank-item">Recruta</span>
-      </div>
+      <div class="rank-list"><span class="rank-item">Cabo</span><span class="rank-item">Soldado</span><span class="rank-item">Recruta</span></div>
     </div>
   </section>
 
@@ -495,7 +266,6 @@ th { color:var(--gold); }
       <div class="empty">Nenhuma promoção registrada.</div>
     </div>
   </section>
-
   <section id="audit" class="page hidden">
     <div class="card">
       <h2>Auditoria administrativa</h2>
@@ -510,7 +280,6 @@ th { color:var(--gold); }
       </table>
     </div>
   </section>
-
   <section id="accounts" class="page hidden">
     <div class="card">
       <h2>Vinculação de contas</h2>
@@ -518,59 +287,69 @@ th { color:var(--gold); }
       <p class="muted">Nunca informe senhas, cookies ou tokens neste painel.</p>
     </div>
   </section>
-
   <footer class="muted" style="padding:25px 5px;text-align:center">
     EB DO AXEL • Disciplina • Respeito • União
   </footer>
 </main>
-  </div>
-  <script>
+</div>
+<script>
+"use strict";
+
 const API_URL = "https://eb-do-axel-api.onrender.com";
 
 const titles = {
-  home:"Visão geral",
-  promote:"Promover",
-  demote:"Rebaixar",
-  ranks:"Hierarquia militar",
-  history:"Histórico",
-  audit:"Auditoria",
-  accounts:"Contas"
+  home: "Visão geral",
+  promote: "Promover",
+  demote: "Rebaixar",
+  ranks: "Hierarquia militar",
+  history: "Histórico",
+  audit: "Auditoria",
+  accounts: "Contas"
 };
 
-// Elementos da promoção
-const nicknameInput = document.getElementById("nickname");
-const playerName = document.getElementById("playerName");
-const playerRank = document.getElementById("playerRank");
-const promoteButton = document.getElementById("promoteButton");
-const errorMessage = document.getElementById("errorMessage");
+const adminPages = [
+  "promote",
+  "demote",
+  "history",
+  "audit",
+  "accounts"
+];
 
-// Elementos do rebaixamento
-const demoteNicknameInput = document.getElementById("demoteNickname");
-const demotePlayerName = document.getElementById("demotePlayerName");
-const demotePlayerRank = document.getElementById("demotePlayerRank");
-const demoteButton = document.getElementById("demoteButton");
-const demoteMessage = document.getElementById("demoteMessage");
+const $ = id => document.getElementById(id);
 
-// Login
-const loginTitle = document.getElementById("loginTitle");
-const loginDescription = document.getElementById("loginDescription");
-const loginButton = document.getElementById("loginButton");
-const logoutButton = document.getElementById("logoutButton");
-const adminLabel = document.getElementById("adminLabel");
-const authMessage = document.getElementById("authMessage");
+// Elementos
+const loginTitle = $("loginTitle");
+const loginDescription = $("loginDescription");
+const loginButton = $("loginButton");
+const logoutButton = $("logoutButton");
+const adminLabel = $("adminLabel");
+const authMessage = $("authMessage");
+
+const nicknameInput = $("nickname");
+const playerName = $("playerName");
+const playerRank = $("playerRank");
+const promoteButton = $("promoteButton");
+const errorMessage = $("errorMessage");
+
+const demoteNicknameInput = $("demoteNickname");
+const demotePlayerName = $("demotePlayerName");
+const demotePlayerRank = $("demotePlayerRank");
+const demoteButton = $("demoteButton");
+const demoteMessage = $("demoteMessage");
+
+let usuarioAtual = null;
+let isAdmin = false;
+let verificandoLogin = false;
 
 let jogadorEncontrado = false;
 let jogadorAlvoId = null;
 let consultaAtual = 0;
-let temporizador;
-let usuarioAtual = null;
-let isAdmin = false;
+let temporizador = null;
 
-// Controle do rebaixamento
 let jogadorRebaixamentoEncontrado = false;
 let jogadorRebaixamentoId = null;
 let consultaRebaixamentoAtual = 0;
-let temporizadorRebaixamento;
+let temporizadorRebaixamento = null;
 
 // Mensagens
 function showAuthMessage(message) {
@@ -579,8 +358,8 @@ function showAuthMessage(message) {
 }
 
 function clearAuthMessage() {
-  authMessage.classList.add("hidden");
   authMessage.textContent = "";
+  authMessage.classList.add("hidden");
 }
 
 function mostrarMensagemRebaixamento(message) {
@@ -593,66 +372,94 @@ function limparMensagemRebaixamento() {
   demoteMessage.classList.add("hidden");
 }
 
-// Acesso administrativo
+// Controle de acesso
 function updateAccess() {
-  document.querySelectorAll(".admin-only").forEach(button => {
-    button.disabled = !isAdmin;
-  });
+  document.querySelectorAll(".admin-only").forEach(element => {
+    element.classList.toggle("hidden", !isAdmin);
 
-  document.getElementById("shortcutPromote").disabled = !isAdmin;
-  document.getElementById("shortcutDemote").disabled = !isAdmin;
+    if ("disabled" in element) {
+      element.disabled = !isAdmin;
+    }
+
+    element.setAttribute("aria-disabled", String(!isAdmin));
+  });
 
   const paginaAtual = document.querySelector(".page:not(.hidden)");
 
   if (
     !isAdmin &&
     paginaAtual &&
-    ["promote", "demote", "history", "audit", "accounts"].includes(paginaAtual.id)
+    adminPages.includes(paginaAtual.id)
   ) {
     openPage("home");
   }
+
+  verificarAutopromocao();
+  verificarRebaixamento();
 }
 
-// Verificar login
+// Estado de visitante
+function definirDesconectado(mensagem) {
+  usuarioAtual = null;
+  isAdmin = false;
+
+  loginTitle.textContent = "Não conectado";
+  loginDescription.textContent =
+    "Entre com sua conta Roblox para verificar seu acesso.";
+
+  loginButton.classList.remove("hidden");
+  logoutButton.classList.add("hidden");
+  adminLabel.classList.add("hidden");
+
+  promoteButton.disabled = true;
+  demoteButton.disabled = true;
+
+  updateAccess();
+
+  if (mensagem) {
+    showAuthMessage(mensagem);
+  }
+}
+
+// Verificar sessão Roblox
 async function checkLogin() {
+  if (verificandoLogin) return;
+
+  verificandoLogin = true;
+
   try {
     const response = await fetch(`${API_URL}/api/me`, {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
+      cache: "no-store"
     });
 
-    if (!response.ok) {
-      usuarioAtual = null;
-      isAdmin = false;
-
-      loginTitle.textContent = "Não conectado";
-      loginDescription.textContent =
-        "Entre com sua conta Roblox para verificar seu acesso.";
-
-      loginButton.classList.remove("hidden");
-      logoutButton.classList.add("hidden");
-      adminLabel.classList.add("hidden");
-
-      updateAccess();
+    if (response.status === 401) {
+      definirDesconectado(null);
       return;
+    }
+
+    if (!response.ok) {
+      throw new Error("Falha ao consultar a sessão.");
     }
 
     const data = await response.json();
 
     if (!data.autenticado || !data.usuario) {
-      throw new Error("Sessão inválida.");
+      definirDesconectado(null);
+      return;
     }
 
     usuarioAtual = data.usuario;
-
-    // A API é responsável por determinar quem é administrador.
     isAdmin = data.usuario.admin === true;
 
     loginTitle.textContent =
-      data.usuario.displayName || data.usuario.username;
+      data.usuario.displayName ||
+      data.usuario.username ||
+      "Conta Roblox";
 
     loginDescription.textContent =
-      `${data.usuario.cargo} • Patente ${data.usuario.patente}`;
+      `${data.usuario.cargo || "Sem cargo"} • Patente ${data.usuario.patente ?? "N/A"}`;
 
     loginButton.classList.add("hidden");
     logoutButton.classList.remove("hidden");
@@ -662,33 +469,28 @@ async function checkLogin() {
       showAuthMessage("Acesso administrativo autorizado.");
     } else {
       showAuthMessage(
-        "Login realizado, mas sua patente não permite acesso administrativo."
+        "Login realizado. Sua conta não possui autorização administrativa."
       );
     }
 
     updateAccess();
 
   } catch (error) {
-    usuarioAtual = null;
-    isAdmin = false;
+    console.error("Erro ao verificar login:", error);
 
-    loginTitle.textContent = "Não conectado";
-    loginDescription.textContent =
-      "Não foi possível verificar a sessão.";
-
-    loginButton.classList.remove("hidden");
-    logoutButton.classList.add("hidden");
-    adminLabel.classList.add("hidden");
-
-    updateAccess();
-    showAuthMessage(
-      "Não foi possível verificar o login. Tente atualizar a página."
+    definirDesconectado(
+      "Não foi possível verificar a sessão. Tente novamente."
     );
+
+  } finally {
+    verificandoLogin = false;
   }
 }
 
 // Sair da conta
 logoutButton.addEventListener("click", async () => {
+  logoutButton.disabled = true;
+
   try {
     const response = await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
@@ -696,26 +498,23 @@ logoutButton.addEventListener("click", async () => {
     });
 
     if (!response.ok) {
-      throw new Error("Falha ao sair.");
+      throw new Error("Não foi possível encerrar a sessão.");
     }
 
-    usuarioAtual = null;
-    isAdmin = false;
-
-    clearAuthMessage();
-    await checkLogin();
+    definirDesconectado(null);
     openPage("home");
 
     showAuthMessage("Você saiu da sua conta Roblox.");
 
   } catch (error) {
-    showAuthMessage(
-      "Não foi possível encerrar a sessão. Tente novamente."
-    );
+    showAuthMessage(error.message);
+
+  } finally {
+    logoutButton.disabled = false;
   }
 });
 
-// Limpar consulta de promoção
+// Limpar promoção
 function clearPlayerResult() {
   jogadorEncontrado = false;
   jogadorAlvoId = null;
@@ -725,13 +524,13 @@ function clearPlayerResult() {
 
   promoteButton.disabled = true;
 
-  errorMessage.classList.add("hidden");
   errorMessage.textContent = "";
+  errorMessage.classList.add("hidden");
 }
 
 // Verificar autopromoção
 function verificarAutopromocao() {
-  if (!usuarioAtual || !jogadorAlvoId) {
+  if (!usuarioAtual || !jogadorAlvoId || !jogadorEncontrado) {
     promoteButton.disabled = true;
     return;
   }
@@ -746,11 +545,11 @@ function verificarAutopromocao() {
     return;
   }
 
-  promoteButton.disabled = !isAdmin || !jogadorEncontrado;
+  promoteButton.disabled = !isAdmin;
   errorMessage.classList.add("hidden");
 }
 
-// Limpar consulta de rebaixamento
+// Limpar rebaixamento
 function limparJogadorRebaixamento() {
   jogadorRebaixamentoEncontrado = false;
   jogadorRebaixamentoId = null;
@@ -762,17 +561,22 @@ function limparJogadorRebaixamento() {
   limparMensagemRebaixamento();
 }
 
-// Verificar se pode rebaixar o jogador selecionado
+// Verificar rebaixamento
 function verificarRebaixamento() {
-  if (!usuarioAtual || !jogadorRebaixamentoId) {
+  if (
+    !usuarioAtual ||
+    !isAdmin ||
+    !jogadorRebaixamentoId ||
+    !jogadorRebaixamentoEncontrado
+  ) {
     demoteButton.disabled = true;
     return;
   }
 
-  const mesmoJogador =
-    String(usuarioAtual.id) === String(jogadorRebaixamentoId);
-
-  if (mesmoJogador) {
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorRebaixamentoId)
+  ) {
     demoteButton.disabled = true;
     mostrarMensagemRebaixamento(
       "Você não pode rebaixar a si mesmo."
@@ -780,18 +584,14 @@ function verificarRebaixamento() {
     return;
   }
 
-  demoteButton.disabled =
-    !isAdmin || !jogadorRebaixamentoEncontrado;
-
-  limparMensagemRebaixamento();
+  demoteButton.disabled = false;
 }
 
 // Navegação
 function openPage(page) {
-  if (
-    ["promote", "demote", "history", "audit", "accounts"].includes(page) &&
-    !isAdmin
-  ) {
+  if (!titles[page]) return;
+
+  if (adminPages.includes(page) && !isAdmin) {
     showAuthMessage(
       "Você precisa de autorização administrativa para acessar essa área."
     );
@@ -809,8 +609,7 @@ function openPage(page) {
     );
   });
 
-  document.getElementById("heading").textContent =
-    titles[page] || "Central de gestão";
+  $("heading").textContent = titles[page];
 
   if (page !== "promote") {
     consultaAtual++;
@@ -827,6 +626,7 @@ function openPage(page) {
   }
 }
 
+// Eventos de navegação
 document.querySelectorAll("[data-page]").forEach(button => {
   button.addEventListener("click", () => {
     openPage(button.dataset.page);
@@ -845,7 +645,7 @@ async function consultarJogador(nickname) {
 
   clearPlayerResult();
 
-  if (!nickname) return;
+  if (!nickname || !isAdmin) return;
 
   playerName.textContent = "Consultando...";
 
@@ -878,7 +678,7 @@ async function consultarJogador(nickname) {
     if (minhaConsulta !== consultaAtual) return;
 
     errorMessage.textContent =
-      "Não foi possível conectar à API. Tente novamente.";
+      "Não foi possível conectar à API.";
 
     errorMessage.classList.remove("hidden");
   }
@@ -892,7 +692,7 @@ nicknameInput.addEventListener("input", () => {
 
   const nickname = nicknameInput.value.trim();
 
-  if (!nickname) return;
+  if (!nickname || !isAdmin) return;
 
   temporizador = setTimeout(() => {
     consultarJogador(nickname);
@@ -901,20 +701,15 @@ nicknameInput.addEventListener("input", () => {
 
 // Botão de promoção
 promoteButton.addEventListener("click", () => {
-  if (!isAdmin || !jogadorEncontrado) return;
+  if (!isAdmin || !jogadorEncontrado || !usuarioAtual) return;
 
   if (String(usuarioAtual.id) === String(jogadorAlvoId)) {
-    promoteButton.disabled = true;
-
-    errorMessage.textContent =
-      "Você não pode se autopromover!";
-
-    errorMessage.classList.remove("hidden");
+    verificarAutopromocao();
     return;
   }
 
   errorMessage.textContent =
-    "Consulta concluída! A promoção automática ainda está em desenvolvimento.";
+    "A promoção automática ainda está em desenvolvimento.";
 
   errorMessage.classList.remove("hidden");
 });
@@ -925,7 +720,7 @@ async function consultarJogadorRebaixamento(nickname) {
 
   limparJogadorRebaixamento();
 
-  if (!nickname) return;
+  if (!nickname || !isAdmin) return;
 
   demotePlayerName.textContent = "Consultando...";
 
@@ -957,12 +752,12 @@ async function consultarJogadorRebaixamento(nickname) {
     if (minhaConsulta !== consultaRebaixamentoAtual) return;
 
     mostrarMensagemRebaixamento(
-      "Não foi possível conectar à API. Tente novamente."
+      "Não foi possível conectar à API."
     );
   }
 }
 
-// Busca automática do jogador
+// Busca automática do rebaixamento
 demoteNicknameInput.addEventListener("input", () => {
   clearTimeout(temporizadorRebaixamento);
   consultaRebaixamentoAtual++;
@@ -971,7 +766,7 @@ demoteNicknameInput.addEventListener("input", () => {
 
   const nickname = demoteNicknameInput.value.trim();
 
-  if (!nickname) return;
+  if (!nickname || !isAdmin) return;
 
   temporizadorRebaixamento = setTimeout(() => {
     consultarJogadorRebaixamento(nickname);
@@ -982,8 +777,9 @@ demoteNicknameInput.addEventListener("input", () => {
 demoteButton.addEventListener("click", async () => {
   if (
     !isAdmin ||
+    !usuarioAtual ||
     !jogadorRebaixamentoEncontrado ||
-    !usuarioAtual
+    !jogadorRebaixamentoId
   ) {
     return;
   }
@@ -992,13 +788,13 @@ demoteButton.addEventListener("click", async () => {
     String(usuarioAtual.id) ===
     String(jogadorRebaixamentoId)
   ) {
-    mostrarMensagemRebaixamento(
-      "Você não pode rebaixar a si mesmo."
-    );
+    verificarRebaixamento();
     return;
   }
 
   const nickname = demoteNicknameInput.value.trim();
+
+  if (!nickname) return;
 
   const confirmado = confirm(
     `Tem certeza de que deseja rebaixar ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
@@ -1018,9 +814,7 @@ demoteButton.addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          nick: nickname
-        })
+        body: JSON.stringify({ nick: nickname })
       }
     );
 
@@ -1036,38 +830,27 @@ demoteButton.addEventListener("click", async () => {
       data.mensagem || "Rebaixamento realizado com sucesso!"
     );
 
-    // Atualizar o cargo exibido após a alteração
     await consultarJogadorRebaixamento(nickname);
 
-    // Preservar a mensagem de sucesso
-    if (data.mensagem) {
-      mostrarMensagemRebaixamento(data.mensagem);
-    }
-
-    } catch (error) {
+  } catch (error) {
     verificarRebaixamento();
 
     mostrarMensagemRebaixamento(
       error.message || "Erro ao realizar o rebaixamento."
     );
   }
-
-    verificarRebaixamento();
-  }
 });
 
-// Mensagens do login
+// Retorno do login Roblox
 const loginResult =
   new URLSearchParams(location.search).get("login");
 
 if (loginResult === "sucesso") {
-  showAuthMessage(
-    "Login Roblox concluído. Verificando sua autorização..."
-  );
+  showAuthMessage("Login concluído. Verificando sua sessão...");
 
 } else if (loginResult === "sem_permissao") {
   showAuthMessage(
-    "Login realizado, mas sua patente não permite acesso administrativo."
+    "Login realizado, mas sua conta não possui autorização administrativa."
   );
 
 } else if (loginResult) {
@@ -1076,17 +859,16 @@ if (loginResult === "sucesso") {
   );
 }
 
+// Remover parâmetro da URL
 if (loginResult) {
-  history.replaceState(
-    {},
-    document.title,
-    location.pathname
-  );
+  history.replaceState({}, document.title, location.pathname);
 }
 
 // Inicialização
 clearPlayerResult();
 limparJogadorRebaixamento();
+
+updateAccess();
 checkLogin();
 </script>
 
