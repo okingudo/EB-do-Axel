@@ -292,6 +292,7 @@ th { color:var(--gold); }
   <nav>
     <button class="active" data-page="home">⌂ Visão geral</button>
     <button data-page="promote" class="admin-only" disabled>↑ Promover</button>
+    <button data-page="demote" class="admin-only" disabled>↓ Rebaixar</button>
     <button data-page="ranks">▤ Hierarquia</button>
     <button data-page="history" class="admin-only" disabled>◷ Histórico</button>
     <button data-page="audit" class="admin-only" disabled>⌕ Auditoria</button>
@@ -347,6 +348,9 @@ th { color:var(--gold); }
       <button class="action" data-go="promote" id="shortcutPromote" disabled>
         Consultar jogador
       </button>
+      <button class="secondary" data-go="demote" id="shortcutDemote" disabled>
+        Rebaixar jogador
+      </button>
       <button class="secondary" data-go="ranks">Consultar hierarquia</button>
     </div>
   </section>
@@ -370,6 +374,34 @@ th { color:var(--gold); }
       </button>
 
       <div id="errorMessage" class="notice hidden"></div>
+    </div>
+  </section>
+
+  <section id="demote" class="page hidden">
+    <div class="card">
+      <h2>Rebaixar jogador</h2>
+      <p class="muted">
+        Digite o nickname Roblox para consultar o jogador.
+      </p>
+
+      <label for="demoteNickname">Nickname Roblox</label>
+      <input
+        id="demoteNickname"
+        placeholder="Digite o nickname do jogador"
+        autocomplete="off"
+      >
+
+      <div class="player-card">
+        <div class="player-name" id="demotePlayerName">N/A</div>
+        <p class="muted">Cargo atual</p>
+        <div class="player-rank" id="demotePlayerRank">N/A</div>
+      </div>
+
+      <button class="action" id="demoteButton" disabled>
+        REBAIXAR UM CARGO
+      </button>
+
+      <div id="demoteMessage" class="notice hidden"></div>
     </div>
   </section>
 
@@ -491,26 +523,35 @@ th { color:var(--gold); }
     EB DO AXEL • Disciplina • Respeito • União
   </footer>
 </main>
-</div>
-
-<script>
+  </div>
+  <script>
 const API_URL = "https://eb-do-axel-api.onrender.com";
 
 const titles = {
   home:"Visão geral",
   promote:"Promover",
+  demote:"Rebaixar",
   ranks:"Hierarquia militar",
   history:"Histórico",
   audit:"Auditoria",
   accounts:"Contas"
 };
 
+// Elementos da promoção
 const nicknameInput = document.getElementById("nickname");
 const playerName = document.getElementById("playerName");
 const playerRank = document.getElementById("playerRank");
 const promoteButton = document.getElementById("promoteButton");
 const errorMessage = document.getElementById("errorMessage");
 
+// Elementos do rebaixamento
+const demoteNicknameInput = document.getElementById("demoteNickname");
+const demotePlayerName = document.getElementById("demotePlayerName");
+const demotePlayerRank = document.getElementById("demotePlayerRank");
+const demoteButton = document.getElementById("demoteButton");
+const demoteMessage = document.getElementById("demoteMessage");
+
+// Login
 const loginTitle = document.getElementById("loginTitle");
 const loginDescription = document.getElementById("loginDescription");
 const loginButton = document.getElementById("loginButton");
@@ -525,6 +566,13 @@ let temporizador;
 let usuarioAtual = null;
 let isAdmin = false;
 
+// Controle do rebaixamento
+let jogadorRebaixamentoEncontrado = false;
+let jogadorRebaixamentoId = null;
+let consultaRebaixamentoAtual = 0;
+let temporizadorRebaixamento;
+
+// Mensagens
 function showAuthMessage(message) {
   authMessage.textContent = message;
   authMessage.classList.remove("hidden");
@@ -535,18 +583,37 @@ function clearAuthMessage() {
   authMessage.textContent = "";
 }
 
+function mostrarMensagemRebaixamento(message) {
+  demoteMessage.textContent = message;
+  demoteMessage.classList.remove("hidden");
+}
+
+function limparMensagemRebaixamento() {
+  demoteMessage.textContent = "";
+  demoteMessage.classList.add("hidden");
+}
+
+// Acesso administrativo
 function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(button => {
     button.disabled = !isAdmin;
   });
 
   document.getElementById("shortcutPromote").disabled = !isAdmin;
+  document.getElementById("shortcutDemote").disabled = !isAdmin;
 
-  if (!isAdmin && document.getElementById("promote").classList.contains("hidden") === false) {
+  const paginaAtual = document.querySelector(".page:not(.hidden)");
+
+  if (
+    !isAdmin &&
+    paginaAtual &&
+    ["promote", "demote", "history", "audit", "accounts"].includes(paginaAtual.id)
+  ) {
     openPage("home");
   }
 }
 
+// Verificar login
 async function checkLogin() {
   try {
     const response = await fetch(`${API_URL}/api/me`, {
@@ -559,7 +626,9 @@ async function checkLogin() {
       isAdmin = false;
 
       loginTitle.textContent = "Não conectado";
-      loginDescription.textContent = "Entre com sua conta Roblox para verificar seu acesso.";
+      loginDescription.textContent =
+        "Entre com sua conta Roblox para verificar seu acesso.";
+
       loginButton.classList.remove("hidden");
       logoutButton.classList.add("hidden");
       adminLabel.classList.add("hidden");
@@ -575,10 +644,13 @@ async function checkLogin() {
     }
 
     usuarioAtual = data.usuario;
-    isAdmin = data.usuario.admin === true &&
-      [254, 255].includes(Number(data.usuario.patente));
 
-    loginTitle.textContent = data.usuario.displayName || data.usuario.username;
+    // A API é responsável por determinar quem é administrador.
+    isAdmin = data.usuario.admin === true;
+
+    loginTitle.textContent =
+      data.usuario.displayName || data.usuario.username;
+
     loginDescription.textContent =
       `${data.usuario.cargo} • Patente ${data.usuario.patente}`;
 
@@ -589,7 +661,9 @@ async function checkLogin() {
     if (isAdmin) {
       showAuthMessage("Acesso administrativo autorizado.");
     } else {
-      showAuthMessage("Login realizado, mas sua patente não permite acesso administrativo.");
+      showAuthMessage(
+        "Login realizado, mas sua patente não permite acesso administrativo."
+      );
     }
 
     updateAccess();
@@ -599,16 +673,21 @@ async function checkLogin() {
     isAdmin = false;
 
     loginTitle.textContent = "Não conectado";
-    loginDescription.textContent = "Não foi possível verificar a sessão.";
+    loginDescription.textContent =
+      "Não foi possível verificar a sessão.";
+
     loginButton.classList.remove("hidden");
     logoutButton.classList.add("hidden");
     adminLabel.classList.add("hidden");
 
     updateAccess();
-    showAuthMessage("Não foi possível verificar o login. Tente atualizar a página.");
+    showAuthMessage(
+      "Não foi possível verificar o login. Tente atualizar a página."
+    );
   }
 }
 
+// Sair da conta
 logoutButton.addEventListener("click", async () => {
   try {
     const response = await fetch(`${API_URL}/auth/logout`, {
@@ -622,26 +701,35 @@ logoutButton.addEventListener("click", async () => {
 
     usuarioAtual = null;
     isAdmin = false;
+
     clearAuthMessage();
     await checkLogin();
     openPage("home");
+
     showAuthMessage("Você saiu da sua conta Roblox.");
 
   } catch (error) {
-    showAuthMessage("Não foi possível encerrar a sessão. Tente novamente.");
+    showAuthMessage(
+      "Não foi possível encerrar a sessão. Tente novamente."
+    );
   }
 });
 
+// Limpar consulta de promoção
 function clearPlayerResult() {
   jogadorEncontrado = false;
   jogadorAlvoId = null;
+
   playerName.textContent = "N/A";
   playerRank.textContent = "N/A";
+
   promoteButton.disabled = true;
+
   errorMessage.classList.add("hidden");
   errorMessage.textContent = "";
 }
 
+// Verificar autopromoção
 function verificarAutopromocao() {
   if (!usuarioAtual || !jogadorAlvoId) {
     promoteButton.disabled = true;
@@ -649,7 +737,7 @@ function verificarAutopromocao() {
   }
 
   const mesmoJogador =
-    Number(usuarioAtual.id) === Number(jogadorAlvoId);
+    String(usuarioAtual.id) === String(jogadorAlvoId);
 
   if (mesmoJogador) {
     promoteButton.disabled = true;
@@ -662,9 +750,51 @@ function verificarAutopromocao() {
   errorMessage.classList.add("hidden");
 }
 
+// Limpar consulta de rebaixamento
+function limparJogadorRebaixamento() {
+  jogadorRebaixamentoEncontrado = false;
+  jogadorRebaixamentoId = null;
+
+  demotePlayerName.textContent = "N/A";
+  demotePlayerRank.textContent = "N/A";
+
+  demoteButton.disabled = true;
+  limparMensagemRebaixamento();
+}
+
+// Verificar se pode rebaixar o jogador selecionado
+function verificarRebaixamento() {
+  if (!usuarioAtual || !jogadorRebaixamentoId) {
+    demoteButton.disabled = true;
+    return;
+  }
+
+  const mesmoJogador =
+    String(usuarioAtual.id) === String(jogadorRebaixamentoId);
+
+  if (mesmoJogador) {
+    demoteButton.disabled = true;
+    mostrarMensagemRebaixamento(
+      "Você não pode rebaixar a si mesmo."
+    );
+    return;
+  }
+
+  demoteButton.disabled =
+    !isAdmin || !jogadorRebaixamentoEncontrado;
+
+  limparMensagemRebaixamento();
+}
+
+// Navegação
 function openPage(page) {
-  if (["promote", "history", "audit", "accounts"].includes(page) && !isAdmin) {
-    showAuthMessage("Você precisa de uma patente autorizada para acessar essa área.");
+  if (
+    ["promote", "demote", "history", "audit", "accounts"].includes(page) &&
+    !isAdmin
+  ) {
+    showAuthMessage(
+      "Você precisa de autorização administrativa para acessar essa área."
+    );
     return;
   }
 
@@ -673,7 +803,10 @@ function openPage(page) {
   });
 
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
   });
 
   document.getElementById("heading").textContent =
@@ -685,18 +818,31 @@ function openPage(page) {
     nicknameInput.value = "";
     clearPlayerResult();
   }
+
+  if (page !== "demote") {
+    consultaRebaixamentoAtual++;
+    clearTimeout(temporizadorRebaixamento);
+    demoteNicknameInput.value = "";
+    limparJogadorRebaixamento();
+  }
 }
 
 document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click", () => openPage(button.dataset.page));
+  button.addEventListener("click", () => {
+    openPage(button.dataset.page);
+  });
 });
 
 document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click", () => openPage(button.dataset.go));
+  button.addEventListener("click", () => {
+    openPage(button.dataset.go);
+  });
 });
 
+// Consultar jogador para promoção
 async function consultarJogador(nickname) {
   const minhaConsulta = ++consultaAtual;
+
   clearPlayerResult();
 
   if (!nickname) return;
@@ -715,6 +861,7 @@ async function consultarJogador(nickname) {
     if (!response.ok || !data.encontrado) {
       errorMessage.textContent =
         data.mensagem || "Jogador não encontrado.";
+
       errorMessage.classList.remove("hidden");
       return;
     }
@@ -732,6 +879,7 @@ async function consultarJogador(nickname) {
 
     errorMessage.textContent =
       "Não foi possível conectar à API. Tente novamente.";
+
     errorMessage.classList.remove("hidden");
   }
 }
@@ -739,6 +887,7 @@ async function consultarJogador(nickname) {
 nicknameInput.addEventListener("input", () => {
   clearTimeout(temporizador);
   consultaAtual++;
+
   clearPlayerResult();
 
   const nickname = nicknameInput.value.trim();
@@ -750,36 +899,194 @@ nicknameInput.addEventListener("input", () => {
   }, 600);
 });
 
+// Botão de promoção
 promoteButton.addEventListener("click", () => {
   if (!isAdmin || !jogadorEncontrado) return;
 
-  if (Number(usuarioAtual.id) === Number(jogadorAlvoId)) {
+  if (String(usuarioAtual.id) === String(jogadorAlvoId)) {
     promoteButton.disabled = true;
-    errorMessage.textContent = "Você não pode se autopromover!";
+
+    errorMessage.textContent =
+      "Você não pode se autopromover!";
+
     errorMessage.classList.remove("hidden");
     return;
   }
 
   errorMessage.textContent =
     "Consulta concluída! A promoção automática ainda está em desenvolvimento.";
+
   errorMessage.classList.remove("hidden");
 });
 
-const loginResult = new URLSearchParams(location.search).get("login");
+// Consultar jogador para rebaixamento
+async function consultarJogadorRebaixamento(nickname) {
+  const minhaConsulta = ++consultaRebaixamentoAtual;
+
+  limparJogadorRebaixamento();
+
+  if (!nickname) return;
+
+  demotePlayerName.textContent = "Consultando...";
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
+    );
+
+    const data = await response.json();
+
+    if (minhaConsulta !== consultaRebaixamentoAtual) return;
+
+    if (!response.ok || !data.encontrado) {
+      mostrarMensagemRebaixamento(
+        data.mensagem || "Jogador não encontrado."
+      );
+      return;
+    }
+
+    demotePlayerName.textContent = data.jogador.nick;
+    demotePlayerRank.textContent = data.jogador.cargo;
+
+    jogadorRebaixamentoId = data.jogador.id;
+    jogadorRebaixamentoEncontrado = true;
+
+    verificarRebaixamento();
+
+  } catch (error) {
+    if (minhaConsulta !== consultaRebaixamentoAtual) return;
+
+    mostrarMensagemRebaixamento(
+      "Não foi possível conectar à API. Tente novamente."
+    );
+  }
+}
+
+// Busca automática do jogador
+demoteNicknameInput.addEventListener("input", () => {
+  clearTimeout(temporizadorRebaixamento);
+  consultaRebaixamentoAtual++;
+
+  limparJogadorRebaixamento();
+
+  const nickname = demoteNicknameInput.value.trim();
+
+  if (!nickname) return;
+
+  temporizadorRebaixamento = setTimeout(() => {
+    consultarJogadorRebaixamento(nickname);
+  }, 600);
+});
+
+// Executar rebaixamento
+demoteButton.addEventListener("click", async () => {
+  if (
+    !isAdmin ||
+    !jogadorRebaixamentoEncontrado ||
+    !usuarioAtual
+  ) {
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorRebaixamentoId)
+  ) {
+    mostrarMensagemRebaixamento(
+      "Você não pode rebaixar a si mesmo."
+    );
+    return;
+  }
+
+  const nickname = demoteNicknameInput.value.trim();
+
+  const confirmado = confirm(
+    `Tem certeza de que deseja rebaixar ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
+  );
+
+  if (!confirmado) return;
+
+  demoteButton.disabled = true;
+  mostrarMensagemRebaixamento("Processando rebaixamento...");
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/rebaixamento`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nick: nickname
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.sucesso) {
+      throw new Error(
+        data.mensagem || "Não foi possível realizar o rebaixamento."
+      );
+    }
+
+    mostrarMensagemRebaixamento(
+      data.mensagem || "Rebaixamento realizado com sucesso!"
+    );
+
+    // Atualizar o cargo exibido após a alteração
+    await consultarJogadorRebaixamento(nickname);
+
+    // Preservar a mensagem de sucesso
+    if (data.mensagem) {
+      mostrarMensagemRebaixamento(data.mensagem);
+    }
+
+    } catch (error) {
+    verificarRebaixamento();
+
+    mostrarMensagemRebaixamento(
+      error.message || "Erro ao realizar o rebaixamento."
+    );
+  }
+
+    verificarRebaixamento();
+  }
+});
+
+// Mensagens do login
+const loginResult =
+  new URLSearchParams(location.search).get("login");
 
 if (loginResult === "sucesso") {
-  showAuthMessage("Login Roblox concluído. Verificando sua autorização...");
+  showAuthMessage(
+    "Login Roblox concluído. Verificando sua autorização..."
+  );
+
 } else if (loginResult === "sem_permissao") {
-  showAuthMessage("Login realizado, mas sua patente não permite acesso administrativo.");
+  showAuthMessage(
+    "Login realizado, mas sua patente não permite acesso administrativo."
+  );
+
 } else if (loginResult) {
-  showAuthMessage("Não foi possível concluir o login. Tente novamente.");
+  showAuthMessage(
+    "Não foi possível concluir o login. Tente novamente."
+  );
 }
 
 if (loginResult) {
-  history.replaceState({}, document.title, location.pathname);
+  history.replaceState(
+    {},
+    document.title,
+    location.pathname
+  );
 }
 
+// Inicialização
 clearPlayerResult();
+limparJogadorRebaixamento();
 checkLogin();
 </script>
 
