@@ -825,6 +825,7 @@ identificacao.appendChild(nome);
 
 $("accountsSearch").addEventListener("input", renderizarContas);
 $("refreshAccounts").addEventListener("click", carregarContas);
+  carregarContas();
 
 function renderizarHistorico() {
   const tabela = $("historyTable");
