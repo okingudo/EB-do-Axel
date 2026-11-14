@@ -799,15 +799,6 @@ function renderizarContas() {
     identificacao.style.alignItems = "center";
     identificacao.style.gap = "10px";
 
-    const avatar = document.createElement("img");
-
-avatar.alt = "Avatar Roblox";
-avatar.width = 42;
-avatar.height = 42;
-avatar.style.borderRadius = "50%";
-avatar.style.objectFit = "cover";
-
-avatar.src = "https://placehold.co/150x150?text=...";
 avatar.onerror = () => {
   avatar.alt = "Erro ao carregar avatar";
   avatar.style.background = "#ff0000";
@@ -858,7 +849,7 @@ if (imagem) {
 const nome = document.createElement("span");
 nome.textContent = `${conta.displayName} (@${conta.username})`;
 
-identificacao.append(avatar, nome);
+identificacao.appendChild(nome);
     jogador.appendChild(identificacao);
     linha.appendChild(jogador);
 
