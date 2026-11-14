@@ -820,25 +820,33 @@ avatar.src = "https://placehold.co/150x150?text=...";
     url.searchParams.set("isCircular", "true");
 
     const resposta = await fetch(url);
-    if (!resposta.ok) throw new Error("Falha na miniatura");
+
+    if (!resposta.ok) {
+      throw new Error("Falha na miniatura");
+    }
 
     const dados = await resposta.json();
     const imagem = dados.data?.[0]?.imageUrl;
 
     if (imagem) {
-  avatar.onload = () => console.log("Avatar carregado:", conta.username);
-  avatar.onerror = () => console.error("Falha ao exibir avatar:", conta.username);
-  avatar.src = imagem;
+      avatar.onload = () =>
+        console.log("Avatar carregado:", conta.username);
+
+      avatar.onerror = () =>
+        console.error("Falha ao exibir avatar:", conta.username);
+
+      avatar.src = imagem;
     }
-   catch (erro) {
+
+  } catch (erro) {
     console.error("Erro ao carregar avatar:", erro);
   }
 })();
 
-    const nome = document.createElement("span");
-    nome.textContent = `${conta.displayName} (@${conta.username})`;
+const nome = document.createElement("span");
+nome.textContent = `${conta.displayName} (@${conta.username})`;
 
-    identificacao.append(avatar, nome);
+identificacao.append(avatar, nome);
     jogador.appendChild(identificacao);
     linha.appendChild(jogador);
 
