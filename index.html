@@ -311,13 +311,57 @@ th { color:var(--gold); }
       </table>
     </div>
   </section>
-  <section id="accounts" class="page hidden">
-    <div class="card">
-      <h2>Vinculação de contas</h2>
-      <p class="muted">Conexão entre Roblox e Discord.</p>
-      <p class="muted">Nunca informe senhas, cookies ou tokens neste painel.</p>
+  
+<section id="accounts" class="page hidden">
+  <div class="card">
+    <div class="topline">
+      <div>
+        <h2>Contas conectadas</h2>
+        <p class="muted">Gerenciamento das sessões da Central de Gestão.</p>
+      </div>
+      <button class="secondary" id="refreshAccounts">
+        ↻ Atualizar
+      </button>
     </div>
-  </section>
+
+    <div class="notice">
+      As sessões ativas não significam necessariamente que o jogador
+      está conectado neste momento.
+    </div>
+
+    <div class="player-card">
+      <div class="muted">SESSÕES ATIVAS</div>
+      <div class="player-name" id="accountsTotal">0</div>
+    </div>
+
+    <input
+      id="accountsSearch"
+      placeholder="Pesquisar por nickname ou cargo..."
+      autocomplete="off"
+    >
+
+    <div id="accountsMessage" class="empty">
+      Carregando contas...
+    </div>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Jogador</th>
+            <th>Roblox ID</th>
+            <th>Cargo</th>
+            <th>Patente</th>
+            <th>Sessão</th>
+            <th>Expira em</th>
+          </tr>
+        </thead>
+        <tbody id="accountsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+  
   <footer class="muted" style="padding:25px 5px;text-align:center">
     EB DO AXEL • Disciplina • Respeito • União
   </footer>
