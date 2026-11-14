@@ -657,7 +657,86 @@ function openPage(page) {
   }
 if (page === "history") carregarHistorico();
 }
+// Histórico de promoções e rebaixamentos
+let historicoRegistros = [];
 
+async function carregarHistorico() {
+  const mensagem = $("historyMessage");
+  const tabela = $("historyTable");
+
+  mensagem.textContent = "Carregando histórico...";
+  tabela.replaceChildren();
+
+  try {
+    const resposta = await fetch(`${API_URL}/api/historico`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store"
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.mensagem || "Erro ao carregar histórico.");
+    }
+
+    historicoRegistros = dados.historico || [];
+    renderizarHistorico();
+
+  } catch (erro) {
+    mensagem.textContent = erro.message;
+    historicoRegistros = [];
+  }
+}
+
+function renderizarHistorico() {
+  const tabela = $("historyTable");
+  const mensagem = $("historyMessage");
+  const pesquisa = $("historySearch").value.toLowerCase().trim();
+
+  tabela.replaceChildren();
+
+  const registros = historicoRegistros.filter(item =>
+    `${item.jogador_nick} ${item.responsavel_nick}`
+      .toLowerCase()
+      .includes(pesquisa)
+  );
+
+  if (registros.length === 0) {
+    mensagem.textContent = "Nenhum registro encontrado.";
+    return;
+  }
+
+  mensagem.textContent = "";
+
+  registros.forEach(item => {
+    const linha = document.createElement("tr");
+
+    const valores = [
+      item.jogador_nick,
+      item.tipo === "promocao" ? "Promoção" : "Rebaixamento",
+      item.cargo_anterior,
+      item.novo_cargo,
+      item.responsavel_nick,
+      new Date(item.data).toLocaleString("pt-BR")
+    ];
+
+    valores.forEach(valor => {
+      const celula = document.createElement("td");
+      celula.textContent = valor ?? "-";
+      linha.appendChild(celula);
+    });
+
+    tabela.appendChild(linha);
+  });
+}
+
+// Pesquisa no histórico
+$("historySearch").addEventListener("input", renderizarHistorico);
+
+// Botão atualizar
+$("refreshHistory").addEventListener("click", carregarHistorico);
+  
 // Eventos de navegação
 document.querySelectorAll("[data-page]").forEach(button => {
   button.addEventListener("click", () => {
