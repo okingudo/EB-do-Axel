@@ -803,48 +803,6 @@ avatar.onerror = () => {
   avatar.alt = "Erro ao carregar avatar";
   avatar.style.background = "#ff0000";
 };
-    
-(async () => {
-  try {
-    const url = new URL(
-      "https://thumbnails.roblox.com/v1/users/avatar-headshot"
-    );
-
-    url.searchParams.set("userIds", conta.id);
-    url.searchParams.set("size", "150x150");
-    url.searchParams.set("format", "Png");
-    url.searchParams.set("isCircular", "true");
-
-    const resposta = await fetch(url);
-
-    if (!resposta.ok) {
-      throw new Error("Falha na miniatura");
-    }
-
-    const dados = await resposta.json();
-    const imagem = dados.data?.[0]?.imageUrl;
-if (imagem) {
-  avatar.src = imagem;
-} else {
-  avatar.alt = "Avatar não encontrado";
-  avatar.src = "";
-  avatar.style.background = "#ff0000";
-}
-    
-    if (imagem) {
-      avatar.onload = () =>
-        console.log("Avatar carregado:", conta.username);
-
-      avatar.onerror = () =>
-        console.error("Falha ao exibir avatar:", conta.username);
-
-      avatar.src = imagem;
-    }
-
-  } catch (erro) {
-    console.error("Erro ao carregar avatar:", erro);
-  }
-})();
 
 const nome = document.createElement("span");
 nome.textContent = `${conta.displayName} (@${conta.username})`;
