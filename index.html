@@ -752,6 +752,7 @@ async function carregarContas() {
     });
 
     const dados = await resposta.json();
+    console.log("Dados do avatar:", dados);
 
     if (!resposta.ok || !dados.sucesso) {
       throw new Error(dados.mensagem || "Erro ao carregar contas.");
