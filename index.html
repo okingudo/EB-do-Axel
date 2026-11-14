@@ -799,11 +799,6 @@ function renderizarContas() {
     identificacao.style.alignItems = "center";
     identificacao.style.gap = "10px";
 
-avatar.onerror = () => {
-  avatar.alt = "Erro ao carregar avatar";
-  avatar.style.background = "#ff0000";
-};
-
 const nome = document.createElement("span");
 nome.textContent = `${conta.displayName} (@${conta.username})`;
 
