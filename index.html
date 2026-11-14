@@ -828,7 +828,14 @@ avatar.src = "https://placehold.co/150x150?text=...";
 
     const dados = await resposta.json();
     const imagem = dados.data?.[0]?.imageUrl;
-
+if (imagem) {
+  avatar.src = imagem;
+} else {
+  avatar.alt = "Avatar não encontrado";
+  avatar.src = "";
+  avatar.style.background = "#ff0000";
+}
+    
     if (imagem) {
       avatar.onload = () =>
         console.log("Avatar carregado:", conta.username);
