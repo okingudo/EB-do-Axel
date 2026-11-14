@@ -789,25 +789,49 @@ function renderizarContas() {
   mensagem.textContent = "";
 
   contas.forEach(conta => {
-    const linha = document.createElement("tr");
+  
+contas.forEach(conta => {
+  const linha = document.createElement("tr");
 
-    const valores = [
-      `${conta.displayName} (@${conta.username})`,
-      conta.id,
-      conta.cargo,
-      conta.patente,
-      "Sessão ativa",
-      new Date(conta.expiraEm).toLocaleString("pt-BR")
-    ];
+  // Avatar e identificação
+  const jogador = document.createElement("td");
+  const identificacao = document.createElement("div");
 
-    valores.forEach(valor => {
-      const celula = document.createElement("td");
-      celula.textContent = valor ?? "-";
-      linha.appendChild(celula);
-    });
+  identificacao.style.display = "flex";
+  identificacao.style.alignItems = "center";
+  identificacao.style.gap = "10px";
 
-    tabela.appendChild(linha);
+  const avatar = document.createElement("img");
+  avatar.src = `https://www.roblox.com/headshot-thumbnail/image?userId=${encodeURIComponent(conta.id)}&width=150&height=150&format=png`;
+  avatar.alt = "Avatar Roblox";
+  avatar.width = 42;
+  avatar.height = 42;
+  avatar.style.borderRadius = "50%";
+  avatar.style.objectFit = "cover";
+
+  const nome = document.createElement("span");
+  nome.textContent = `${conta.displayName} (@${conta.username})`;
+
+  identificacao.append(avatar, nome);
+  jogador.appendChild(identificacao);
+  linha.appendChild(jogador);
+
+  const valores = [
+    conta.id,
+    conta.cargo,
+    conta.patente,
+    "Sessão ativa",
+    new Date(conta.expiraEm).toLocaleString("pt-BR")
+  ];
+
+  valores.forEach(valor => {
+    const celula = document.createElement("td");
+    celula.textContent = valor ?? "-";
+    linha.appendChild(celula);
   });
+
+  tabela.appendChild(linha);
+});
 }
 
 $("accountsSearch").addEventListener("input", renderizarContas);
