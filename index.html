@@ -799,12 +799,39 @@ function renderizarContas() {
     identificacao.style.gap = "10px";
 
     const avatar = document.createElement("img");
-    avatar.src = `https://www.roblox.com/headshot-thumbnail/image?userId=${encodeURIComponent(conta.id)}&width=150&height=150&format=png`;
-    avatar.alt = "Avatar Roblox";
-    avatar.width = 42;
-    avatar.height = 42;
-    avatar.style.borderRadius = "50%";
-    avatar.style.objectFit = "cover";
+
+avatar.alt = "Avatar Roblox";
+avatar.width = 42;
+avatar.height = 42;
+avatar.style.borderRadius = "50%";
+avatar.style.objectFit = "cover";
+
+avatar.src = "https://placehold.co/150x150?text=...";
+
+(async () => {
+  try {
+    const url = new URL(
+      "https://thumbnails.roblox.com/v1/users/avatar-headshot"
+    );
+
+    url.searchParams.set("userIds", conta.id);
+    url.searchParams.set("size", "150x150");
+    url.searchParams.set("format", "Png");
+    url.searchParams.set("isCircular", "true");
+
+    const resposta = await fetch(url);
+    if (!resposta.ok) throw new Error("Falha na miniatura");
+
+    const dados = await resposta.json();
+    const imagem = dados.data?.[0]?.imageUrl;
+
+    if (imagem) {
+      avatar.src = imagem;
+    }
+  } catch (erro) {
+    console.error("Erro ao carregar avatar:", erro);
+  }
+})();
 
     const nome = document.createElement("span");
     nome.textContent = `${conta.displayName} (@${conta.username})`;
