@@ -261,11 +261,42 @@ th { color:var(--gold); }
   </section>
 
   <section id="history" class="page hidden">
-    <div class="card">
-      <h2>Histórico de promoções</h2>
-      <div class="empty">Nenhuma promoção registrada.</div>
+  <div class="card">
+    <div class="topline">
+      <h2>Histórico de alterações</h2>
+      <button class="secondary" id="refreshHistory">
+        Atualizar
+      </button>
     </div>
-  </section>
+
+    <input
+      id="historySearch"
+      placeholder="Pesquisar jogador ou responsável..."
+      autocomplete="off"
+    >
+
+    <div id="historyMessage" class="empty">
+      Carregando histórico...
+    </div>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Jogador</th>
+            <th>Alteração</th>
+            <th>Cargo anterior</th>
+            <th>Novo cargo</th>
+            <th>Responsável</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+  
   <section id="audit" class="page hidden">
     <div class="card">
       <h2>Auditoria administrativa</h2>
@@ -624,6 +655,7 @@ function openPage(page) {
     demoteNicknameInput.value = "";
     limparJogadorRebaixamento();
   }
+if (page === "history") carregarHistorico();
 }
 
 // Eventos de navegação
