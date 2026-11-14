@@ -732,6 +732,86 @@ async function carregarHistorico() {
     historicoRegistros = [];
   }
 }
+  
+// Contas com sessões ativas
+let contasRegistros = [];
+
+async function carregarContas() {
+  const mensagem = $("accountsMessage");
+  const tabela = $("accountsTable");
+  const total = $("accountsTotal");
+
+  mensagem.textContent = "Carregando contas...";
+  tabela.replaceChildren();
+
+  try {
+    const resposta = await fetch(`${API_URL}/api/contas-online`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store"
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.mensagem || "Erro ao carregar contas.");
+    }
+
+    contasRegistros = dados.contas || [];
+    total.textContent = dados.total;
+    renderizarContas();
+
+  } catch (erro) {
+    mensagem.textContent = erro.message;
+    contasRegistros = [];
+    total.textContent = "0";
+  }
+}
+
+function renderizarContas() {
+  const tabela = $("accountsTable");
+  const mensagem = $("accountsMessage");
+  const pesquisa = $("accountsSearch").value.toLowerCase().trim();
+
+  tabela.replaceChildren();
+
+  const contas = contasRegistros.filter(conta =>
+    `${conta.username} ${conta.displayName} ${conta.cargo}`
+      .toLowerCase()
+      .includes(pesquisa)
+  );
+
+  if (contas.length === 0) {
+    mensagem.textContent = "Nenhuma sessão encontrada.";
+    return;
+  }
+
+  mensagem.textContent = "";
+
+  contas.forEach(conta => {
+    const linha = document.createElement("tr");
+
+    const valores = [
+      `${conta.displayName} (@${conta.username})`,
+      conta.id,
+      conta.cargo,
+      conta.patente,
+      "Sessão ativa",
+      new Date(conta.expiraEm).toLocaleString("pt-BR")
+    ];
+
+    valores.forEach(valor => {
+      const celula = document.createElement("td");
+      celula.textContent = valor ?? "-";
+      linha.appendChild(celula);
+    });
+
+    tabela.appendChild(linha);
+  });
+}
+
+$("accountsSearch").addEventListener("input", renderizarContas);
+$("refreshAccounts").addEventListener("click", carregarContas);
 
 function renderizarHistorico() {
   const tabela = $("historyTable");
