@@ -422,7 +422,12 @@ const demotePlayerName = $("demotePlayerName");
 const demotePlayerRank = $("demotePlayerRank");
 const demoteButton = $("demoteButton");
 const demoteMessage = $("demoteMessage");
-
+const exileNicknameInput = $("exileNickname");
+const exilePlayerName = $("exilePlayerName");
+const exilePlayerRank = $("exilePlayerRank");
+const exileButton = $("exileButton");
+const exileMessage = $("exileMessage");
+  
 let usuarioAtual = null;
 let isAdmin = false;
 let verificandoLogin = false;
@@ -437,6 +442,11 @@ let jogadorRebaixamentoId = null;
 let consultaRebaixamentoAtual = 0;
 let temporizadorRebaixamento = null;
 
+let jogadorExilioEncontrado = false;
+let jogadorExilioId = null;
+let consultaExilioAtual = 0;
+let temporizadorExilio = null;
+  
 // Mensagens
 function showAuthMessage(message) {
   authMessage.textContent = message;
