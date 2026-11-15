@@ -468,6 +468,17 @@ function limparMensagemRebaixamento() {
   demoteMessage.classList.add("hidden");
 }
 
+// Mensagens do exílio
+function mostrarMensagemExilio(message) {
+  exileMessage.textContent = message;
+  exileMessage.classList.remove("hidden");
+}
+
+function limparMensagemExilio() {
+  exileMessage.textContent = "";
+  exileMessage.classList.add("hidden");
+}
+  
 // Controle de acesso
 function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(element => {
