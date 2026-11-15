@@ -1160,6 +1160,90 @@ demoteButton.addEventListener("click", async () => {
   }
 });
 
+// Busca automática do exílio
+exileNicknameInput.addEventListener("input", () => {
+  clearTimeout(temporizadorExilio);
+  consultaExilioAtual++;
+
+  limparJogadorExilio();
+
+  const nickname = exileNicknameInput.value.trim();
+
+  if (!nickname || !isAdmin) return;
+
+  temporizadorExilio = setTimeout(() => {
+    consultarJogadorExilio(nickname);
+  }, 600);
+});
+
+// Executar exílio
+exileButton.addEventListener("click", async () => {
+  if (
+    !isAdmin ||
+    !usuarioAtual ||
+    !jogadorExilioEncontrado ||
+    !jogadorExilioId
+  ) {
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorExilioId)
+  ) {
+    verificarExilio();
+    return;
+  }
+
+  const nickname = exileNicknameInput.value.trim();
+
+  if (!nickname) return;
+
+  const confirmado = confirm(
+    `Tem certeza de que deseja exilar ${nickname}?\n\nO jogador será rebaixado diretamente para Recruta no grupo Roblox.`
+  );
+
+  if (!confirmado) return;
+
+  exileButton.disabled = true;
+  mostrarMensagemExilio("Processando exílio...");
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/exilio`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nick: nickname })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.sucesso) {
+      throw new Error(
+        data.mensagem || "Não foi possível realizar o exílio."
+      );
+    }
+
+    mostrarMensagemExilio(
+      data.mensagem || "Exílio realizado com sucesso!"
+    );
+
+    await consultarJogadorExilio(nickname);
+
+  } catch (error) {
+    verificarExilio();
+
+    mostrarMensagemExilio(
+      error.message || "Erro ao realizar o exílio."
+    );
+  }
+});
+  
 // Retorno do login Roblox
 const loginResult =
   new URLSearchParams(location.search).get("login");
