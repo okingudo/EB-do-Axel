@@ -695,6 +695,32 @@ function verificarRebaixamento() {
   demoteButton.disabled = false;
 }
 
+// Verificar exílio
+function verificarExilio() {
+  if (
+    !usuarioAtual ||
+    !isAdmin ||
+    !jogadorExilioId ||
+    !jogadorExilioEncontrado
+  ) {
+    exileButton.disabled = true;
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorExilioId)
+  ) {
+    exileButton.disabled = true;
+    mostrarMensagemExilio(
+      "Você não pode exilar a si mesmo."
+    );
+    return;
+  }
+
+  exileButton.disabled = false;
+}
+  
 // Navegação
 function openPage(page) {
   if (!titles[page]) return;
