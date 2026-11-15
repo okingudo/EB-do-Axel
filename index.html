@@ -297,20 +297,43 @@ th { color:var(--gold); }
   </div>
 </section>
   
-  <section id="audit" class="page hidden">
-    <div class="card">
-      <h2>Exílio</h2>
-      <p class="muted">Área destinada à equipe autorizada.</p>
-      <table>
-        <tr><th>Campo</th><th>Informação registrada</th></tr>
-        <tr><td>Jogador promovido</td><td>Nickname Roblox</td></tr>
-        <tr><td>Cargo anterior</td><td>Posto anterior</td></tr>
-        <tr><td>Novo cargo</td><td>Posto alcançado</td></tr>
-        <tr><td>Responsável</td><td>Promotor identificado</td></tr>
-        <tr><td>Data e horário</td><td>Registro automático</td></tr>
-      </table>
+<section id="audit" class="page hidden">
+  <div class="card">
+    <h2>⚖️ Exílio</h2>
+    <p class="muted">
+      Consulte um jogador e altere sua patente diretamente para Recruta.
+    </p>
+
+    <div class="form-group">
+      <label for="exilioNick">Nickname Roblox</label>
+      <input
+        type="text"
+        id="exilioNick"
+        placeholder="Digite o nickname do jogador"
+        maxlength="20"
+      />
     </div>
-  </section>
+
+    <button id="consultarExilio">
+      🔎 Consultar jogador
+    </button>
+
+    <div id="exilioResultado" class="hidden">
+      <hr />
+
+      <h3>Dados do jogador</h3>
+      <p>**Jogador:** <span id="exilioNome">-</span></p>
+      <p>**Cargo atual:** <span id="exilioCargo">-</span></p>
+      <p>**Novo cargo:** [REC] Recruta</p>
+
+      <button id="executarExilio">
+        ⚖️ Exilar jogador
+      </button>
+    </div>
+
+    <p id="exilioMensagem" class="muted"></p>
+  </div>
+</section>
   
 <section id="accounts" class="page hidden">
   <div class="card">
