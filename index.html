@@ -1076,6 +1076,49 @@ async function consultarJogadorRebaixamento(nickname) {
   }
 }
 
+// Consultar jogador para exílio
+async function consultarJogadorExilio(nickname) {
+  const minhaConsulta = ++consultaExilioAtual;
+
+  limparJogadorExilio();
+
+  if (!nickname || !isAdmin) return;
+
+  exilePlayerName.textContent = "Consultando...";
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
+    );
+
+    const data = await response.json();
+
+    if (minhaConsulta !== consultaExilioAtual) return;
+
+    if (!response.ok || !data.encontrado) {
+      mostrarMensagemExilio(
+        data.mensagem || "Jogador não encontrado."
+      );
+      return;
+    }
+
+    exilePlayerName.textContent = data.jogador.nick;
+    exilePlayerRank.textContent = data.jogador.cargo;
+
+    jogadorExilioId = data.jogador.id;
+    jogadorExilioEncontrado = true;
+
+    verificarExilio();
+
+  } catch (error) {
+    if (minhaConsulta !== consultaExilioAtual) return;
+
+    mostrarMensagemExilio(
+      "Não foi possível conectar à API."
+    );
+  }
+}
+  
 // Busca automática do rebaixamento
 demoteNicknameInput.addEventListener("input", () => {
   clearTimeout(temporizadorRebaixamento);
