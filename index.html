@@ -657,6 +657,18 @@ function limparJogadorRebaixamento() {
   limparMensagemRebaixamento();
 }
 
+// Limpar exílio
+function limparJogadorExilio() {
+  jogadorExilioEncontrado = false;
+  jogadorExilioId = null;
+
+  exilePlayerName.textContent = "N/A";
+  exilePlayerRank.textContent = "N/A";
+
+  exileButton.disabled = true;
+  limparMensagemExilio();
+}
+  
 // Verificar rebaixamento
 function verificarRebaixamento() {
   if (
