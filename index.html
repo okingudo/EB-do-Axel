@@ -299,39 +299,27 @@ th { color:var(--gold); }
   
 <section id="audit" class="page hidden">
   <div class="card">
-    <h2>⚖️ Exílio</h2>
-    <p class="muted">
-      Consulte um jogador e altere sua patente diretamente para Recruta.
-    </p>
+    <h2>Exilar jogador</h2>
+    <p class="muted">Digite o nickname Roblox para consultar o jogador.</p>
 
-    <div class="form-group">
-      <label for="exilioNick">Nickname Roblox</label>
-      <input
-        type="text"
-        id="exilioNick"
-        placeholder="Digite o nickname do jogador"
-        maxlength="20"
-      />
+    <label for="exileNickname">Nickname Roblox</label>
+    <input
+      id="exileNickname"
+      placeholder="Digite o nickname do jogador"
+      autocomplete="off"
+    >
+
+    <div class="player-card">
+      <div class="player-name" id="exilePlayerName">N/A</div>
+      <p class="muted">Cargo atual</p>
+      <div class="player-rank" id="exilePlayerRank">N/A</div>
     </div>
 
-    <button id="consultarExilio">
-      🔎 Consultar jogador
+    <button class="action" id="exileButton" disabled>
+      EXILAR JOGADOR
     </button>
 
-    <div id="exilioResultado" class="hidden">
-      <hr />
-
-      <h3>Dados do jogador</h3>
-      <p>**Jogador:** <span id="exilioNome">-</span></p>
-      <p>**Cargo atual:** <span id="exilioCargo">-</span></p>
-      <p>**Novo cargo:** [REC] Recruta</p>
-
-      <button id="executarExilio">
-        ⚖️ Exilar jogador
-      </button>
-    </div>
-
-    <p id="exilioMensagem" class="muted"></p>
+    <div id="exileMessage" class="notice hidden"></div>
   </div>
 </section>
   
