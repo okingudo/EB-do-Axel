@@ -922,7 +922,11 @@ function renderizarHistorico() {
 
     const valores = [
       item.jogador_nick,
-      item.tipo === "promocao" ? "Promoção" : "Rebaixamento",
+      ({
+  promocao: "Promoção",
+  rebaixamento: "Rebaixamento",
+  exilio: "Exílio"
+})[item.tipo] || item.tipo,
       item.cargo_anterior,
       item.novo_cargo,
       item.responsavel_nick,
