@@ -802,7 +802,7 @@ function verificarExilio() {
 function openPage(page) {
   if (!titles[page]) return;
 
-  if (!podeAcessarPagina(page)) {
+  if (adminPages.includes(page) && !isAdmin) {
   showAuthMessage(
     "Seu cargo não possui autorização para acessar essa página."
   );
