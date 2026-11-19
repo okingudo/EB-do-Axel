@@ -482,10 +482,13 @@ function limparMensagemExilio() {
 // Controle de acesso
 function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(element => {
-    element.classList.toggle("hidden", !isAdmin);
+    element.classList.toggle(
+  "hidden",
+  !podeAcessarPagina(element.dataset.page)
+);
 
     if ("disabled" in element) {
-      element.disabled = !isAdmin;
+      element.disabled = !podeAcessarPagina(element.dataset.page);
     }
 
     element.setAttribute("aria-disabled", String(!isAdmin));
