@@ -833,6 +833,47 @@ function openPage(page) {
     limparJogadorRebaixamento();
   }
 if (page === "history") carregarHistorico();
+  }
+
+  return false;
+  }
+function openPage(page) {
+  if (!titles[page]) return;
+
+  if (!podeAcessarPagina(page)) {
+  showAuthMessage(
+    "Seu cargo não possui autorização para acessar essa página."
+  );
+  return;
+  }
+
+  document.querySelectorAll(".page").forEach(section => {
+    section.classList.toggle("hidden", section.id !== page);
+  });
+
+  document.querySelectorAll("[data-page]").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
+  });
+
+  $("heading").textContent = titles[page];
+
+  if (page !== "promote") {
+    consultaAtual++;
+    clearTimeout(temporizador);
+    nicknameInput.value = "";
+    clearPlayerResult();
+  }
+
+  if (page !== "demote") {
+    consultaRebaixamentoAtual++;
+    clearTimeout(temporizadorRebaixamento);
+    demoteNicknameInput.value = "";
+    limparJogadorRebaixamento();
+  }
+if (page === "history") carregarHistorico();
 }
 // Histórico de promoções e rebaixamentos
 let historicoRegistros = [];
