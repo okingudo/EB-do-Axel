@@ -734,67 +734,62 @@ function verificarExilio() {
   
 // Navegação
   function podeAcessarPagina(page) {
-  const cargo = usuarioAtual?.cargo;
+  function podeAcessarPagina(page) {
+  const roleId = String(usuarioAtual?.roleId || "");
 
-  if (!cargo) return false;
+  if (!roleId) return false;
 
   const acessoTotal = [
-    "Criador",
-    "Sub Criador",
-    "Administrador",
-    "Moderador",
-    "Presidente",
-    "Vice-presidente"
+    "624621166", // Criador
+    "913676036", // Sub Criador
+    "913878055", // Administração
+    "914880005", // Presidente
+    "910318152", // Vice-presidente
+    "915712144" // CGEx
   ];
 
   const cargosIntermediarios = [
-    "Marechal",
-    "Comandante",
-    "Subcomandante",
-    "Sócio",
-    "Elite Real",
-    "Elite Secreta",
-    "Elite Militar",
-    "General do Exército",
-    "General de Divisão",
-    "General de Brigada",
-    "Coronel",
-    "Tenente-Coronel",
-    "Major",
-    "Capitão",
-    "Primeiro Tenente",
-    "Segundo Tenente",
-    "Aspirante a Oficial"
+    "915608074", // Marechal
+    "912426185", // Comandante
+    "912426184", // Sub Comandante
+    "914134039", // Sócios
+    "910692179", // Elite Real
+    "912430093", // Elite Secreta
+    "912982149", // Elite Militar
+    "914750010", // General do Exército
+    "914966000", // General de Divisão
+    "912772157", // General de Brigada
+    "910692178", // Coronel
+    "913754027", // Tenente-Coronel
+    "914832000", // Major
+    "913756066", // Capitão
+    "912758142", // Primeiro Tenente
+    "914088028", // Segundo Tenente
+    "912920120"  // Aspirante
   ];
 
   const cargosInferiores = [
-    "Cadete",
-    "Subtenente",
-    "Primeiro Sargento",
-    "Segundo Sargento",
-    "Terceiro Sargento",
-    "Cabo",
-    "Soldado",
-    "Recruta"
+    "914484015", // Cadete
+    "912700158", // Subtenente
+    "913524050", // Primeiro Sargento
+    "913206177", // Segundo Sargento
+    "914686026", // Terceiro Sargento
+    "914748012", // Cabo
+    "912590141", // Soldado
+    "12884901889" // Recruta
   ];
 
-  if (acessoTotal.includes(cargo)) return true;
+  if (acessoTotal.includes(roleId)) return true;
 
-  if (cargosIntermediarios.includes(cargo)) {
-    return [
-      "home",
-      "promote",
-      "ranks",
-      "cdp"
-    ].includes(page);
+  if (cargosIntermediarios.includes(roleId)) {
+    return ["home", "promote", "ranks", "cdp"].includes(page);
   }
 
-  if (cargosInferiores.includes(cargo)) {
-    return [
-      "home",
-      "ranks",
-      "cdp"
-    ].includes(page);
+  if (cargosInferiores.includes(roleId)) {
+    return ["home", "ranks", "cdp"].includes(page);
+  }
+
+  return page === "home";
   }
 
   return false;
@@ -802,12 +797,12 @@ function verificarExilio() {
 function openPage(page) {
   if (!titles[page]) return;
 
-  if (adminPages.includes(page) && !isAdmin) {
+  if (!podeAcessarPagina(page)) {
   showAuthMessage(
     "Seu cargo não possui autorização para acessar essa página."
   );
   return;
-                     }
+  }
 
   document.querySelectorAll(".page").forEach(section => {
     section.classList.toggle("hidden", section.id !== page);
