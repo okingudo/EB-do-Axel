@@ -735,8 +735,7 @@ function verificarExilio() {
 // Navegação
   function podeAcessarPagina(page) {
   function podeAcessarPagina(page) {
-  const roleId = String(usuarioAtual?.roleId || "");
-
+  const roleId = String(usuarioAtual?.roleId || "").split("/").pop();
   if (!roleId) return false;
 
   const acessoTotal = [
