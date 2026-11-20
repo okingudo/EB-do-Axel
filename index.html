@@ -735,51 +735,7 @@ function verificarExilio() {
   exileButton.disabled = false;
 }
   
-// Navegação
-  function podeAcessarPagina(page) {
-  function podeAcessarPagina(page) {
-  const roleId = String(usuarioAtual?.roleId || "").split("/").pop();
-  if (!roleId) return false;
 
-  const acessoTotal = [
-    "624621166", // Criador
-    "913676036", // Sub Criador
-    "913878055", // Administração
-    "914880005", // Presidente
-    "910318152", // Vice-presidente
-    "915712144" // CGEx
-  ];
-
-  const cargosIntermediarios = [
-    "915608074", // Marechal
-    "912426185", // Comandante
-    "912426184", // Sub Comandante
-    "914134039", // Sócios
-    "910692179", // Elite Real
-    "912430093", // Elite Secreta
-    "912982149", // Elite Militar
-    "914750010", // General do Exército
-    "914966000", // General de Divisão
-    "912772157", // General de Brigada
-    "910692178", // Coronel
-    "913754027", // Tenente-Coronel
-    "914832000", // Major
-    "913756066", // Capitão
-    "912758142", // Primeiro Tenente
-    "914088028", // Segundo Tenente
-    "912920120"  // Aspirante
-  ];
-
-  const cargosInferiores = [
-    "914484015", // Cadete
-    "912700158", // Subtenente
-    "913524050", // Primeiro Sargento
-    "913206177", // Segundo Sargento
-    "914686026", // Terceiro Sargento
-    "914748012", // Cabo
-    "912590141", // Soldado
-    "12884901889" // Recruta
-  ];
 
   if (acessoTotal.includes(roleId)) return true;
 
@@ -799,52 +755,57 @@ function verificarExilio() {
 function openPage(page) {
   if (!titles[page]) return;
 
-  if (!podeAcessarPagina(page)) {
-  showAuthMessage(
-    "Seu cargo não possui autorização para acessar essa página."
-  );
-  return;
+ // Navegação
+function podeAcessarPagina(page) {
+  const roleId = String(usuarioAtual?.roleId || "").split("/").pop();
+
+  if (!roleId) return page === "home";
+
+  const acessoTotal = [
+    "624621166",
+    "913676036",
+    "913878055",
+    "914880005",
+    "910318152",
+    "915712144"
+  ];
+
+  const cargosIntermediarios = [
+    "915608074", "912426185", "912426184",
+    "914134039", "910692179", "912430093",
+    "912982149", "914750010", "914966000",
+    "912772157", "910692178", "913754027",
+    "914832000", "913756066", "912758142",
+    "914088028", "912920120"
+  ];
+
+  const cargosInferiores = [
+    "914484015", "912700158", "913524050",
+    "913206177", "914686026", "914748012",
+    "912590141", "12884901889"
+  ];
+
+  if (acessoTotal.includes(roleId)) return true;
+
+  if (cargosIntermediarios.includes(roleId)) {
+    return ["home", "promote", "ranks", "cdp"].includes(page);
   }
 
-  document.querySelectorAll(".page").forEach(section => {
-    section.classList.toggle("hidden", section.id !== page);
-  });
-
-  document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.page === page
-    );
-  });
-
-  $("heading").textContent = titles[page];
-
-  if (page !== "promote") {
-    consultaAtual++;
-    clearTimeout(temporizador);
-    nicknameInput.value = "";
-    clearPlayerResult();
+  if (cargosInferiores.includes(roleId)) {
+    return ["home", "ranks", "cdp"].includes(page);
   }
 
-  if (page !== "demote") {
-    consultaRebaixamentoAtual++;
-    clearTimeout(temporizadorRebaixamento);
-    demoteNicknameInput.value = "";
-    limparJogadorRebaixamento();
-  }
-if (page === "history") carregarHistorico();
-  }
+  return page === "home";
+}
 
-  return false;
-  }
 function openPage(page) {
   if (!titles[page]) return;
 
   if (!podeAcessarPagina(page)) {
-  showAuthMessage(
-    "Seu cargo não possui autorização para acessar essa página."
-  );
-  return;
+    showAuthMessage(
+      "Seu cargo não possui autorização para acessar essa página."
+    );
+    return;
   }
 
   document.querySelectorAll(".page").forEach(section => {
@@ -852,10 +813,7 @@ function openPage(page) {
   });
 
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.page === page
-    );
+    button.classList.toggle("active", button.dataset.page === page);
   });
 
   $("heading").textContent = titles[page];
@@ -873,8 +831,11 @@ function openPage(page) {
     demoteNicknameInput.value = "";
     limparJogadorRebaixamento();
   }
-if (page === "history") carregarHistorico();
-}
+
+  if (page === "history") carregarHistorico();
+  if (page === "accounts") carregarContas();
+  }
+  
 // Histórico de promoções e rebaixamentos
 let historicoRegistros = [];
 
