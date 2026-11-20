@@ -672,8 +672,6 @@ function limparMensagemExilio() {
   
 // Controle de acesso
 function updateAccess() {
-
-function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(element => {
     const page = element.dataset.page || element.dataset.go;
     const permitido = page && podeAcessarPagina(page);
