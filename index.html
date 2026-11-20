@@ -482,21 +482,22 @@ function limparMensagemExilio() {
 // Controle de acesso
 function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(element => {
-    const page = element.dataset.page || element.dataset.go;
-    const permitido = podeAcessarPagina(page);
-
-    element.classList.toggle("hidden", !permitido);
+    element.classList.toggle("hidden", !isAdmin);
 
     if ("disabled" in element) {
-      element.disabled = !permitido;
+      element.disabled = !isAdmin;
     }
 
-    element.setAttribute("aria-disabled", String(!permitido));
+    element.setAttribute("aria-disabled", String(!isAdmin));
   });
 
   const paginaAtual = document.querySelector(".page:not(.hidden)");
 
-  if (paginaAtual && !podeAcessarPagina(paginaAtual.id)) {
+  if (
+    !isAdmin &&
+    paginaAtual &&
+    adminPages.includes(paginaAtual.id)
+  ) {
     openPage("home");
   }
 
@@ -557,8 +558,8 @@ async function checkLogin() {
     }
 
     usuarioAtual = data.usuario;
-isAdmin = data.usuario.admin === true;
-    
+    isAdmin = data.usuario.admin === true;
+
     loginTitle.textContent =
       data.usuario.displayName ||
       data.usuario.username ||
@@ -730,18 +731,70 @@ function verificarExilio() {
 
   exileButton.disabled = false;
 }
+  
+// Navegação
+  function podeAcessarPagina(page) {
+  const cargo = usuarioAtual?.cargo;
 
-  if (acessoTotal.includes(roleId)) return true;
+  if (!cargo) return false;
 
-  if (cargosIntermediarios.includes(roleId)) {
-    return ["home", "promote", "ranks", "cdp"].includes(page);
+  const acessoTotal = [
+    "Criador",
+    "Sub Criador",
+    "Administrador",
+    "Moderador",
+    "Presidente",
+    "Vice-presidente"
+  ];
+
+  const cargosIntermediarios = [
+    "Marechal",
+    "Comandante",
+    "Subcomandante",
+    "Sócio",
+    "Elite Real",
+    "Elite Secreta",
+    "Elite Militar",
+    "General do Exército",
+    "General de Divisão",
+    "General de Brigada",
+    "Coronel",
+    "Tenente-Coronel",
+    "Major",
+    "Capitão",
+    "Primeiro Tenente",
+    "Segundo Tenente",
+    "Aspirante a Oficial"
+  ];
+
+  const cargosInferiores = [
+    "Cadete",
+    "Subtenente",
+    "Primeiro Sargento",
+    "Segundo Sargento",
+    "Terceiro Sargento",
+    "Cabo",
+    "Soldado",
+    "Recruta"
+  ];
+
+  if (acessoTotal.includes(cargo)) return true;
+
+  if (cargosIntermediarios.includes(cargo)) {
+    return [
+      "home",
+      "promote",
+      "ranks",
+      "cdp"
+    ].includes(page);
   }
 
-  if (cargosInferiores.includes(roleId)) {
-    return ["home", "ranks", "cdp"].includes(page);
-  }
-
-  return page === "home";
+  if (cargosInferiores.includes(cargo)) {
+    return [
+      "home",
+      "ranks",
+      "cdp"
+    ].includes(page);
   }
 
   return false;
@@ -749,44 +802,22 @@ function verificarExilio() {
 function openPage(page) {
   if (!titles[page]) return;
 
- 
-// Navegação
-function podeAcessarPagina(page) {
-  const roleId = String(usuarioAtual?.roleId || "").split("/").pop();
-
-  if (!roleId) return page === "home";
-
-  const acessoTotal = [
-    "624621166", "913676036", "913878055",
-    "914880005", "910318152", "915712144"
-  ];
-
-  const cargosIntermediarios = [
-    "915608074", "912426185", "912426184",
-    "914134039", "910692179", "912430093",
-    "912982149", "914750010", "914966000",
-    "912772157", "910692178", "913754027",
-    "914832000", "913756066", "912758142",
-    "914088028", "912920120"
-  ];
-
-  const cargosInferiores = [
-    "914484015", "912700158", "913524050",
-    "913206177", "914686026", "914748012",
-    "912590141", "12884901889"
-  ];
-
-  if (!podeAcessarPagina(page)) {
-    showAuthMessage("Seu cargo não possui autorização para acessar essa página.");
-    return;
-  }
+  if (adminPages.includes(page) && !isAdmin) {
+  showAuthMessage(
+    "Seu cargo não possui autorização para acessar essa página."
+  );
+  return;
+                     }
 
   document.querySelectorAll(".page").forEach(section => {
     section.classList.toggle("hidden", section.id !== page);
   });
 
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
   });
 
   $("heading").textContent = titles[page];
@@ -804,11 +835,8 @@ function podeAcessarPagina(page) {
     demoteNicknameInput.value = "";
     limparJogadorRebaixamento();
   }
-
-  if (page === "history") carregarHistorico();
-  if (page === "accounts") carregarContas();
+if (page === "history") carregarHistorico();
 }
-  
 // Histórico de promoções e rebaixamentos
 let historicoRegistros = [];
 
@@ -1405,6 +1433,7 @@ if (loginResult) {
 clearPlayerResult();
 limparJogadorRebaixamento();
 
+updateAccess();
 checkLogin();
 </script>
 
