@@ -147,7 +147,6 @@ th { color:var(--gold); }
     <button data-page="accounts" class="admin-only hidden" disabled>◎ Contas</button>
   </nav>
 </aside>
-
 <main>
   <div class="topline">
     <div>
@@ -164,7 +163,7 @@ th { color:var(--gold); }
         Entre com sua conta Roblox para verificar seu acesso.
       </span>
       <span class="admin-label hidden" id="adminLabel">
-        ACESSO ADMINISTRATIVO AUTORIZADO
+        ADMINISTRADOR AUTORIZADO
       </span>
     </div>
     <div class="login-actions">
@@ -176,7 +175,6 @@ th { color:var(--gold); }
       <button class="secondary hidden" id="logoutButton">Sair</button>
     </div>
   </div>
-
   <div id="authMessage" class="notice hidden"></div>
 
   <section id="home" class="page">
@@ -188,9 +186,13 @@ th { color:var(--gold); }
     <div class="card">
       <h2>Atalhos administrativos</h2>
       <button class="action admin-only hidden" data-go="promote"
-              id="shortcutPromote" disabled>Promover jogador</button>
+              id="shortcutPromote" disabled>
+        Promover jogador
+      </button>
       <button class="secondary admin-only hidden" data-go="demote"
-              id="shortcutDemote" disabled>Rebaixar jogador</button>
+              id="shortcutDemote" disabled>
+        Rebaixar jogador
+      </button>
       <button class="secondary" data-go="ranks">Consultar hierarquia</button>
     </div>
   </section>
@@ -231,127 +233,155 @@ th { color:var(--gold); }
     <div class="card">
       <h2>Hierarquia militar</h2>
       <p class="muted">Estrutura organizada conforme os cargos do projeto.</p>
-
       <h3 class="rank-category">Diretoria</h3>
       <div class="rank-list"><span class="rank-item">Criador</span><span class="rank-item">Sub Criador</span></div>
-
       <h3 class="rank-category">Administração</h3>
-      <div class="rank-list"><span class="rank-item">Administração</span></div>
-
+      <div class="rank-list"><span class="rank-item">Administrador</span><span class="rank-item">Moderador</span></div>
       <h3 class="rank-category">Alto Comando da Supremacia</h3>
-      <div class="rank-list"><span class="rank-item">Presidente</span><span class="rank-item">Vice-Presidente</span><span class="rank-item">CGEx</span></div>
-
+      <div class="rank-list"><span class="rank-item">Marechal</span></div>
       <h3 class="rank-category">Alto Comando</h3>
-      <div class="rank-list"><span class="rank-item">Marechal</span><span class="rank-item">Sócios</span><span class="rank-item">Comandante</span><span class="rank-item">Subcomandante</span></div>
-
+      <div class="rank-list"><span class="rank-item">Comandante</span><span class="rank-item">Subcomandante</span><span class="rank-item">Sócios</span></div>
       <h3 class="rank-category">Oficiais da Elite</h3>
       <div class="rank-list"><span class="rank-item">Elite Real</span><span class="rank-item">Elite Secreta</span><span class="rank-item">Elite Militar</span></div>
-
       <h3 class="rank-category">Oficiais Generais</h3>
       <div class="rank-list"><span class="rank-item">General do Exército</span><span class="rank-item">General de Divisão</span><span class="rank-item">General de Brigada</span></div>
-
       <h3 class="rank-category">Oficiais Superiores</h3>
       <div class="rank-list"><span class="rank-item">Coronel</span><span class="rank-item">Tenente-Coronel</span><span class="rank-item">Major</span></div>
-
       <h3 class="rank-category">Oficiais Intermediários</h3>
       <div class="rank-list"><span class="rank-item">Capitão</span></div>
-
       <h3 class="rank-category">Oficiais Subalternos</h3>
       <div class="rank-list"><span class="rank-item">Primeiro Tenente</span><span class="rank-item">Segundo Tenente</span><span class="rank-item">Aspirante a Oficial</span></div>
-
       <h3 class="rank-category">Praças Especiais</h3>
       <div class="rank-list"><span class="rank-item">Cadete</span></div>
-
       <h3 class="rank-category">Graduados</h3>
       <div class="rank-list"><span class="rank-item">Subtenente</span><span class="rank-item">Primeiro Sargento</span><span class="rank-item">Segundo Sargento</span><span class="rank-item">Terceiro Sargento</span></div>
-
       <h3 class="rank-category">Praças</h3>
       <div class="rank-list"><span class="rank-item">Cabo</span><span class="rank-item">Soldado</span><span class="rank-item">Recruta</span></div>
     </div>
   </section>
 
   <section id="history" class="page hidden">
-    <div class="card">
-      <div class="topline">
-        <h2>Histórico de alterações</h2>
-        <button class="secondary" id="refreshHistory">Atualizar</button>
-      </div>
-      <input id="historySearch" placeholder="Pesquisar jogador ou responsável..." autocomplete="off">
-      <div id="historyMessage" class="empty">Carregando histórico...</div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Jogador</th><th>Alteração</th><th>Cargo anterior</th>
-              <th>Novo cargo</th><th>Responsável</th><th>Data</th>
-            </tr>
-          </thead>
-          <tbody id="historyTable"></tbody>
-        </table>
-      </div>
+  <div class="card">
+    <div class="topline">
+      <h2>Histórico de alterações</h2>
+      <button class="secondary" id="refreshHistory">
+        Atualizar
+      </button>
     </div>
-  </section>
 
-  <section id="audit" class="page hidden">
-    <div class="card">
-      <h2>Exilar jogador</h2>
-      <p class="muted">Digite o nickname Roblox para consultar o jogador.</p>
-      <label for="exileNickname">Nickname Roblox</label>
-      <input id="exileNickname" placeholder="Digite o nickname do jogador" autocomplete="off">
-      <div class="player-card">
-        <div class="player-name" id="exilePlayerName">N/A</div>
-        <p class="muted">Cargo atual</p>
-        <div class="player-rank" id="exilePlayerRank">N/A</div>
-      </div>
-      <button class="action" id="exileButton" disabled>EXILAR JOGADOR</button>
-      <div id="exileMessage" class="notice hidden"></div>
+    <input
+      id="historySearch"
+      placeholder="Pesquisar jogador ou responsável..."
+      autocomplete="off"
+    >
+
+    <div id="historyMessage" class="empty">
+      Carregando histórico...
     </div>
-  </section>
 
-  <section id="accounts" class="page hidden">
-    <div class="card">
-      <div class="topline">
-        <div>
-          <h2>Contas conectadas</h2>
-          <p class="muted">Gerenciamento das sessões da Central de Gestão.</p>
-        </div>
-        <button class="secondary" id="refreshAccounts">↻ Atualizar</button>
-      </div>
-      <div class="notice">
-        As sessões ativas não significam necessariamente que o jogador
-        está conectado neste momento.
-      </div>
-      <div class="player-card">
-        <div class="muted">SESSÕES ATIVAS</div>
-        <div class="player-name" id="accountsTotal">0</div>
-      </div>
-      <input id="accountsSearch" placeholder="Pesquisar por nickname ou cargo..." autocomplete="off">
-      <div id="accountsMessage" class="empty">Carregando contas...</div>
-      <div style="overflow-x:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Jogador</th><th>Roblox ID</th><th>Cargo</th>
-              <th>Patente</th><th>Sessão</th><th>Expira em</th>
-            </tr>
-          </thead>
-          <tbody id="accountsTable"></tbody>
-        </table>
-      </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Jogador</th>
+            <th>Alteração</th>
+            <th>Cargo anterior</th>
+            <th>Novo cargo</th>
+            <th>Responsável</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
     </div>
-  </section>
+  </div>
+</section>
+  
+<section id="audit" class="page hidden">
+  <div class="card">
+    <h2>Exilar jogador</h2>
+    <p class="muted">Digite o nickname Roblox para consultar o jogador.</p>
 
+    <label for="exileNickname">Nickname Roblox</label>
+    <input
+      id="exileNickname"
+      placeholder="Digite o nickname do jogador"
+      autocomplete="off"
+    >
+
+    <div class="player-card">
+      <div class="player-name" id="exilePlayerName">N/A</div>
+      <p class="muted">Cargo atual</p>
+      <div class="player-rank" id="exilePlayerRank">N/A</div>
+    </div>
+
+    <button class="action" id="exileButton" disabled>
+      EXILAR JOGADOR
+    </button>
+
+    <div id="exileMessage" class="notice hidden"></div>
+  </div>
+</section>
+  
+<section id="accounts" class="page hidden">
+  <div class="card">
+    <div class="topline">
+      <div>
+        <h2>Contas conectadas</h2>
+        <p class="muted">Gerenciamento das sessões da Central de Gestão.</p>
+      </div>
+      <button class="secondary" id="refreshAccounts">
+        ↻ Atualizar
+      </button>
+    </div>
+
+    <div class="notice">
+      As sessões ativas não significam necessariamente que o jogador
+      está conectado neste momento.
+    </div>
+
+    <div class="player-card">
+      <div class="muted">SESSÕES ATIVAS</div>
+      <div class="player-name" id="accountsTotal">0</div>
+    </div>
+
+    <input
+      id="accountsSearch"
+      placeholder="Pesquisar por nickname ou cargo..."
+      autocomplete="off"
+    >
+
+    <div id="accountsMessage" class="empty">
+      Carregando contas...
+    </div>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead>
+          <tr>
+            <th>Jogador</th>
+            <th>Roblox ID</th>
+            <th>Cargo</th>
+            <th>Patente</th>
+            <th>Sessão</th>
+            <th>Expira em</th>
+          </tr>
+        </thead>
+        <tbody id="accountsTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+  
   <footer class="muted" style="padding:25px 5px;text-align:center">
     EB DO AXEL • Disciplina • Respeito • União
   </footer>
 </main>
 </div>
-
 <script>
 "use strict";
 
 const API_URL = "https://eb-do-axel-api.onrender.com";
-const $ = id => document.getElementById(id);
 
 const titles = {
   home: "Visão geral",
@@ -363,7 +393,46 @@ const titles = {
   accounts: "Contas"
 };
 
-const CARGOS = {
+const adminPages = [
+  "promote",
+  "demote",
+  "history",
+  "audit",
+  "accounts"
+];
+
+const $ = id => document.getElementById(id);
+
+// Elementos
+const loginTitle = $("loginTitle");
+const loginDescription = $("loginDescription");
+const loginButton = $("loginButton");
+const logoutButton = $("logoutButton");
+const adminLabel = $("adminLabel");
+const authMessage = $("authMessage");
+
+const nicknameInput = $("nickname");
+const playerName = $("playerName");
+const playerRank = $("playerRank");
+const promoteButton = $("promoteButton");
+const errorMessage = $("errorMessage");
+
+const demoteNicknameInput = $("demoteNickname");
+const demotePlayerName = $("demotePlayerName");
+const demotePlayerRank = $("demotePlayerRank");
+const demoteButton = $("demoteButton");
+const demoteMessage = $("demoteMessage");
+const exileNicknameInput = $("exileNickname");
+const exilePlayerName = $("exilePlayerName");
+const exilePlayerRank = $("exilePlayerRank");
+const exileButton = $("exileButton");
+const exileMessage = $("exileMessage");
+  
+let usuarioAtual = null;
+let isAdmin = false;
+let verificandoLogin = false;
+
+  const CARGOS = {
   visitante: 624621167,
   recruta: 12884901889,
   soldado: 912590141,
@@ -398,118 +467,13 @@ const CARGOS = {
   criador: 624621166
 };
 
-// Cargos autorizados para cada função
-const CARGOS_OFICIAIS = [
-  "aspirante", "segundoTenente", "primeiroTenente",
-  "capitao", "major", "tenenteCoronel", "coronel",
-  "generalBrigada", "generalDivisao", "generalExercito",
-  "eliteMilitar", "eliteSecreta", "eliteReal",
-  "subComandante", "comandante", "marechal", "socios",
-  "cgex", "vicePresidente", "presidente",
-  "administracao", "subCriador", "criador"
-];
-
-const CARGOS_CGEX = [
-  "cgex", "vicePresidente", "presidente",
-  "administracao", "subCriador", "criador"
-];
-
-const CARGOS_ALTO_COMANDO = [
-  "marechal", "socios", "eliteReal", "eliteSecreta",
-  "eliteMilitar", "subComandante", "comandante"
-];
-
-const CARGOS_ACESSO_TOTAL = [
-  "cgex", "vicePresidente", "presidente",
-  "administracao", "subCriador", "criador"
-];
-
-const CARGOS_OFICIAIS_NOMES = {
-  visitante: "Visitante",
-  recruta: "Recruta",
-  soldado: "Soldado",
-  cabo: "Cabo",
-  terceiroSargento: "Terceiro Sargento",
-  segundoSargento: "Segundo Sargento",
-  primeiroSargento: "Primeiro Sargento",
-  subtenente: "Subtenente",
-  cadete: "Cadete",
-  aspirante: "Aspirante a Oficial",
-  segundoTenente: "Segundo Tenente",
-  primeiroTenente: "Primeiro Tenente",
-  capitao: "Capitão",
-  major: "Major",
-  tenenteCoronel: "Tenente Coronel",
-  coronel: "Coronel",
-  generalBrigada: "General de Brigada",
-  generalDivisao: "General de Divisão",
-  generalExercito: "General do Exército",
-  eliteMilitar: "Elite Militar",
-  eliteSecreta: "Elite Secreta",
-  eliteReal: "Elite Real",
-  subComandante: "Subcomandante",
-  comandante: "Comandante",
-  marechal: "Marechal",
-  socios: "Sócios",
-  cgex: "Corregedoria Geral do Exército",
-  vicePresidente: "Vice-Presidente",
-  presidente: "Presidente",
-  administracao: "Administração",
-  subCriador: "Sub Criador",
-  criador: "Criador"
-};
-
-const loginTitle = $("loginTitle");
-const loginDescription = $("loginDescription");
-const loginButton = $("loginButton");
-const logoutButton = $("logoutButton");
-const adminLabel = $("adminLabel");
-const authMessage = $("authMessage");
-
-const nicknameInput = $("nickname");
-const playerName = $("playerName");
-const playerRank = $("playerRank");
-const promoteButton = $("promoteButton");
-const errorMessage = $("errorMessage");
-
-const demoteNicknameInput = $("demoteNickname");
-const demotePlayerName = $("demotePlayerName");
-const demotePlayerRank = $("demotePlayerRank");
-const demoteButton = $("demoteButton");
-const demoteMessage = $("demoteMessage");
-
-const exileNicknameInput = $("exileNickname");
-const exilePlayerName = $("exilePlayerName");
-const exilePlayerRank = $("exilePlayerRank");
-const exileButton = $("exileButton");
-const exileMessage = $("exileMessage");
-
-let usuarioAtual = null;
-let verificandoLogin = false;
-
-let jogadorEncontrado = false;
-let jogadorAlvoId = null;
-let consultaAtual = 0;
-let temporizador = null;
-
-let jogadorRebaixamentoEncontrado = false;
-let jogadorRebaixamentoId = null;
-let consultaRebaixamentoAtual = 0;
-let temporizadorRebaixamento = null;
-
-let jogadorExilioEncontrado = false;
-let jogadorExilioId = null;
-let consultaExilioAtual = 0;
-let temporizadorExilio = null;
-
 function normalizarCargo(cargo) {
   return String(cargo || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/^\[[^\]]+\]\s*/, "")
     .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ");
+    .trim();
 }
 
 function obterCargoAtual() {
@@ -519,28 +483,19 @@ function obterCargoAtual() {
     usuarioAtual.roleId,
     usuarioAtual.cargoId,
     usuarioAtual.robloxRoleId,
-    usuarioAtual.groupRoleId,
-    usuarioAtual.groupRole?.id,
-    usuarioAtual.role?.id
+    usuarioAtual.groupRoleId
   ];
 
   for (const id of possiveisIds) {
-    if (id == null) continue;
+    if (id != null) {
+      const encontrado = Object.entries(CARGOS)
+        .find(([, valor]) => String(valor) === String(id));
 
-    const encontrado = Object.entries(CARGOS).find(
-      ([, valor]) => String(valor) === String(id)
-    );
-
-    if (encontrado) return encontrado[0];
+      if (encontrado) return encontrado[0];
+    }
   }
 
-  const possiveisNomes = [
-    usuarioAtual.cargo,
-    usuarioAtual.roleName,
-    usuarioAtual.role?.name,
-    usuarioAtual.groupRole?.name,
-    usuarioAtual.patente
-  ];
+  const nome = normalizarCargo(usuarioAtual.cargo);
 
   const nomes = {
     "visitante": "visitante",
@@ -568,50 +523,492 @@ function obterCargoAtual() {
     "subcomandante": "subComandante",
     "comandante": "comandante",
     "marechal": "marechal",
-    "socio": "socios",
     "socios": "socios",
     "corregedoria geral do exercito": "cgex",
-    "cgex": "cgex",
     "vice-presidente": "vicePresidente",
     "vice presidente": "vicePresidente",
     "presidente": "presidente",
     "administracao": "administracao",
-    "administrador": "administracao",
     "sub criador": "subCriador",
     "criador": "criador"
   };
 
-  for (const nome of possiveisNomes) {
-    const chave = normalizarCargo(nome);
-    if (nomes[chave]) return nomes[chave];
-  }
-
-  return null;
+  return nomes[nome] || null;
 }
+
+const CARGOS_OFICIAIS = [
+  "aspirante",
+  "segundoTenente",
+  "primeiroTenente",
+  "capitao",
+  "major",
+  "tenenteCoronel",
+  "coronel",
+  "generalBrigada",
+  "generalDivisao",
+  "generalExercito",
+  "eliteMilitar",
+  "eliteSecreta",
+  "eliteReal",
+  "subComandante",
+  "comandante",
+  "marechal",
+  "socios",
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
+
+const CARGOS_CGEX = [
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
+
+const CARGOS_ALTO_COMANDO = [
+  "marechal",
+  "socios",
+  "eliteReal",
+  "eliteSecreta",
+  "eliteMilitar",
+  "subComandante",
+  "comandante"
+];
+
+const CARGOS_ACESSO_TOTAL = [
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
 
 function temPermissao(acao) {
   const cargo = obterCargoAtual();
+
   if (!cargo) return false;
 
   if (acao === "promote") {
-    return CARGOS_OFICIAIS.includes(cargo)
-    // Navegação entre páginas
-function openPage(page) {
-  if (!titles[page]) return;
+    return CARGOS_OFICIAIS.includes(cargo);
+  }
 
-  if (!podeAcessarPagina(page)) {
-    showAuthMessage(
-      "Seu cargo não possui autorização para acessar essa página."
+  if (acao === "demote" || acao === "exile") {
+    return CARGOS_CGEX.includes(cargo);
+  }
+
+  if (acao === "history") {
+    return [
+      ...CARGOS_ACESSO_TOTAL,
+      ...CARGOS_ALTO_COMANDO
+    ].includes(cargo);
+  }
+
+  if (acao === "accounts") {
+    return CARGOS_ACESSO_TOTAL.includes(cargo);
+  }
+
+  return false;
+}
+
+function podeAcessarPagina(page) {
+  if (page === "home" || page === "ranks") return true;
+
+  return temPermissao(page);
+}
+  
+let jogadorEncontrado = false;
+let jogadorAlvoId = null;
+let consultaAtual = 0;
+let temporizador = null;
+
+let jogadorRebaixamentoEncontrado = false;
+let jogadorRebaixamentoId = null;
+let consultaRebaixamentoAtual = 0;
+let temporizadorRebaixamento = null;
+
+let jogadorExilioEncontrado = false;
+let jogadorExilioId = null;
+let consultaExilioAtual = 0;
+let temporizadorExilio = null;
+  
+// Mensagens
+function showAuthMessage(message) {
+  authMessage.textContent = message;
+  authMessage.classList.remove("hidden");
+}
+
+function clearAuthMessage() {
+  authMessage.textContent = "";
+  authMessage.classList.add("hidden");
+}
+
+function mostrarMensagemRebaixamento(message) {
+  demoteMessage.textContent = message;
+  demoteMessage.classList.remove("hidden");
+}
+
+function limparMensagemRebaixamento() {
+  demoteMessage.textContent = "";
+  demoteMessage.classList.add("hidden");
+}
+
+// Mensagens do exílio
+function mostrarMensagemExilio(message) {
+  exileMessage.textContent = message;
+  exileMessage.classList.remove("hidden");
+}
+
+function limparMensagemExilio() {
+  exileMessage.textContent = "";
+  exileMessage.classList.add("hidden");
+}
+  
+// Controle de acesso
+function updateAccess() {
+  document.querySelectorAll(".admin-only").forEach(element => {
+    const page = element.dataset.page || element.dataset.go;
+    const permitido = page && podeAcessarPagina(page);
+
+    element.classList.toggle("hidden", !permitido);
+
+    if ("disabled" in element) {
+      element.disabled = !permitido;
+    }
+
+    element.setAttribute("aria-disabled", String(!permitido));
+  });
+
+  const paginaAtual = document.querySelector(".page:not(.hidden)");
+
+  if (paginaAtual && !podeAcessarPagina(paginaAtual.id)) {
+    openPage("home");
+  }
+
+  verificarAutopromocao();
+  verificarRebaixamento();
+  verificarExilio();
+}
+
+// Estado de visitante
+function definirDesconectado(mensagem) {
+  usuarioAtual = null;
+  isAdmin = false;
+
+  loginTitle.textContent = "Não conectado";
+  loginDescription.textContent =
+    "Entre com sua conta Roblox para verificar seu acesso.";
+
+  loginButton.classList.remove("hidden");
+  logoutButton.classList.add("hidden");
+  adminLabel.classList.add("hidden");
+
+  promoteButton.disabled = true;
+  demoteButton.disabled = true;
+
+  updateAccess();
+
+  if (mensagem) {
+    showAuthMessage(mensagem);
+  }
+}
+
+// Verificar sessão Roblox
+async function checkLogin() {
+  if (verificandoLogin) return;
+
+  verificandoLogin = true;
+
+  try {
+    const response = await fetch(`${API_URL}/api/me`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store"
+    });
+
+    if (response.status === 401) {
+      definirDesconectado(null);
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error("Falha ao consultar a sessão.");
+    }
+
+    const data = await response.json();
+
+    if (!data.autenticado || !data.usuario) {
+      definirDesconectado(null);
+      return;
+    }
+
+    usuarioAtual = data.usuario;
+    isAdmin = data.usuario.admin === true;
+
+    loginTitle.textContent =
+      data.usuario.displayName ||
+      data.usuario.username ||
+      "Conta Roblox";
+
+    loginDescription.textContent =
+      `${data.usuario.cargo || "Sem cargo"} • Patente ${data.usuario.patente ?? "N/A"}`;
+
+    loginButton.classList.add("hidden");
+    logoutButton.classList.remove("hidden");
+    adminLabel.classList.toggle("hidden", !isAdmin);
+
+    if (isAdmin) {
+      showAuthMessage("Acesso administrativo autorizado.");
+    } else {
+      showAuthMessage(
+        "Login realizado. Sua conta não possui autorização administrativa."
+      );
+    }
+
+    updateAccess();
+
+  } catch (error) {
+    console.error("Erro ao verificar login:", error);
+
+    definirDesconectado(
+      "Não foi possível verificar a sessão. Tente novamente."
+    );
+
+  } finally {
+    verificandoLogin = false;
+  }
+}
+
+// Sair da conta
+logoutButton.addEventListener("click", async () => {
+  logoutButton.disabled = true;
+
+  try {
+    const response = await fetch(`${API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include"
+    });
+
+    if (!response.ok) {
+      throw new Error("Não foi possível encerrar a sessão.");
+    }
+
+    definirDesconectado(null);
+    openPage("home");
+
+    showAuthMessage("Você saiu da sua conta Roblox.");
+
+  } catch (error) {
+    showAuthMessage(error.message);
+
+  } finally {
+    logoutButton.disabled = false;
+  }
+});
+
+// Limpar promoção
+function clearPlayerResult() {
+  jogadorEncontrado = false;
+  jogadorAlvoId = null;
+
+  playerName.textContent = "N/A";
+  playerRank.textContent = "N/A";
+
+  promoteButton.disabled = true;
+
+  errorMessage.textContent = "";
+  errorMessage.classList.add("hidden");
+}
+
+// Verificar autopromoção
+function verificarAutopromocao() {
+  if (!usuarioAtual || !jogadorAlvoId || !jogadorEncontrado) {
+    promoteButton.disabled = true;
+    return;
+  }
+
+  const mesmoJogador =
+    String(usuarioAtual.id) === String(jogadorAlvoId);
+
+  if (mesmoJogador) {
+    promoteButton.disabled = true;
+    errorMessage.textContent = "Você não pode se autopromover!";
+    errorMessage.classList.remove("hidden");
+    return;
+  }
+
+  promoteButton.disabled = !isAdmin;
+  errorMessage.classList.add("hidden");
+}
+
+// Limpar rebaixamento
+function limparJogadorRebaixamento() {
+  jogadorRebaixamentoEncontrado = false;
+  jogadorRebaixamentoId = null;
+
+  demotePlayerName.textContent = "N/A";
+  demotePlayerRank.textContent = "N/A";
+
+  demoteButton.disabled = true;
+  limparMensagemRebaixamento();
+}
+
+// Limpar exílio
+function limparJogadorExilio() {
+  jogadorExilioEncontrado = false;
+  jogadorExilioId = null;
+
+  exilePlayerName.textContent = "N/A";
+  exilePlayerRank.textContent = "N/A";
+
+  exileButton.disabled = true;
+  limparMensagemExilio();
+}
+  
+// Verificar rebaixamento
+function verificarRebaixamento() {
+  if (
+    !usuarioAtual ||
+    !isAdmin ||
+    !jogadorRebaixamentoId ||
+    !jogadorRebaixamentoEncontrado
+  ) {
+    demoteButton.disabled = true;
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorRebaixamentoId)
+  ) {
+    demoteButton.disabled = true;
+    mostrarMensagemRebaixamento(
+      "Você não pode rebaixar a si mesmo."
     );
     return;
   }
+
+  demoteButton.disabled = false;
+}
+
+// Verificar exílio
+function verificarExilio() {
+  if (
+    !usuarioAtual ||
+    !isAdmin ||
+    !jogadorExilioId ||
+    !jogadorExilioEncontrado
+  ) {
+    exileButton.disabled = true;
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorExilioId)
+  ) {
+    exileButton.disabled = true;
+    mostrarMensagemExilio(
+      "Você não pode exilar a si mesmo."
+    );
+    return;
+  }
+
+  exileButton.disabled = false;
+}
+  
+// Navegação
+  function podeAcessarPagina(page) {
+  const cargo = usuarioAtual?.cargo;
+
+  if (!cargo) return false;
+
+  const acessoTotal = [
+    "Criador",
+    "Sub Criador",
+    "Administrador",
+    "Moderador",
+    "Presidente",
+    "Vice-presidente"
+  ];
+
+  const cargosIntermediarios = [
+    "Marechal",
+    "Comandante",
+    "Subcomandante",
+    "Sócio",
+    "Elite Real",
+    "Elite Secreta",
+    "Elite Militar",
+    "General do Exército",
+    "General de Divisão",
+    "General de Brigada",
+    "Coronel",
+    "Tenente-Coronel",
+    "Major",
+    "Capitão",
+    "Primeiro Tenente",
+    "Segundo Tenente",
+    "Aspirante a Oficial"
+  ];
+
+  const cargosInferiores = [
+    "Cadete",
+    "Subtenente",
+    "Primeiro Sargento",
+    "Segundo Sargento",
+    "Terceiro Sargento",
+    "Cabo",
+    "Soldado",
+    "Recruta"
+  ];
+
+  if (acessoTotal.includes(cargo)) return true;
+
+  if (cargosIntermediarios.includes(cargo)) {
+    return [
+      "home",
+      "promote",
+      "ranks",
+      "cdp"
+    ].includes(page);
+  }
+
+  if (cargosInferiores.includes(cargo)) {
+    return [
+      "home",
+      "ranks",
+      "cdp"
+    ].includes(page);
+  }
+
+  return false;
+  }
+function openPage(page) {
+  if (!titles[page]) return;
+
+  if (adminPages.includes(page) && !isAdmin) {
+  showAuthMessage(
+    "Seu cargo não possui autorização para acessar essa página."
+  );
+  return;
+                     }
 
   document.querySelectorAll(".page").forEach(section => {
     section.classList.toggle("hidden", section.id !== page);
   });
 
   document.querySelectorAll("[data-page]").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === page);
+    button.classList.toggle(
+      "active",
+      button.dataset.page === page
+    );
   });
 
   $("heading").textContent = titles[page];
@@ -629,35 +1026,9 @@ function openPage(page) {
     demoteNicknameInput.value = "";
     limparJogadorRebaixamento();
   }
-
-  if (page !== "audit") {
-    consultaExilioAtual++;
-    clearTimeout(temporizadorExilio);
-    exileNicknameInput.value = "";
-    limparJogadorExilio();
-  }
-
-  if (page === "history") carregarHistorico();
-  if (page === "accounts") carregarContas();
+if (page === "history") carregarHistorico();
 }
-
-// Eventos de navegação
-document.querySelectorAll("[data-page]").forEach(button => {
-  button.addEventListener("click", () => {
-    openPage(button.dataset.page);
-  });
-});
-
-document.querySelectorAll("[data-go]").forEach(button => {
-  button.addEventListener("click", () => {
-    openPage(button.dataset.go);
-  });
-});
-
-// =====================================
-// HISTÓRICO
-// =====================================
-
+// Histórico de promoções e rebaixamentos
 let historicoRegistros = [];
 
 async function carregarHistorico() {
@@ -666,11 +1037,6 @@ async function carregarHistorico() {
 
   mensagem.textContent = "Carregando histórico...";
   tabela.replaceChildren();
-
-  if (!temPermissao("history")) {
-    mensagem.textContent = "Você não possui permissão para visualizar o histórico.";
-    return;
-  }
 
   try {
     const resposta = await fetch(`${API_URL}/api/historico`, {
@@ -693,60 +1059,8 @@ async function carregarHistorico() {
     historicoRegistros = [];
   }
 }
-
-function renderizarHistorico() {
-  const tabela = $("historyTable");
-  const mensagem = $("historyMessage");
-  const pesquisa = $("historySearch").value.toLowerCase().trim();
-
-  tabela.replaceChildren();
-
-  const registros = historicoRegistros.filter(item =>
-    `${item.jogador_nick || ""} ${item.responsavel_nick || ""}`
-      .toLowerCase()
-      .includes(pesquisa)
-  );
-
-  if (registros.length === 0) {
-    mensagem.textContent = "Nenhum registro encontrado.";
-    return;
-  }
-
-  mensagem.textContent = "";
-
-  registros.forEach(item => {
-    const linha = document.createElement("tr");
-
-    const valores = [
-      item.jogador_nick,
-      ({
-        promocao: "Promoção",
-        rebaixamento: "Rebaixamento",
-        exilio: "Exílio"
-      })[item.tipo] || item.tipo,
-      item.cargo_anterior,
-      item.novo_cargo,
-      item.responsavel_nick,
-      item.data ? new Date(item.data).toLocaleString("pt-BR") : "-"
-    ];
-
-    valores.forEach(valor => {
-      const celula = document.createElement("td");
-      celula.textContent = valor ?? "-";
-      linha.appendChild(celula);
-    });
-
-    tabela.appendChild(linha);
-  });
-}
-
-$("historySearch").addEventListener("input", renderizarHistorico);
-$("refreshHistory").addEventListener("click", carregarHistorico);
-
-// =====================================
-// CONTAS CONECTADAS
-// =====================================
-
+  
+// Contas com sessões ativas
 let contasRegistros = [];
 
 async function carregarContas() {
@@ -756,12 +1070,6 @@ async function carregarContas() {
 
   mensagem.textContent = "Carregando contas...";
   tabela.replaceChildren();
-
-  if (!temPermissao("accounts")) {
-    mensagem.textContent = "Você não possui permissão para visualizar as contas.";
-    total.textContent = "0";
-    return;
-  }
 
   try {
     const resposta = await fetch(`${API_URL}/api/contas-online`, {
@@ -777,8 +1085,7 @@ async function carregarContas() {
     }
 
     contasRegistros = dados.contas || [];
-    total.textContent = dados.total ?? contasRegistros.length;
-
+    total.textContent = dados.total;
     renderizarContas();
 
   } catch (erro) {
@@ -796,7 +1103,7 @@ function renderizarContas() {
   tabela.replaceChildren();
 
   const contas = contasRegistros.filter(conta =>
-    `${conta.username || ""} ${conta.displayName || ""} ${conta.cargo || ""}`
+    `${conta.username} ${conta.displayName} ${conta.cargo}`
       .toLowerCase()
       .includes(pesquisa)
   );
@@ -812,8 +1119,17 @@ function renderizarContas() {
     const linha = document.createElement("tr");
 
     const jogador = document.createElement("td");
-    jogador.textContent =
-      `${conta.displayName || conta.username || "Desconhecido"} (@${conta.username || "-"})`;
+    const identificacao = document.createElement("div");
+
+    identificacao.style.display = "flex";
+    identificacao.style.alignItems = "center";
+    identificacao.style.gap = "10px";
+
+const nome = document.createElement("span");
+nome.textContent = `${conta.displayName} (@${conta.username})`;
+
+identificacao.appendChild(nome);
+    jogador.appendChild(identificacao);
     linha.appendChild(jogador);
 
     const valores = [
@@ -821,9 +1137,7 @@ function renderizarContas() {
       conta.cargo,
       conta.patente,
       "Sessão ativa",
-      conta.expiraEm
-        ? new Date(conta.expiraEm).toLocaleString("pt-BR")
-        : "-"
+      new Date(conta.expiraEm).toLocaleString("pt-BR")
     ];
 
     valores.forEach(valor => {
@@ -838,24 +1152,86 @@ function renderizarContas() {
 
 $("accountsSearch").addEventListener("input", renderizarContas);
 $("refreshAccounts").addEventListener("click", carregarContas);
+  carregarContas();
 
-// =====================================
-// CONSULTA DE JOGADORES
-// =====================================
+function renderizarHistorico() {
+  const tabela = $("historyTable");
+  const mensagem = $("historyMessage");
+  const pesquisa = $("historySearch").value.toLowerCase().trim();
 
+  tabela.replaceChildren();
+
+  const registros = historicoRegistros.filter(item =>
+    `${item.jogador_nick} ${item.responsavel_nick}`
+      .toLowerCase()
+      .includes(pesquisa)
+  );
+
+  if (registros.length === 0) {
+    mensagem.textContent = "Nenhum registro encontrado.";
+    return;
+  }
+
+  mensagem.textContent = "";
+
+  registros.forEach(item => {
+    const linha = document.createElement("tr");
+
+    const valores = [
+      item.jogador_nick,
+      ({
+  promocao: "Promoção",
+  rebaixamento: "Rebaixamento",
+  exilio: "Exílio"
+})[item.tipo] || item.tipo,
+      item.cargo_anterior,
+      item.novo_cargo,
+      item.responsavel_nick,
+      new Date(item.data).toLocaleString("pt-BR")
+    ];
+
+    valores.forEach(valor => {
+      const celula = document.createElement("td");
+      celula.textContent = valor ?? "-";
+      linha.appendChild(celula);
+    });
+
+    tabela.appendChild(linha);
+  });
+}
+
+// Pesquisa no histórico
+$("historySearch").addEventListener("input", renderizarHistorico);
+
+// Botão atualizar
+$("refreshHistory").addEventListener("click", carregarHistorico);
+  
+// Eventos de navegação
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => {
+    openPage(button.dataset.page);
+  });
+});
+
+document.querySelectorAll("[data-go]").forEach(button => {
+  button.addEventListener("click", () => {
+    openPage(button.dataset.go);
+  });
+});
+
+// Consultar jogador para promoção
 async function consultarJogador(nickname) {
   const minhaConsulta = ++consultaAtual;
 
   clearPlayerResult();
 
-  if (!nickname || !temPermissao("promote")) return;
+  if (!nickname || !isAdmin) return;
 
   playerName.textContent = "Consultando...";
 
   try {
     const response = await fetch(
-      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`,
-      { credentials: "include" }
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
     );
 
     const data = await response.json();
@@ -881,7 +1257,9 @@ async function consultarJogador(nickname) {
   } catch (error) {
     if (minhaConsulta !== consultaAtual) return;
 
-    errorMessage.textContent = "Não foi possível conectar à API.";
+    errorMessage.textContent =
+      "Não foi possível conectar à API.";
+
     errorMessage.classList.remove("hidden");
   }
 }
@@ -894,20 +1272,17 @@ nicknameInput.addEventListener("input", () => {
 
   const nickname = nicknameInput.value.trim();
 
-  if (!nickname || !temPermissao("promote")) return;
+  if (!nickname || !isAdmin) return;
 
   temporizador = setTimeout(() => {
     consultarJogador(nickname);
   }, 600);
 });
 
-// =====================================
-// EXECUTAR PROMOÇÃO
-// =====================================
-
+// Executar promoção REAL
 promoteButton.addEventListener("click", async () => {
   if (
-    !temPermissao("promote") ||
+    !isAdmin ||
     !usuarioAtual ||
     !jogadorEncontrado ||
     !jogadorAlvoId
@@ -921,6 +1296,7 @@ promoteButton.addEventListener("click", async () => {
   }
 
   const nickname = nicknameInput.value.trim();
+
   if (!nickname) return;
 
   const confirmado = confirm(
@@ -966,23 +1342,20 @@ promoteButton.addEventListener("click", async () => {
   }
 });
 
-// =====================================
-// CONSULTA PARA REBAIXAMENTO
-// =====================================
 
+// Consultar jogador para rebaixamento
 async function consultarJogadorRebaixamento(nickname) {
   const minhaConsulta = ++consultaRebaixamentoAtual;
 
   limparJogadorRebaixamento();
 
-  if (!nickname || !temPermissao("demote")) return;
+  if (!nickname || !isAdmin) return;
 
   demotePlayerName.textContent = "Consultando...";
 
   try {
     const response = await fetch(
-      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`,
-      { credentials: "include" }
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
     );
 
     const data = await response.json();
@@ -1013,102 +1386,19 @@ async function consultarJogadorRebaixamento(nickname) {
   }
 }
 
-demoteNicknameInput.addEventListener("input", () => {
-  clearTimeout(temporizadorRebaixamento);
-  consultaRebaixamentoAtual++;
-
-  limparJogadorRebaixamento();
-
-  const nickname = demoteNicknameInput.value.trim();
-
-  if (!nickname || !temPermissao("demote")) return;
-
-  temporizadorRebaixamento = setTimeout(() => {
-    consultarJogadorRebaixamento(nickname);
-  }, 600);
-});
-
-// =====================================
-// EXECUTAR REBAIXAMENTO
-// =====================================
-
-demoteButton.addEventListener("click", async () => {
-  if (
-    !temPermissao("demote") ||
-    !usuarioAtual ||
-    !jogadorRebaixamentoEncontrado ||
-    !jogadorRebaixamentoId
-  ) {
-    return;
-  }
-
-  if (String(usuarioAtual.id) === String(jogadorRebaixamentoId)) {
-    verificarRebaixamento();
-    return;
-  }
-
-  const nickname = demoteNicknameInput.value.trim();
-  if (!nickname) return;
-
-  const confirmado = confirm(
-    `Tem certeza de que deseja rebaixar ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
-  );
-
-  if (!confirmado) return;
-
-  demoteButton.disabled = true;
-  mostrarMensagemRebaixamento("Processando rebaixamento...");
-
-  try {
-    const response = await fetch(`${API_URL}/api/rebaixamento`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ nick: nickname })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.sucesso) {
-      throw new Error(
-        data.mensagem || "Não foi possível realizar o rebaixamento."
-      );
-    }
-
-    mostrarMensagemRebaixamento(
-      data.mensagem || "Rebaixamento realizado com sucesso!"
-    );
-
-    await consultarJogadorRebaixamento(nickname);
-
-  } catch (error) {
-    verificarRebaixamento();
-
-    mostrarMensagemRebaixamento(
-      error.message || "Erro ao realizar o rebaixamento."
-    );
-  }
-});
-
-// =====================================
-// CONSULTA PARA EXÍLIO
-// =====================================
-
+// Consultar jogador para exílio
 async function consultarJogadorExilio(nickname) {
   const minhaConsulta = ++consultaExilioAtual;
 
   limparJogadorExilio();
 
-  if (!nickname || !temPermissao("exile")) return;
+  if (!nickname || !isAdmin) return;
 
   exilePlayerName.textContent = "Consultando...";
 
   try {
     const response = await fetch(
-      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`,
-      { credentials: "include" }
+      `${API_URL}/api/jogador/${encodeURIComponent(nickname)}`
     );
 
     const data = await response.json();
@@ -1138,7 +1428,92 @@ async function consultarJogadorExilio(nickname) {
     );
   }
 }
+  
+// Busca automática do rebaixamento
+demoteNicknameInput.addEventListener("input", () => {
+  clearTimeout(temporizadorRebaixamento);
+  consultaRebaixamentoAtual++;
 
+  limparJogadorRebaixamento();
+
+  const nickname = demoteNicknameInput.value.trim();
+
+  if (!nickname || !isAdmin) return;
+
+  temporizadorRebaixamento = setTimeout(() => {
+    consultarJogadorRebaixamento(nickname);
+  }, 600);
+});
+
+// Executar rebaixamento
+demoteButton.addEventListener("click", async () => {
+  if (
+    !isAdmin ||
+    !usuarioAtual ||
+    !jogadorRebaixamentoEncontrado ||
+    !jogadorRebaixamentoId
+  ) {
+    return;
+  }
+
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorRebaixamentoId)
+  ) {
+    verificarRebaixamento();
+    return;
+  }
+
+  const nickname = demoteNicknameInput.value.trim();
+
+  if (!nickname) return;
+
+  const confirmado = confirm(
+    `Tem certeza de que deseja rebaixar ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
+  );
+
+  if (!confirmado) return;
+
+  demoteButton.disabled = true;
+  mostrarMensagemRebaixamento("Processando rebaixamento...");
+
+  try {
+    const response = await fetch(
+      `${API_URL}/api/rebaixamento`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nick: nickname })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.sucesso) {
+      throw new Error(
+        data.mensagem || "Não foi possível realizar o rebaixamento."
+      );
+    }
+
+    mostrarMensagemRebaixamento(
+      data.mensagem || "Rebaixamento realizado com sucesso!"
+    );
+
+    await consultarJogadorRebaixamento(nickname);
+
+  } catch (error) {
+    verificarRebaixamento();
+
+    mostrarMensagemRebaixamento(
+      error.message || "Erro ao realizar o rebaixamento."
+    );
+  }
+});
+
+// Busca automática do exílio
 exileNicknameInput.addEventListener("input", () => {
   clearTimeout(temporizadorExilio);
   consultaExilioAtual++;
@@ -1147,20 +1522,17 @@ exileNicknameInput.addEventListener("input", () => {
 
   const nickname = exileNicknameInput.value.trim();
 
-  if (!nickname || !temPermissao("exile")) return;
+  if (!nickname || !isAdmin) return;
 
   temporizadorExilio = setTimeout(() => {
     consultarJogadorExilio(nickname);
   }, 600);
 });
 
-// =====================================
-// EXECUTAR EXÍLIO
-// =====================================
-
+// Executar exílio
 exileButton.addEventListener("click", async () => {
   if (
-    !temPermissao("exile") ||
+    !isAdmin ||
     !usuarioAtual ||
     !jogadorExilioEncontrado ||
     !jogadorExilioId
@@ -1168,12 +1540,16 @@ exileButton.addEventListener("click", async () => {
     return;
   }
 
-  if (String(usuarioAtual.id) === String(jogadorExilioId)) {
+  if (
+    String(usuarioAtual.id) ===
+    String(jogadorExilioId)
+  ) {
     verificarExilio();
     return;
   }
 
   const nickname = exileNicknameInput.value.trim();
+
   if (!nickname) return;
 
   const confirmado = confirm(
@@ -1186,14 +1562,17 @@ exileButton.addEventListener("click", async () => {
   mostrarMensagemExilio("Processando exílio...");
 
   try {
-    const response = await fetch(`${API_URL}/api/exilio`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ nick: nickname })
-    });
+    const response = await fetch(
+      `${API_URL}/api/exilio`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ nick: nickname })
+      }
+    );
 
     const data = await response.json();
 
@@ -1217,11 +1596,8 @@ exileButton.addEventListener("click", async () => {
     );
   }
 });
-
-// =====================================
-// RETORNO DO LOGIN ROBLOX
-// =====================================
-
+  
+// Retorno do login Roblox
 const loginResult =
   new URLSearchParams(location.search).get("login");
 
@@ -1244,17 +1620,13 @@ if (loginResult) {
   history.replaceState({}, document.title, location.pathname);
 }
 
-// =====================================
-// INICIALIZAÇÃO
-// =====================================
-
+// Inicialização
 clearPlayerResult();
 limparJogadorRebaixamento();
-limparJogadorExilio();
 
 updateAccess();
 checkLogin();
-
 </script>
+
 </body>
 </html>
