@@ -432,6 +432,197 @@ let usuarioAtual = null;
 let isAdmin = false;
 let verificandoLogin = false;
 
+  const CARGOS = {
+  visitante: 624621167,
+  recruta: 12884901889,
+  soldado: 912590141,
+  cabo: 914748012,
+  terceiroSargento: 914686026,
+  segundoSargento: 913206177,
+  primeiroSargento: 913524050,
+  subtenente: 912700158,
+  cadete: 914484015,
+  aspirante: 912920120,
+  segundoTenente: 914088028,
+  primeiroTenente: 912758142,
+  capitao: 913756066,
+  major: 914832000,
+  tenenteCoronel: 913754027,
+  coronel: 910692178,
+  generalBrigada: 912772157,
+  generalDivisao: 914966000,
+  generalExercito: 914750010,
+  eliteMilitar: 912982149,
+  eliteSecreta: 912430093,
+  eliteReal: 910692179,
+  subComandante: 912426184,
+  comandante: 912426185,
+  marechal: 915608074,
+  socios: 914134039,
+  cgex: 915712144,
+  vicePresidente: 910318152,
+  presidente: 914880005,
+  administracao: 913878055,
+  subCriador: 913676036,
+  criador: 624621166
+};
+
+function normalizarCargo(cargo) {
+  return String(cargo || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/^\[[^\]]+\]\s*/, "")
+    .toLowerCase()
+    .trim();
+}
+
+function obterCargoAtual() {
+  if (!usuarioAtual) return null;
+
+  const possiveisIds = [
+    usuarioAtual.roleId,
+    usuarioAtual.cargoId,
+    usuarioAtual.robloxRoleId,
+    usuarioAtual.groupRoleId
+  ];
+
+  for (const id of possiveisIds) {
+    if (id != null) {
+      const encontrado = Object.entries(CARGOS)
+        .find(([, valor]) => String(valor) === String(id));
+
+      if (encontrado) return encontrado[0];
+    }
+  }
+
+  const nome = normalizarCargo(usuarioAtual.cargo);
+
+  const nomes = {
+    "visitante": "visitante",
+    "recruta": "recruta",
+    "soldado": "soldado",
+    "cabo": "cabo",
+    "terceiro sargento": "terceiroSargento",
+    "segundo sargento": "segundoSargento",
+    "primeiro sargento": "primeiroSargento",
+    "subtenente": "subtenente",
+    "cadete": "cadete",
+    "aspirante a oficial": "aspirante",
+    "segundo tenente": "segundoTenente",
+    "primeiro tenente": "primeiroTenente",
+    "capitao": "capitao",
+    "major": "major",
+    "tenente coronel": "tenenteCoronel",
+    "coronel": "coronel",
+    "general de brigada": "generalBrigada",
+    "general de divisao": "generalDivisao",
+    "general do exercito": "generalExercito",
+    "elite militar": "eliteMilitar",
+    "elite secreta": "eliteSecreta",
+    "elite real": "eliteReal",
+    "subcomandante": "subComandante",
+    "comandante": "comandante",
+    "marechal": "marechal",
+    "socios": "socios",
+    "corregedoria geral do exercito": "cgex",
+    "vice-presidente": "vicePresidente",
+    "vice presidente": "vicePresidente",
+    "presidente": "presidente",
+    "administracao": "administracao",
+    "sub criador": "subCriador",
+    "criador": "criador"
+  };
+
+  return nomes[nome] || null;
+}
+
+const CARGOS_OFICIAIS = [
+  "aspirante",
+  "segundoTenente",
+  "primeiroTenente",
+  "capitao",
+  "major",
+  "tenenteCoronel",
+  "coronel",
+  "generalBrigada",
+  "generalDivisao",
+  "generalExercito",
+  "eliteMilitar",
+  "eliteSecreta",
+  "eliteReal",
+  "subComandante",
+  "comandante",
+  "marechal",
+  "socios",
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
+
+const CARGOS_CGEX = [
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
+
+const CARGOS_ALTO_COMANDO = [
+  "marechal",
+  "socios",
+  "eliteReal",
+  "eliteSecreta",
+  "eliteMilitar",
+  "subComandante",
+  "comandante"
+];
+
+const CARGOS_ACESSO_TOTAL = [
+  "cgex",
+  "vicePresidente",
+  "presidente",
+  "administracao",
+  "subCriador",
+  "criador"
+];
+
+function temPermissao(acao) {
+  const cargo = obterCargoAtual();
+
+  if (!cargo) return false;
+
+  if (acao === "promote") {
+    return CARGOS_OFICIAIS.includes(cargo);
+  }
+
+  if (acao === "demote" || acao === "exile") {
+    return CARGOS_CGEX.includes(cargo);
+  }
+
+  if (acao === "history") {
+    return [
+      ...CARGOS_ACESSO_TOTAL,
+      ...CARGOS_ALTO_COMANDO
+    ].includes(cargo);
+  }
+
+  if (acao === "accounts") {
+    return CARGOS_ACESSO_TOTAL.includes(cargo);
+  }
+
+  return false;
+}
+
+function podeAcessarPagina(page) {
+  if (page === "home" || page === "ranks") return true;
+
+  return temPermissao(page);
+}
+  
 let jogadorEncontrado = false;
 let jogadorAlvoId = null;
 let consultaAtual = 0;
