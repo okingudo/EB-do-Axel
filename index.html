@@ -730,8 +730,6 @@ function verificarExilio() {
 
   exileButton.disabled = false;
 }
-  
-
 
   if (acessoTotal.includes(roleId)) return true;
 
@@ -777,22 +775,6 @@ function podeAcessarPagina(page) {
     "913206177", "914686026", "914748012",
     "912590141", "12884901889"
   ];
-
-  if (acessoTotal.includes(roleId)) return true;
-
-  if (cargosIntermediarios.includes(roleId)) {
-    return ["home", "promote", "ranks"].includes(page);
-  }
-
-  if (cargosInferiores.includes(roleId)) {
-    return ["home", "ranks"].includes(page);
-  }
-
-  return page === "home";
-}
-
-function openPage(page) {
-  if (!titles[page]) return;
 
   if (!podeAcessarPagina(page)) {
     showAuthMessage("Seu cargo não possui autorização para acessar essa página.");
