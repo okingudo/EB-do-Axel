@@ -561,8 +561,7 @@ async function checkLogin() {
     }
 
     usuarioAtual = data.usuario;
-    isAdmin = data.usuario.admin === true;
-    updateAccess();
+isAdmin = data.usuario.admin === true;
     
     loginTitle.textContent =
       data.usuario.displayName ||
