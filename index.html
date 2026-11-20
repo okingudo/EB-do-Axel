@@ -753,19 +753,16 @@ function verificarExilio() {
 function openPage(page) {
   if (!titles[page]) return;
 
- // Navegação
+ 
+// Navegação
 function podeAcessarPagina(page) {
   const roleId = String(usuarioAtual?.roleId || "").split("/").pop();
 
   if (!roleId) return page === "home";
 
   const acessoTotal = [
-    "624621166",
-    "913676036",
-    "913878055",
-    "914880005",
-    "910318152",
-    "915712144"
+    "624621166", "913676036", "913878055",
+    "914880005", "910318152", "915712144"
   ];
 
   const cargosIntermediarios = [
@@ -786,11 +783,11 @@ function podeAcessarPagina(page) {
   if (acessoTotal.includes(roleId)) return true;
 
   if (cargosIntermediarios.includes(roleId)) {
-    return ["home", "promote", "ranks", "cdp"].includes(page);
+    return ["home", "promote", "ranks"].includes(page);
   }
 
   if (cargosInferiores.includes(roleId)) {
-    return ["home", "ranks", "cdp"].includes(page);
+    return ["home", "ranks"].includes(page);
   }
 
   return page === "home";
@@ -800,9 +797,7 @@ function openPage(page) {
   if (!titles[page]) return;
 
   if (!podeAcessarPagina(page)) {
-    showAuthMessage(
-      "Seu cargo não possui autorização para acessar essa página."
-    );
+    showAuthMessage("Seu cargo não possui autorização para acessar essa página.");
     return;
   }
 
@@ -832,7 +827,7 @@ function openPage(page) {
 
   if (page === "history") carregarHistorico();
   if (page === "accounts") carregarContas();
-  }
+}
   
 // Histórico de promoções e rebaixamentos
 let historicoRegistros = [];
