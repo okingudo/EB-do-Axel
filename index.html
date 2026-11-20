@@ -481,26 +481,24 @@ function limparMensagemExilio() {
   
 // Controle de acesso
 function updateAccess() {
+
+function updateAccess() {
   document.querySelectorAll(".admin-only").forEach(element => {
-    element.classList.toggle(
-  "hidden",
-  !podeAcessarPagina(element.dataset.page)
-);
+    const page = element.dataset.page || element.dataset.go;
+    const permitido = podeAcessarPagina(page);
+
+    element.classList.toggle("hidden", !permitido);
 
     if ("disabled" in element) {
-      element.disabled = !podeAcessarPagina(element.dataset.page);
+      element.disabled = !permitido;
     }
 
-    element.setAttribute("aria-disabled", String(!isAdmin));
+    element.setAttribute("aria-disabled", String(!permitido));
   });
 
   const paginaAtual = document.querySelector(".page:not(.hidden)");
 
-  if (
-    !isAdmin &&
-    paginaAtual &&
-    adminPages.includes(paginaAtual.id)
-  ) {
+  if (paginaAtual && !podeAcessarPagina(paginaAtual.id)) {
     openPage("home");
   }
 
