@@ -604,11 +604,8 @@ function temPermissao(acao) {
   }
 
   if (acao === "history") {
-    return [
-      ...CARGOS_ACESSO_TOTAL,
-      ...CARGOS_ALTO_COMANDO
-    ].includes(cargo);
-  }
+  return CARGOS_ACESSO_TOTAL.includes(cargo);
+    }
 
   if (acao === "accounts") {
     return CARGOS_ACESSO_TOTAL.includes(cargo);
