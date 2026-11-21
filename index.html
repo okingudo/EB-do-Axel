@@ -749,7 +749,7 @@ async function checkLogin() {
     }
 
     usuarioAtual = data.usuario;
-    isAdmin = data.usuario.admin === true;
+    isAdmin = !!obterCargoAtual();
 
     loginTitle.textContent =
       data.usuario.displayName ||
