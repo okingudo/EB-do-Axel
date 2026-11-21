@@ -761,7 +761,12 @@ async function checkLogin() {
 
     loginButton.classList.add("hidden");
     logoutButton.classList.remove("hidden");
-    adminLabel.classList.toggle("hidden", !isAdmin);
+    adminLabel.classList.toggle(
+  "hidden",
+  !temPermissao("promote") &&
+  !temPermissao("demote") &&
+  !temPermissao("exile")
+);
 
     if (isAdmin) {
       showAuthMessage("Acesso administrativo autorizado.");
