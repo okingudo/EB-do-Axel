@@ -774,7 +774,8 @@ async function checkLogin() {
     }
 
     updateAccess();
-
+showAuthMessage(`DEBUG cargo=${usuarioAtual.cargo} | roleId=${usuarioAtual.roleId} | lido=${obterCargoAtual()} | exilio=${temPermissao("audit")}`);
+    
   } catch (error) {
     console.error("Erro ao verificar login:", error);
 
