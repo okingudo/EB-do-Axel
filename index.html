@@ -1664,8 +1664,13 @@ demoteButton.addEventListener("click", async () => {
 
   if (!nickname) return;
 
+    const destino = destinoRebaixamento;
+  const destinoTexto = destino
+    ? `até ${destinoRebaixamentoNome}`
+    : "em um cargo";
+
   const confirmado = confirm(
-    `Tem certeza de que deseja rebaixar ${nickname} em um cargo?\n\nEssa ação altera o cargo real no grupo Roblox.`
+    `Tem certeza de que deseja rebaixar ${nickname} ${destinoTexto}?\n\nEssa ação altera o cargo real no grupo Roblox.`
   );
 
   if (!confirmado) return;
