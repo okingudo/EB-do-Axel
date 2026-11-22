@@ -1562,6 +1562,8 @@ async function consultarJogadorRebaixamento(nickname) {
     demotePlayerRank.textContent = data.jogador.cargo;
 
     jogadorRebaixamentoId = data.jogador.id;
+    jogadorRebaixamentoRoleId = String(data.jogador.roleId);
+    preencherDestinos();
     jogadorRebaixamentoEncontrado = true;
 
     verificarRebaixamento();
