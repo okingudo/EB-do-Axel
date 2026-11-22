@@ -669,6 +669,14 @@ let temporizador = null;
 
 let jogadorRebaixamentoEncontrado = false;
 let jogadorRebaixamentoId = null;
+    jogadorRebaixamentoRoleId = null;
+  destinoRebaixamento = null;
+  destinoRebaixamentoNome = "";
+  destinoInvalido = false;
+  $("demoteDestino").value = "";
+  $("demoteDestino").disabled = true;
+  $("demoteDestinoLista").replaceChildren();
+  demoteButton.textContent = "REBAIXAR UM CARGO";
 let consultaRebaixamentoAtual = 0;
 let temporizadorRebaixamento = null;
 
