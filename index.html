@@ -872,6 +872,14 @@ function verificarAutopromocao() {
     return;
   }
 
+    if (jogadorAlvoCdpFim && new Date(jogadorAlvoCdpFim) > new Date()) {
+    promoteButton.disabled = true;
+    errorMessage.textContent =
+      `Jogador em CDP. Faltam ${formatarTempo(new Date(jogadorAlvoCdpFim) - Date.now())}.`;
+    errorMessage.classList.remove("hidden");
+    return;
+    }
+  
   promoteButton.disabled = !isAdmin;
   errorMessage.classList.add("hidden");
 }
