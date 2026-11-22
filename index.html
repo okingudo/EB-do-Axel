@@ -1687,7 +1687,7 @@ demoteButton.addEventListener("click", async () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ nick: nickname })
+        body: JSON.stringify({ nick: nickname, cargoDestino: destino })
       }
     );
 
