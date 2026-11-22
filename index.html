@@ -639,7 +639,7 @@ function temPermissao(acao) {
 
 function podeAcessarPagina(page) {
   if (page === "home" || page === "ranks") return true;
-
+  if (page === "cdp") return !!usuarioAtual;
   if (page === "audit") return temPermissao("exile");
 
   return temPermissao(page);
