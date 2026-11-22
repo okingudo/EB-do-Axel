@@ -672,6 +672,104 @@ let jogadorRebaixamentoId = null;
 let consultaRebaixamentoAtual = 0;
 let temporizadorRebaixamento = null;
 
+  let jogadorRebaixamentoRoleId = null;
+let destinoRebaixamento = null;
+let destinoRebaixamentoNome = "";
+let destinoInvalido = false;
+
+const ORDEM_CARGOS = [
+  ["recruta", "Recruta"],
+  ["soldado", "Soldado"],
+  ["cabo", "Cabo"],
+  ["terceiroSargento", "Terceiro Sargento"],
+  ["segundoSargento", "Segundo Sargento"],
+  ["primeiroSargento", "Primeiro Sargento"],
+  ["subtenente", "Subtenente"],
+  ["cadete", "Cadete"],
+  ["aspirante", "Aspirante a Oficial"],
+  ["segundoTenente", "Segundo Tenente"],
+  ["primeiroTenente", "Primeiro Tenente"],
+  ["capitao", "Capitão"],
+  ["major", "Major"],
+  ["tenenteCoronel", "Tenente-Coronel"],
+  ["coronel", "Coronel"],
+  ["generalBrigada", "General de Brigada"],
+  ["generalDivisao", "General de Divisão"],
+  ["generalExercito", "General do Exército"],
+  ["eliteMilitar", "Elite Militar"],
+  ["eliteSecreta", "Elite Secreta"],
+  ["eliteReal", "Elite Real"],
+  ["subComandante", "Subcomandante"],
+  ["comandante", "Comandante"],
+  ["marechal", "Marechal"],
+  ["socios", "Sócios"],
+  ["cgex", "CGEx"],
+  ["vicePresidente", "Vice-Presidente"],
+  ["presidente", "Presidente"],
+  ["administracao", "Administração"],
+  ["subCriador", "Sub Criador"],
+  ["criador", "Criador"]
+];
+
+function indiceAlvoRebaixamento() {
+  return ORDEM_CARGOS.findIndex(
+    ([chave]) => String(CARGOS[chave]) === jogadorRebaixamentoRoleId
+  );
+}
+
+function preencherDestinos() {
+  const lista = $("demoteDestinoLista");
+  const campo = $("demoteDestino");
+  const indice = indiceAlvoRebaixamento();
+
+  lista.replaceChildren();
+
+  if (indice <= 0) {
+    campo.disabled = true;
+    return;
+  }
+
+  ORDEM_CARGOS.slice(0, indice).reverse().forEach(([, nome]) => {
+    const opcao = document.createElement("option");
+    opcao.value = nome;
+    lista.appendChild(opcao);
+  });
+
+  campo.disabled = false;
+}
+
+function resolverDestino() {
+  const texto = $("demoteDestino").value.trim().toLowerCase();
+
+  destinoRebaixamento = null;
+  destinoRebaixamentoNome = "";
+  destinoInvalido = false;
+
+  if (!texto) return;
+
+  const achado = ORDEM_CARGOS
+    .slice(0, Math.max(0, indiceAlvoRebaixamento()))
+    .find(([, nome]) => nome.toLowerCase() === texto);
+
+  if (achado) {
+    destinoRebaixamento = String(CARGOS[achado[0]]);
+    destinoRebaixamentoNome = achado[1];
+  } else {
+    destinoInvalido = true;
+  }
+}
+
+$("demoteDestino").addEventListener("input", () => {
+  resolverDestino();
+
+  demoteButton.textContent = destinoRebaixamento
+    ? `REBAIXAR ATÉ ${destinoRebaixamentoNome.toUpperCase()}`
+    : "REBAIXAR UM CARGO";
+
+  limparMensagemRebaixamento();
+  verificarRebaixamento();
+});
+
 let jogadorExilioEncontrado = false;
 let jogadorExilioId = null;
 let consultaExilioAtual = 0;
