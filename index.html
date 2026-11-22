@@ -1002,6 +1002,14 @@ function verificarAutopromocao() {
 function limparJogadorRebaixamento() {
   jogadorRebaixamentoEncontrado = false;
   jogadorRebaixamentoId = null;
+  jogadorRebaixamentoRoleId = null;
+  destinoRebaixamento = null;
+  destinoRebaixamentoNome = "";
+  destinoInvalido = false;
+  $("demoteDestino").value = "";
+  $("demoteDestino").disabled = true;
+  $("demoteDestinoLista").replaceChildren();
+  demoteButton.textContent = "REBAIXAR UM CARGO";
 
   demotePlayerName.textContent = "N/A";
   demotePlayerRank.textContent = "N/A";
