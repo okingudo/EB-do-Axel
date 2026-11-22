@@ -622,7 +622,7 @@ function temPermissao(acao) {
     return CARGOS_OFICIAIS.includes(cargo);
   }
 
-  if (acao === "demote" || acao === "exile") {
+  if (acao === "demote" || acao === "exile" || acao === "cdpAdmin") {
     return CARGOS_CGEX.includes(cargo);
   }
 
