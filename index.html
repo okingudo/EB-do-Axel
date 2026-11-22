@@ -1269,6 +1269,7 @@ async function consultarJogador(nickname) {
     playerRank.textContent = data.jogador.cargo;
 
     jogadorAlvoId = data.jogador.id;
+    jogadorAlvoCdpFim = data.jogador.cdpFim || null;
     jogadorEncontrado = true;
 
     verificarAutopromocao();
