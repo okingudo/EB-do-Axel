@@ -985,6 +985,8 @@ function formatarTempo(ms) {
 }
 
 async function carregarCdp() {
+  $("cdpAdminCard").classList.toggle("hidden", !temPermissao("cdpAdmin"));
+  
   const status = $("cdpStatus");
   const detalhe = $("cdpDetalhe");
   const tempo = $("cdpTempo");
