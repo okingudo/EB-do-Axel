@@ -1253,10 +1253,11 @@ function renderizarHistorico() {
 
     const valores = [
       item.jogador_nick,
-      ({
+({
   promocao: "Promoção",
   rebaixamento: "Rebaixamento",
-  exilio: "Exílio"
+  exilio: "Exílio",
+  cdp_removida: "CDP removida"
 })[item.tipo] || item.tipo,
       item.cargo_anterior,
       item.novo_cargo,
