@@ -1025,6 +1025,42 @@ async function carregarCdp() {
 }
 
 $("refreshCdp").addEventListener("click", carregarCdp);
+$("cdpRemoverButton").addEventListener("click", async () => {
+  const nick = $("cdpRemoverNick").value.trim();
+  const msg = $("cdpRemoverMessage");
+  const botao = $("cdpRemoverButton");
+
+  if (!nick || !temPermissao("cdpAdmin")) return;
+
+  if (!confirm(`Remover a CDP de ${nick}?\n\nEle poderá ser promovido imediatamente.`)) return;
+
+  botao.disabled = true;
+  msg.textContent = "Processando...";
+  msg.classList.remove("hidden");
+
+  try {
+    const resposta = await fetch(`${API_URL}/api/cdp/remover`, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nick })
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.mensagem || "Não foi possível remover a CDP.");
+    }
+
+    msg.textContent = dados.mensagem;
+    $("cdpRemoverNick").value = "";
+
+  } catch (erro) {
+    msg.textContent = erro.message;
+  } finally {
+    botao.disabled = false;
+  }
+});
   
 // Navegação
 function openPage(page) {
