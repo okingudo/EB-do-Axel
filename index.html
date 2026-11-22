@@ -949,6 +949,61 @@ function verificarExilio() {
 
   exileButton.disabled = false;
 }
+
+// Fim da CDP
+function formatarTempo(ms) {
+  const totalMin = Math.max(0, Math.ceil(ms / 60000));
+  const d = Math.floor(totalMin / 1440);
+  const h = Math.floor((totalMin % 1440) / 60);
+  const m = totalMin % 60;
+  const partes = [];
+
+  if (d) partes.push(`${d}d`);
+  if (d || h) partes.push(`${h}h`);
+  partes.push(`${m}min`);
+
+  return partes.join(" ");
+}
+
+async function carregarCdp() {
+  const status = $("cdpStatus");
+  const detalhe = $("cdpDetalhe");
+  const tempo = $("cdpTempo");
+
+  status.textContent = "Consultando...";
+  detalhe.textContent = "";
+  tempo.textContent = "";
+
+  try {
+    const resposta = await fetch(`${API_URL}/api/cdp`, {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store"
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.sucesso) {
+      throw new Error(dados.mensagem || "Erro ao consultar a CDP.");
+    }
+
+    if (dados.emCdp) {
+      status.textContent = "Você está em CDP";
+      detalhe.textContent =
+        `Início: ${new Date(dados.inicio).toLocaleString("pt-BR")} • ` +
+        `Fim: ${new Date(dados.fim).toLocaleString("pt-BR")}`;
+      tempo.textContent =
+        `Faltam ${formatarTempo(new Date(dados.fim) - Date.now())}`;
+    } else {
+      status.textContent = "Você não está em CDP";
+      detalhe.textContent = "Nenhuma CDP ativa no momento.";
+    }
+  } catch (erro) {
+    status.textContent = erro.message;
+  }
+}
+
+$("refreshCdp").addEventListener("click", carregarCdp);
   
 // Navegação
 function openPage(page) {
