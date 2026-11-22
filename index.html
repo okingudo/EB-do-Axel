@@ -231,6 +231,13 @@ th { color:var(--gold); }
       <button class="action" id="demoteButton" disabled>REBAIXAR UM CARGO</button>
       <div id="demoteMessage" class="notice hidden"></div>
     </div>
+  
+        <label for="demoteDestino">Rebaixar até (opcional)</label>
+      <input id="demoteDestino" list="demoteDestinoLista"
+             placeholder="Pesquise o cargo de destino"
+             autocomplete="off" disabled>
+      <datalist id="demoteDestinoLista"></datalist>
+      <p class="muted">Deixe vazio para rebaixar só um cargo.</p>
   </section>
 
 <section id="ranks" class="page hidden">
